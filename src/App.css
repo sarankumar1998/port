@@ -1,0 +1,56 @@
+
+*{
+  font-family: 'Lato', sans-serif;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-family: 'Ubuntu', sans-serif;
+ 
+  /* navbar */
+}
+.bg-myRed{
+  background-color: whitesmoke;
+}
+
+/* skills */
+
+.card{
+  overflow: hidden;
+}
+
+.card img{
+  transition:  all 1.5s ease;
+}
+
+.card:hover img{
+  transform: scale(1.2);
+}
+
+.bg{
+  background-color: #dcebf3
+
+}
+
+/* contact */
+.centered {
+  position: absolute;
+  top: 35%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+#btn{
+  background-color: #dcebf3;
+  border: none;
+  padding: 8px 18px;
+}
+
+#btn:hover{
+   background-color: rgb(209, 45, 94)
+} 
+
+/* responsive */
+
+@media only screen and (max-width: 768px) {
+  .firstrow{
+    margin-top: 1rem;
+  }
+
+}
