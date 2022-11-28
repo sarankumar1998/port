@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Form} from "antd";
 import axios from "axios";
 import { injectStyle } from "react-toastify/dist/inject-style";
 import { ToastContainer, toast } from "react-toastify";
 import './FormData.css'
 import Spinner from "../../containers/Spinner/Spinner";
+import { getVrApi } from "../../containers/API";
 
 const FormsData = () => {
 
@@ -18,6 +19,7 @@ const FormsData = () => {
   const [mobile, setMobile] = useState("");
   const [loadData, SetLoadData] = useState(false)
   const [message, setMessage] = useState("");
+  const[vendor,setVendor] = useState([])
 
 
   const onFinish = async () => {
@@ -25,26 +27,46 @@ const FormsData = () => {
       name: name,
       email: email,
       mobile: mobile,
-      message: message
+      message: message,
+      status:true
     }
   
 
-    await axios.post(`http://localhost:5000/api/v1/clients`, user)
+    await axios.post(`http://localhost:4000/api/v1//members`, user)
+
     .then((res) => {
-        SetLoadData(true)
+
         toast.success("Sent Successfully");
         form.resetFields()
-      
+        // SetLoadData(false)
       },
-      SetLoadData(false),
+ 
       (err) => {
         if (err) {
           toast.error("Try Again");
         }
       }
     );
+
+
   };
   // SetLoadData(false)
+
+  
+
+useEffect(() => {
+  Getven()
+}, [])
+
+const Getven = () => {
+  getVrApi.GetvendorApi()
+  .then((res) => {
+    // setLoad(true);
+    setVendor(res.data,console.log(res.data,'okkk'));
+    // setLoad(false);
+  });
+};
+
   
 
   return (
@@ -151,6 +173,7 @@ const FormsData = () => {
                 ]}
               >
                 <textArea
+                  disabled={vendor.message}
                   type="text"
                   placeholder="Message"
                   class="form-control form-control-sm"
@@ -168,7 +191,7 @@ const FormsData = () => {
                   Send
                 </button>
               </div>
-              {loadData ? <Spinner/> : null}
+              {/* {loadData ? <Spinner/> : null} */}
             </Form>
           </div>
         </div>

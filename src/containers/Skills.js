@@ -67,11 +67,11 @@ function Skills() {
           </div>
 
           <div className="col-sm-6 col-md-4 col-lg-3 mt-5">
-            <div class="card shadow">
+            <div className="card shadow">
               <div className="card-body text-center">
                 <img
                   src={exp}
-                  class="card-img-top"
+                  className="card-img-top"
                   style={{ height: "30%", width: "84%" }}
                   alt="..."
                 />
@@ -80,11 +80,11 @@ function Skills() {
           </div>
 
           <div className="col-sm-6 col-md-6 col-lg-3 mt-5 mb-5">
-            <div class="card shadow">
+            <div className="card shadow">
               <div className="card-body text-center">
                 <img
                   src={mysql}
-                  class="card-img-top"
+                  className="card-img-top"
                   style={{ height: "30%", width: "84%" }}
                   alt="..."
                 />
