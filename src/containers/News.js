@@ -2,10 +2,17 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Spinner from "./Spinner/Spinner";
 import { getAPI } from "././API";
+import {
+  EditOutlined, DeleteOutlined
+} from '@ant-design/icons';
+
 
 export default function News() {
   const [details, setDetails] = useState([]);
   const [load, setLoad] = useState(true);
+  const [timer, setTimer] = useState(0)
+  const [dis, setdis] = useState(true)
+
 
   useEffect(() => {
     GetSpecial();
@@ -20,10 +27,34 @@ export default function News() {
   };
 
 
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     setTimer(timer => timer + 1);
+  //   }, 1000);
+  //   return () => clearInterval(interval);
+  // }, []);
+  
+  useEffect(() => {
+    // if (timer !== 0) {
+   const interval = setInterval(() => {
+        setTimer((prev) => prev - 1);
+      }, 1000);
+    // }
+    return () => clearInterval(interval);
+  }, []);
+ 
+
 
   return (
     <div className="mt-5">
-      <p> okkk {details.name}</p>
+      <div className="text-center">
+      <button className="btn btn-info" type="" disabled={dis}>Payment here</button>
+
+      </div>
+      <div className="text-center">
+      {timer}
+  
+      </div>
       {load ? (
         <Spinner />
       ) : (
@@ -49,8 +80,8 @@ export default function News() {
               <td>{el.message}</td>
               <td>{el.mobile}</td>
             <td > {el.status > 0 ? "paid" : "Not Paid"}</td>
-              <td><i class="bi bi-pencil-fill"></i></td>
-              <td>{el.mobile}</td>
+              <td><EditOutlined /></td>
+              <td><DeleteOutlined /></td>
             </tr>
           ))}
         </tbody>
