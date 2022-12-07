@@ -4,8 +4,7 @@ import axios from "axios";
 import { injectStyle } from "react-toastify/dist/inject-style";
 import { ToastContainer, toast } from "react-toastify";
 import './FormData.css'
-import Spinner from "../../containers/Spinner/Spinner";
-import { getVrApi } from "../../containers/API";
+
 
 const FormsData = () => {
 
@@ -17,7 +16,6 @@ const FormsData = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [mobile, setMobile] = useState("");
-  const [loadData, SetLoadData] = useState(false)
   const [message, setMessage] = useState("");
   const[vendor,setVendor] = useState([])
 
@@ -33,9 +31,7 @@ const FormsData = () => {
   
 
     await axios.post(`http://localhost:4000/api/v1//members`, user)
-
     .then((res) => {
-
         toast.success("Sent Successfully");
         form.resetFields()
         // SetLoadData(false)
@@ -51,23 +47,6 @@ const FormsData = () => {
 
   };
   // SetLoadData(false)
-
-  
-
-useEffect(() => {
-  Getven()
-}, [])
-
-const Getven = () => {
-  getVrApi.GetvendorApi()
-  .then((res) => {
-    // setLoad(true);
-    setVendor(res.data,console.log(res.data,'okkk'));
-    // setLoad(false);
-  });
-};
-
-  
 
   return (
     <>  
@@ -106,7 +85,7 @@ const Getven = () => {
                 <input
                   type="text"
                   placeholder="Name"
-                  class="form-control form-control-sm"
+                  className="form-control form-control-sm"
                   value={name}
                   onChange={(event) => setName(event.target.value)}
                 />
@@ -129,7 +108,7 @@ const Getven = () => {
                 <input
                   type="email"
                   placeholder="Email"
-                  class="form-control form-control-sm"
+                  className="form-control form-control-sm"
                   value={email}
                   onChange={(event) => setEmail(event.target.value)}
                 />
@@ -152,7 +131,7 @@ const Getven = () => {
                 <input
                   type="number"
                   placeholder="Mobile"
-                  class="form-control form-control-sm"
+                  className="form-control form-control-sm"
                   value={mobile}
                   onChange={(event) => setMobile(event.target.value)}
                 />
@@ -173,10 +152,10 @@ const Getven = () => {
                 ]}
               >
                 <textArea
-                  disabled={vendor.message}
+        
                   type="text"
                   placeholder="Message"
-                  class="form-control form-control-sm"
+                  className="form-control form-control-sm"
                   value={message}
                   onChange={(event) => setMessage(event.target.value)}
                 />

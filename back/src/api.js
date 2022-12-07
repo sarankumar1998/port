@@ -6,8 +6,6 @@ Router.get('/special',(req,res) => {
     con.query('SELECT * FROM vendorview', (err, rows) => {
         if(!err) {
             res.send(rows)
-        
-        
         }
         else{
             throw err
@@ -15,40 +13,9 @@ Router.get('/special',(req,res) => {
     })
 })
 
-// Router.get('/special',(req,res) => {
-//     con.query("SELECT * FROM vendorview", (err, rows) => {
-//         if(!err) {
-//            res.send(Object.values(JSON.parse(JSON.stringify(rows))))
-//            console.log(rows);
-   
-//         }
-//         else{
-//             throw err
-//         }
-//     })
-// })
 
-
-// Router.get('/special',(req,res) => {
-//     con.query("SELECT * FROM vendorview", (err, result) => {
-//         if(!err) {
-//            res.send(Object.keys(result).forEach(function(key) {
-//             var row = JSON.parse(JSON.stringify(result[key]));
-//             console.log(row.name)
-//             // if want selective row console.log(row.name)
-//             // 
-//           }))
-   
-//         }
-//         else{
-//             throw err
-//         }
-//     })
-// })
- 
 Router.post('/members', function (req, res) {
     var data  = req.body;
-    // console.log(params);
     con.query(`INSERT INTO vendorview SET ?`, data, function (error, results, fields) {
        if (error) {
         console.log(error,'Please Check your inputs');
@@ -60,23 +27,29 @@ Router.post('/members', function (req, res) {
      });
  });
 
-
-
-   
-Router.put('/members/update', function (req, res) {
-    var data  = req.params.id;
-    con.query(`UPDATE vendorview SET id='' `, data, function (error, results, fields) {
-       if (error) {
-        console.log(error,'Please Check your inputs');
-       }
+ Router.put('/members/update', function (req, res) {
+    con.query('UPDATE `vendorview` SET `name`=?,`email`=?,`message`=?,`mobile`=? where `id`=?',
+     [req.body.name,req.body.email, req.body.message, req.body.mobile, req.body.id], function (error, results, fields) {
+       if (error) throw error;
+       else 
        res.json({
-        message:'Sent Successfully!!',
-        data:results
-       });
+        message:'updated successfully'
+       })
+    //    res.end(JSON.stringify(results));
      });
  });
   
-
+ Router.delete('/member/remove/:id', function (req, res) {
+    console.log(req.body);
+    con.query('DELETE FROM vendorview WHERE id=?', [req.params.id], function (error, results, fields) {
+       if (error) throw error;
+       else
+       res.send({
+        message:'deleted successfully'
+       })
+     });
+ });
+ 
  
 
 module.exports = Router

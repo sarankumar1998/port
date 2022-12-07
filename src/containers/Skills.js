@@ -9,15 +9,15 @@ import mysql from "../assets/mysql.png";
 function Skills() {
   return (
     <div>
-       <div className="bg">
-      <div className="container">
-        <div className="row justify-content-center ">
-          <div className=" col-sm-6 col-md-4 col-lg-3 mt-4">
-            <div class="card firstrow shadow">
-              <div className="card-body text-center">
+       <div classNameName="bg">
+      <div classNameName="container">
+        <div classNameName="row justify-content-center ">
+          <div classNameName=" col-sm-6 col-md-4 col-lg-3 mt-4">
+            <div className="card firstrow shadow">
+              <div classNameName="card-body text-center">
                 <img
                   src={html}
-                  class="card-img-top"
+                  className="card-img-top"
                   style={{ height: "50%", width: "85%" }}
                   alt="..."
                 />
@@ -25,12 +25,12 @@ function Skills() {
             </div>
           </div>
 
-          <div className="col-sm-6 col-md-4 col-lg-3  mt-4">
-            <div class="card firstrow shadow">
-              <div className="card-body text-center">
+          <div classNameName="col-sm-6 col-md-4 col-lg-3  mt-4">
+            <div className="card firstrow shadow">
+              <div classNameName="card-body text-center">
                 <img
                   src={css}
-                  class="card-img-top"
+                  className="card-img-top"
                   style={{ height: "50%", width: "60%" }}
                   alt="..."
                 />
@@ -38,12 +38,12 @@ function Skills() {
             </div>
           </div>
 
-          <div className="col-sm-6 col-md-4 col-lg-3  mt-4">
-            <div class="card firstrow shadow">
-              <div className="card-body text-center">
+          <div classNameName="col-sm-6 col-md-4 col-lg-3  mt-4">
+            <div className="card firstrow shadow">
+              <div classNameName="card-body text-center">
                 <img
                   src={react}
-                  class="card-img-top"
+                  className="card-img-top"
                   style={{ height: "50%", width: "66%" }}
                   alt="..."
                 />
@@ -52,13 +52,13 @@ function Skills() {
           </div>
         </div>
         {/* second row starts */}
-        <div className="row justify-content-center">
-          <div className=" col-sm-6 col-md-4 col-lg-3 mt-5">
-            <div class="card shadow">
-              <div className="card-body text-center">
+        <div classNameName="row justify-content-center">
+          <div classNameName=" col-sm-6 col-md-4 col-lg-3 mt-5">
+            <div className="card shadow">
+              <div classNameName="card-body text-center">
                 <img
                   src={boot}
-                  class="card-img-top"
+                  className="card-img-top"
                   style={{ height: "50%", width: "90%" }}
                   alt="..."
                 />
@@ -66,12 +66,12 @@ function Skills() {
             </div>
           </div>
 
-          <div className="col-sm-6 col-md-4 col-lg-3 mt-5">
-            <div className="card shadow">
-              <div className="card-body text-center">
+          <div classNameName="col-sm-6 col-md-4 col-lg-3 mt-5">
+            <div classNameName="card shadow">
+              <div classNameName="card-body text-center">
                 <img
                   src={exp}
-                  className="card-img-top"
+                  classNameName="card-img-top"
                   style={{ height: "30%", width: "84%" }}
                   alt="..."
                 />
@@ -79,12 +79,12 @@ function Skills() {
             </div>
           </div>
 
-          <div className="col-sm-6 col-md-6 col-lg-3 mt-5 mb-5">
-            <div className="card shadow">
-              <div className="card-body text-center">
+          <div classNameName="col-sm-6 col-md-6 col-lg-3 mt-5 mb-5">
+            <div classNameName="card shadow">
+              <div classNameName="card-body text-center">
                 <img
                   src={mysql}
-                  className="card-img-top"
+                  classNameName="card-img-top"
                   style={{ height: "30%", width: "84%" }}
                   alt="..."
                 />
@@ -95,8 +95,8 @@ function Skills() {
       </div>
       
     </div>
-      <div className="row justify-content-center container">
-        <div className="col col-sm-9 col-md-9 col-lg-8 mt-5">
+      <div classNameName="row justify-content-center container">
+        <div classNameName="col col-sm-9 col-md-9 col-lg-8 mt-5">
           <p>
             Innovation is a creative, dynamic process that can't be fully
             encapsulated in a series of how-to steps. Instead, innovation is a

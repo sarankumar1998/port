@@ -9,11 +9,18 @@ export const getAPI = {
 };
 
 
-export const getVrApi = {
-    GetvendorApi: async () =>
+  
+// put
+  export const putMember = {
+    updateMember: async () =>
       await axios
-        .get("http://localhost:4000/api/v1/")
+        .put("  http://localhost:4000/api/v1/members/update")
         .then((res) => res)
         .catch((err) => console.log(err)),
   };
   
+
+
+
+
+
