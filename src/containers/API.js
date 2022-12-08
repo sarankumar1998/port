@@ -11,13 +11,13 @@ export const getAPI = {
 
   
 // put
-  export const putMember = {
-    updateMember: async () =>
-      await axios
-        .put("  http://localhost:4000/api/v1/members/update")
-        .then((res) => res)
-        .catch((err) => console.log(err)),
-  };
+  // export const putMember = {
+  //   updateMember: async () =>
+  //     await axios
+  //       .put("  http://localhost:4000/api/v1/members/update")
+  //       .then((res) => res)
+  //       .catch((err) => console.log(err)),
+  // };
   
 
 

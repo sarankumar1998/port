@@ -7,7 +7,7 @@ import About from "./containers/About";
 import Contact from "./containers/Contact";
 import Msc from "./containers/Msc";
 import Footer from "./components/footer/Footer";
-import News from "./containers/News";
+
 
 function App() {
   return (
@@ -21,7 +21,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/msc" element={<Msc />} />
-          <Route path="/news" element={<News />} />
+     
         </Routes>
       </Router>
       <Footer />

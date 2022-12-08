@@ -10,7 +10,7 @@ function Skills() {
   return (
     <div>
        <div classNameName="bg">
-      <div classNameName="container">
+      <div classNameName="container ">
         <div classNameName="row justify-content-center ">
           <div classNameName=" col-sm-6 col-md-4 col-lg-3 mt-4">
             <div className="card firstrow shadow">
