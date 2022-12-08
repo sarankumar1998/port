@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Form} from "antd";
 import axios from "axios";
 import { injectStyle } from "react-toastify/dist/inject-style";
 import { ToastContainer, toast } from "react-toastify";
 import './FormData.css'
-import Spinner from "../../containers/Spinner/Spinner";
+
 
 const FormsData = () => {
 
@@ -16,8 +16,8 @@ const FormsData = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [mobile, setMobile] = useState("");
-  const [loadData, SetLoadData] = useState(false)
   const [message, setMessage] = useState("");
+  const[vendor,setVendor] = useState([])
 
 
   const onFinish = async () => {
@@ -25,27 +25,28 @@ const FormsData = () => {
       name: name,
       email: email,
       mobile: mobile,
-      message: message
+      message: message,
+      status:true
     }
   
 
-    await axios.post(`http://localhost:5000/api/v1/clients`, user)
+    await axios.post(`http://localhost:4000/api/v1//members`, user)
     .then((res) => {
-        SetLoadData(true)
         toast.success("Sent Successfully");
         form.resetFields()
-      
+        // SetLoadData(false)
       },
-      SetLoadData(false),
+ 
       (err) => {
         if (err) {
           toast.error("Try Again");
         }
       }
     );
+
+
   };
   // SetLoadData(false)
-  
 
   return (
     <>  
@@ -84,7 +85,7 @@ const FormsData = () => {
                 <input
                   type="text"
                   placeholder="Name"
-                  class="form-control form-control-sm"
+                  className="form-control form-control-sm"
                   value={name}
                   onChange={(event) => setName(event.target.value)}
                 />
@@ -107,7 +108,7 @@ const FormsData = () => {
                 <input
                   type="email"
                   placeholder="Email"
-                  class="form-control form-control-sm"
+                  className="form-control form-control-sm"
                   value={email}
                   onChange={(event) => setEmail(event.target.value)}
                 />
@@ -130,7 +131,7 @@ const FormsData = () => {
                 <input
                   type="number"
                   placeholder="Mobile"
-                  class="form-control form-control-sm"
+                  className="form-control form-control-sm"
                   value={mobile}
                   onChange={(event) => setMobile(event.target.value)}
                 />
@@ -151,9 +152,10 @@ const FormsData = () => {
                 ]}
               >
                 <textArea
+        
                   type="text"
                   placeholder="Message"
-                  class="form-control form-control-sm"
+                  className="form-control form-control-sm"
                   value={message}
                   onChange={(event) => setMessage(event.target.value)}
                 />
@@ -168,7 +170,7 @@ const FormsData = () => {
                   Send
                 </button>
               </div>
-              {loadData ? <Spinner/> : null}
+              {/* {loadData ? <Spinner/> : null} */}
             </Form>
           </div>
         </div>

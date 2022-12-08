@@ -14,9 +14,6 @@ function Navbars() {
         <Navbar.Collapse className="justify-content-end">
         <Nav>
           <Nav.Link className="nav"  style={{color:'rgb(222, 28, 93)', fontWeight:'900'}} href="/">Home</Nav.Link>
-          <Nav.Link className="nav"  style={{color:'black'}} href="/skills">Skills</Nav.Link>
-          <Nav.Link className="nav"  style={{color:'black'}} href="/about">About</Nav.Link>
-          <Nav.Link className="nav"  style={{color:'black'}} href="/contact">Contact us</Nav.Link>
           <Nav.Link className="nav"  style={{color:'black'}} href="/news">News us</Nav.Link>
         </Nav>
         </Navbar.Collapse>

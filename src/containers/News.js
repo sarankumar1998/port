@@ -1,48 +1,99 @@
-import React, { useEffect, useState } from 'react'
-import axios from 'axios'
-import Spinner from './Spinner/Spinner'
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import Spinner from "./Spinner/Spinner";
+import { getAPI } from "././API";
+import {
+  EditOutlined, DeleteOutlined
+} from '@ant-design/icons';
+import { injectStyle } from "react-toastify/dist/inject-style";
+import { ToastContainer, toast } from "react-toastify";
+
 
 export default function News() {
 
-    const [details, setDetails] = useState([])
-    const [load, setLoad] = useState(true)
+   // CALL IT ONCE IN YOUR APP
+ if (typeof window !== "undefined") {
+  injectStyle();
+}
 
-    useEffect(() => {
-        axios.get('https://jsonplaceholder.typicode.com/users')
-            .then((res) => {
-                setLoad(true)
-                setDetails(res.data.sort((a,b) => a.name.localeCompare(b.name)))
-                setLoad(false)
-            })
-    })
-
-    return (
-        <div className='mt-5'>
-            {load ? <Spinner /> :
-                <table class="table container">
-                    <thead>
-                        <tr>
-                            <th scope="col">Id</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">UserName</th>
-                            <th scope="col">email</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {details.map((e) => (
-                            <> <tr><th scope="row">{e.id}</th>
-                                <td>{e.name}</td>
-                                <td>{e.username}</td>
-                                <td>{e.email}</td>   
-                                </tr>
-                                </>
-                        ))}
-                    </tbody>
-                </table>
-            }
+  const [details, setDetails] = useState([]);
+  const [load, setLoad] = useState(true);
 
 
-        </div>
 
-    )
+  useEffect(() => {
+    GetSpecial();
+  }, []);
+
+  const GetSpecial = () => {
+    getAPI.GetSpecialApi().then((res) => {
+      setLoad(true);
+      setDetails(res.data);
+      setLoad(false);
+    });
+  };
+
+  const handleDel = async (id) => {
+    let confirm = window.confirm("Are you sure you want to delete");
+    if(confirm){
+      try{
+        await axios.delete('http://localhost:8000/api/v1/member/remove/' + id)
+        toast.error("Deleted Successfully");
+          setTimeout(() => {
+            window.location.reload()
+          }, 1000);
+     
+       }catch (err) {
+         console.log(err);
+       }
+    }
+ }
+
+const edit = () => {
+  toast.warning("We are working on it.");
+}
+
+  return (
+    <div className="mt-5">
+      <div className="text-center">
+      <ToastContainer />
+      </div>
+      <div className="text-center">
+
+  
+      </div>
+      {load ? (
+        <Spinner />
+      ) : (
+      <table className="table container">
+        <thead>
+          <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Name</th>
+            <th scope="col">email</th>
+            <th scope="col">Message</th>
+            <th scope="col">Mobile</th>
+            <th scope="col">Status</th>
+            <th scope="col">Update</th>
+            <th scope="col">Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          {details.map((el) => (
+            <tr>
+              <td key={el.id}>{el.id}</td>
+              <td>{el.name}</td>
+              <td>{el.email}</td>
+              <td>{el.message}</td>
+              <td>{el.mobile}</td>
+            <td > {el.status > 0 ? "paid" : "Not Paid"}</td>
+              <td onClick={edit}><EditOutlined /></td>
+              <td onClick={()=>handleDel(el.id)}><DeleteOutlined /></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      )}
+    </div>
+  );
 }
