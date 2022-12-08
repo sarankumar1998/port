@@ -18,8 +18,7 @@ export default function News() {
 
   const [details, setDetails] = useState([]);
   const [load, setLoad] = useState(true);
-  const [timer, setTimer] = useState(0)
-  const [dis, setdis] = useState(true)
+
 
 
   useEffect(() => {
@@ -34,23 +33,11 @@ export default function News() {
     });
   };
 
-  useEffect(() => {
-    // if (timer !== 0) {
-   const interval = setInterval(() => {
-        setTimer((prev) => prev - 1);
-      }, 1000);
-    // }
-    return () => clearInterval(interval);
-  }, []);
- 
-
   const handleDel = async (id) => {
     let confirm = window.confirm("Are you sure you want to delete");
-
-
     if(confirm){
       try{
-        await axios.delete('http://localhost:4000/api/v1/member/remove/' + id)
+        await axios.delete('http://localhost:8000/api/v1/member/remove/' + id)
         toast.error("Deleted Successfully");
           setTimeout(() => {
             window.location.reload()
@@ -69,11 +56,10 @@ const edit = () => {
   return (
     <div className="mt-5">
       <div className="text-center">
-      <button className="btn btn-info" type="" disabled={dis}>Payment here</button>
       <ToastContainer />
       </div>
       <div className="text-center">
-      {timer}
+
   
       </div>
       {load ? (

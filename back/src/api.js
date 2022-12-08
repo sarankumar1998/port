@@ -14,18 +14,24 @@ Router.get('/special',(req,res) => {
 })
 
 
-Router.post('/members', function (req, res) {
-    var data  = req.body;
-    con.query(`INSERT INTO vendorview SET ?`, data, function (error, results, fields) {
-       if (error) {
-        console.log(error,'Please Check your inputs');
-       }
-       res.json({
-        message:'Sent Successfully!!',
-        data:results
-       });
-     });
- });
+// PLAIN OBJ
+// Router.get('/special/Obj',(req,res) => {
+//     con.query('SELECT * FROM vendorview', (err, result) => {
+//         if(!err) {
+//             Object.keys(result).forEach(function(key){
+//                 var row = result[key];
+//                 console.log(result.name)
+//             })
+//             res.send(result)
+//         }
+//         else{
+//             throw err
+//         }
+//     })
+// })
+
+
+
 
  Router.put('/members/update', function (req, res) {
     con.query('UPDATE `vendorview` SET `name`=?,`email`=?,`message`=?,`mobile`=? where `id`=?',
