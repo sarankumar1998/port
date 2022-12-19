@@ -20,27 +20,32 @@ const FormsData = () => {
   const[vendor,setVendor] = useState([])
 
 
+ 
   const onFinish = async () => {
+    let  sessionValue =  JSON.parse(localStorage.getItem("user"))
     let user = {
       name: name,
       email: email,
       mobile: mobile,
       message: message,
-      status:true
+      status:true,
+      tm: new Date(),
+      userId: sessionValue.id
     }
   
 
     await axios.post(`http://localhost:4000/api/v1//members`, user)
     .then((res) => {
-        toast.success("Sent Successfully");
         form.resetFields()
-        // SetLoadData(false)
+        toast.success("Sent Successfully");
+        // window.sessionStorage.setItem('user', JSON.stringify(res.data));
       },
  
       (err) => {
         if (err) {
           toast.error("Try Again");
         }
+    
       }
     );
 

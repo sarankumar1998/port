@@ -7,15 +7,19 @@ import About from "./containers/About";
 import Contact from "./containers/Contact";
 import Msc from "./containers/Msc";
 import Footer from "./components/footer/Footer";
+import Login from "./components/Login/Login";
+import Signup from "./components/Signup/Signup";
 
 
 function App() {
   return (
     <div className="App">
-      <Navbars />
+      <Navbars /> 
       <Router>
         <Routes>
-          <Route path="/" element={<Home />} />
+        <Route path="/" element={<Login/>} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
           <Route path="/home" element={<Home />} />
           <Route path="/skills" element={<Skills />} />
           <Route path="/about" element={<About />} />
@@ -24,7 +28,7 @@ function App() {
      
         </Routes>
       </Router>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }

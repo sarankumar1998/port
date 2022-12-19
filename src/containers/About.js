@@ -1,7 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import pic3 from "../assets/web.jpg";
 
 export default function About() {
+  const navigate  = useNavigate()
+
+  useEffect(() => {
+    if (!!!localStorage.getItem("user")) {
+      navigate("/login");
+    }
+    
+  }, [navigate]);
+
   return (
     <div className="container">
       <section>
