@@ -6,7 +6,9 @@ const autho = require('./auth')
 const cors = require('cors');
 
 var app = express()
-app.use(cors());                    
+
+app.use(cors());   
+app.use(express.json())                 
 app.use(bodyParser.json())
 app.use('/api/v1',PeopleRouter)
 app.use('/api/v2',autho)

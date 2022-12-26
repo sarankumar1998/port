@@ -5,10 +5,12 @@ import react from "../assets/react.png";
 import exp from "../assets/nod.png";
 import boot from "../assets/boot.png";
 import mysql from "../assets/mysql.png";
+import Navbars from "../components/Navbars";
 
 function Skills() {
   return (
     <div>
+      <Navbars />
        <div classNameName="bg">
       <div classNameName="container ">
         <div classNameName="row justify-content-center ">

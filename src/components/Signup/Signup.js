@@ -35,8 +35,8 @@ const Signup = () => {
         }, 2000);
       },
       (err) => {
-        if (!err) {
-          toast.success("User created successfully");
+        if (err) {
+          toast.warning("already User exists!");
         }
       }
     );
@@ -81,7 +81,7 @@ const Signup = () => {
                 <input
                   type="text"
                   id="form3Example3"
-                  class="form-control form-control-sm"
+                  className="form-control form-control-sm"
                   value={name}
                   onChange={(event) => setName(event.target.value)}
                 />
@@ -105,7 +105,7 @@ const Signup = () => {
                 <input
                   type="text"
                   id="form3Example3"
-                  class="form-control form-control-sm "
+                  className="form-control form-control-sm "
                   value={username}
                   onChange={(event) => setUsername(event.target.value)}
                 />
@@ -129,7 +129,7 @@ const Signup = () => {
                 <input
                   type="email"
                   id="form3Example3"
-                  class="form-control form-control-sm"
+                  className="form-control form-control-sm"
                   value={email}
                   onChange={(event) => setEmail(event.target.value)}
                 />
@@ -153,7 +153,7 @@ const Signup = () => {
                 <input
                   type="password"
                   id="form3Example4"
-                  class="form-control form-control-sm"
+                  className="form-control form-control-sm"
                   value={password}
                   onChange={(event) => setPassword(event.target.value)}
                 />
@@ -172,7 +172,7 @@ const Signup = () => {
 
             {/* end */}
 
-            {/* <div class="forgot-link md-5 d-flex justify-content-between align-items-center">
+            {/* <div className="forgot-link md-5 d-flex justify-content-between align-items-center">
               <div>
                 <Link
                   to="/recaptcha"

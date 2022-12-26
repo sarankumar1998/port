@@ -11,13 +11,15 @@ import Login from "./components/Login/Login";
 import Signup from "./components/Signup/Signup";
 
 
-function App() {
+function App() {  
   return (
     <div className="App">
-      <Navbars /> 
+     
       <Router>
+      {/* <Navbars /> */}
         <Routes>
-        <Route path="/" element={<Login/>} />
+          
+        <Route  path="/" element={<Login/>} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/home" element={<Home />} />
@@ -34,3 +36,5 @@ function App() {
 }
 
 export default App;
+
+

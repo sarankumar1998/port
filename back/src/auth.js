@@ -18,7 +18,7 @@ router.post("/register", async (req, res) => {
     //CREATE A NEW USER
     //Hash the password
     const salt = bcrypt.genSaltSync(10);
-    const hashedPassword = (req.body.password, salt);
+    const hashedPassword = bcrypt.hashSync(req.body.password, salt);
 
     const newUser =
       "INSERT INTO users (`username`,`email`,`password`,`name`) VALUE (?)";
@@ -48,15 +48,9 @@ router.post("/login", async (req, res) => {
       req.body.password,
       data[0].password
     );
-    // const checkPassword = (
-    //   req.body.password,
-    //   data[0].password
-    // );
-
 
     if (!checkPassword)
       return res.status(400).json("Wrong password or username!");
-
     const token = jwt.sign({ id: data[0].id }, "secretkey");
 
     const { password, ...others } = data[0];
@@ -68,12 +62,12 @@ router.post("/login", async (req, res) => {
 
 
 
- const logout = (req, res) => {
-  res.clearCookie("accessToken",{
-    secure:true,
-    sameSite:"none"
-  }).status(200).json("User has been logged out.")
-};
+//  const logout = (req, res) => {
+//   res.clearCookie("accessToken",{
+//     secure:true,
+//     sameSite:"none"
+//   }).status(200).json("User has been logged out.")
+// };
 
 
 module.exports = router;

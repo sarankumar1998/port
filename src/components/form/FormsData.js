@@ -37,7 +37,9 @@ const FormsData = () => {
     await axios.post(`http://localhost:4000/api/v1//members`, user)
     .then((res) => {
         form.resetFields()
+        window.localStorage.setItem('details', JSON.stringify(res.data),true);
         toast.success("Sent Successfully");
+
         // window.sessionStorage.setItem('user', JSON.stringify(res.data));
       },
  

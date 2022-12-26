@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import pic3 from "../assets/web.jpg";
+import Navbars from "../components/Navbars";
 
 export default function About() {
   const navigate  = useNavigate()
@@ -14,12 +15,13 @@ export default function About() {
 
   return (
     <div className="container">
+      <Navbars/>
       <section>
-          <div class="row">
-            <div class="col-sm-9 col-md-8 col-xl-5">
+          <div className="row">
+            <div className="col-sm-9 col-md-8 col-xl-5">
               <img src={pic3} width="70%" alt="" />
             </div>
-            <div class="col-sm col-md mt-5">
+            <div className="col-sm col-md mt-5">
               <h2>Hello! <br /> I'm <span style={{ color: "#0275d8" }}>Saran</span> </h2>
               <h3 style={{ color: "gray" }}>Web Developer</h3>
               <p> <span>I</span>
@@ -37,7 +39,7 @@ export default function About() {
                 Small progress is still progress. Open to be placed, trained, coached and also be a good team
                 player.
               </p>
-              <a href="../../assets/cv/resumesarannew-pdf.pdf" class="btn btn-primary">download cv</a>
+              <a href="../../assets/cv/resumesarannew-pdf.pdf" className="btn btn-primary">download cv</a>
             </div>
         </div>
       </section>
