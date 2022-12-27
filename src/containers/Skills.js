@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import html from "../assets/htm.png";
 import css from "../assets/css.png";
 import react from "../assets/react.png";
@@ -6,8 +6,16 @@ import exp from "../assets/nod.png";
 import boot from "../assets/boot.png";
 import mysql from "../assets/mysql.png";
 import Navbars from "../components/Navbars";
+import { useNavigate } from "react-router-dom";
 
 function Skills() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!!!localStorage.getItem("user")) {
+      navigate("/login");
+    }
+  }, [navigate]);
   return (
     <div>
       <Navbars />

@@ -18,15 +18,17 @@ import ListItemButton from '@mui/material/ListItemButton';
 import { Link, useNavigate } from "react-router-dom";
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
+import CircleNotificationsIcon from '@mui/icons-material/CircleNotifications';
 import InfoIcon from '@mui/icons-material/Info';
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ContactsIcon from '@mui/icons-material/Contacts';
-import { AccountCircle, Home, ViewAgenda } from '@material-ui/icons';
-import { Menu, MenuItem } from '@mui/material';
+import { AccountCircle, Home, SettingsCellSharp, ViewAgenda } from '@material-ui/icons';
+import { Badge, Menu, MenuItem } from '@mui/material';
+import { useEffect } from 'react';
+import axios from 'axios';
 
 
 
@@ -113,6 +115,25 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 export default function MiniDrawer() {
+  const [all, setAll] = React.useState([]);
+  
+  const getProduct = async () => {
+    await axios
+      .get(`http://localhost:4000/api/v1/special/Obj/`)
+      .then((res) => {
+        setAll(res.data.length)
+        // if (id === 2) {
+        //   setAll(res.data);
+        //   // setLoad(false);
+        // }
+      })
+      .catch((err) => console.log(err));
+  };
+  console.log(all, "len");
+
+  useEffect(() => {
+getProduct()
+  })
 
     const stringifiedPerson = localStorage.getItem("user");
   const personAsObjectAgain = JSON.parse(stringifiedPerson);
@@ -170,6 +191,7 @@ export default function MiniDrawer() {
       <AppBar position="fixed" open={open}>
         <Toolbar>
           <IconButton
+          //  style={{flexDirectio'}}
             color="inherit"
             aria-label="open drawer"
             onClick={handleDrawerOpen}
@@ -183,16 +205,7 @@ export default function MiniDrawer() {
             <MenuIcon />
           </IconButton>
           <div>
-              <IconButton
-                size="large"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleMenu}
-                color="inherit"
-              >
-                <AccountCircle />
-              </IconButton>
+     
               <Menu
                 id="menu-appbar"
                 anchorEl={anchorEl}
@@ -211,7 +224,22 @@ export default function MiniDrawer() {
                 <MenuItem onClick={handleClose}>{users.username}</MenuItem>
                 <MenuItem onClick={handleClick}>logout</MenuItem>
               </Menu>
+              <IconButton
+                size="large"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleMenu}
+                color="inherit"
+              >
+                <AccountCircle />
+              </IconButton>
+
             </div>
+
+            <Badge color="secondary" badgeContent={all} showZero>
+            <CircleNotificationsIcon/>
+      </Badge>
 
 
 
