@@ -58,17 +58,27 @@ Router.post("/members", function (req, res) {
   //  var userId= req.body.userId;
 });
 
- Router.put('/members/update', function (req, res) {
-    con.query('UPDATE `vendorview` SET `name`=?,`email`=?,`message`=?,`mobile`=? where `id`=?',
-     [req.body.name,req.body.email, req.body.message, req.body.mobile, req.body.id], function (error, results, fields) {
-       if (error) throw error;
-       else
-       res.json({
-        message:'updated successfully'
-       })
-    //    res.end(JSON.stringify(results));
-     });
- });
+
+
+Router.put('/members/update/:id', (req, res)=>{
+  console.log(req.body);
+  const {id} = req.params;
+  // ID
+  const {status} = req.body;
+  // Query
+  let myQuery = `UPDATE vendorview SET status='${status}' WHERE id=${id}`;
+  // Run the query
+  con.query(myQuery, (error, result)=>{
+      if(error){
+          res.status(500).json(error);
+      }else{
+          res.status(201).json({result, message:'updated successfully'});
+          
+      }
+  });
+});
+
+
 
  Router.delete('/member/remove/:id', function (req, res) {
     console.log(req.body);

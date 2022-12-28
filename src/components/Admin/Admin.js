@@ -4,54 +4,34 @@ import { Button } from "antd";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Navbars from "../components/Navbars";
-import ModalDialog from "../components/update/Modal";
-import CheckOutlinedIcon from "@mui/icons-material/CheckOutlined"; 
-import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined';
-import Admin from "../components/Admin/Admin";
- 
+import Navbars from "../../components/Navbars";
+import ModalDialog from "../../components/update/Modal";
+import CheckOutlinedIcon from "@mui/icons-material/CheckOutlined";
+import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
+import { Approval } from "@mui/icons-material";
 
-function Msc() {
-  const [det, setDet] = useState([]);
+function Admin(id) {
+  const [approval, setApproval] = useState(false);
+  const [Reject, setReject] = useState(false);
   const [all, setAll] = useState([]);
   const [load, setLoad] = useState(true);
   const [open, setOpen] = React.useState(false);
-  const { id } = JSON.parse(localStorage.getItem("user"));
-  console.log(id, "ooo");
-
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (id === null) {
-      navigate("/login");
-    }
-  }, [navigate]);
+  //   const [edit, setEdit] = useState({
+  //     status:"Approved"
+  //   })
 
   useEffect(() => {
-    getProductById();
     getProduct();
   }, []);
-
-  const getProductById = async () => {
-    await axios
-      .get(`http://localhost:4000/api/v1/special/Obj/${id}`)
-      .then((res) => {
-        setDet(res.data);
-        setLoad(false);
-      })
-      .catch((err) => console.log(err));
-  };
-
-  console.log(det, "det");
 
   const getProduct = async () => {
     await axios
       .get(`http://localhost:4000/api/v1/special/Obj/`)
       .then((res) => {
-        if (id === 2) {
-          setAll(res.data);
-          setLoad(false);
-        }
+        // if (id === 2) {
+        setAll(res.data);
+        setLoad(false);
+        // }
       })
       .catch((err) => console.log(err));
   };
@@ -73,11 +53,9 @@ function Msc() {
   };
 
   const handleEdit = async (id) => {
-    // let confirm = window.confirm("Are you sure you want to delete");
-    // if(confirm){
     try {
-      await axios.put("http://localhost:4000/api/v1//members/update" + id);
-      // toast.error("Deleted Successfully");
+      await axios.put("http://localhost:4000/api/v1/members/update" + id);
+
       setTimeout(() => {
         window.location.reload();
       }, 1000);
@@ -96,43 +74,25 @@ function Msc() {
     setOpen(false);
   };
 
+  const handleApprove = (event, id) => {
+    setApproval(true);
+    setReject(false);
+    console.log(approval, "ooo");
+    console.log(event, id, "check");
+  };
+
+  const handleReject = () => {
+    setReject(true);
+    setApproval(false);
+    console.log(Reject, "fail");
+  };
+
   return (
     <div className="container mt-5">
       <Navbars />
       <div style={{ marginTop: "5rem" }}></div>
-      {id !== 2 ? (
-        <Box component="main" sx={{ flexGrow: 1, p: 6 }}>
-          <table class="table table-bordered">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Message</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            {load ? (
-              "Loading...."
-            ) : (
-              <tbody>
-                {det.map((el) => {
-                  return (
-                    <tr>
-                      <td>{el.name}</td>
-                      <td>{el.message}</td>
-                      <td>{el.status}</td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            )}
-          </table>
-        </Box>
-      ) : <Admin id={id} />}
-
-
-
-{/* ADMIN */}
-      {/* {all.length > 1 ? (
+      {/* ADMIN */}
+      {all.length > 1 ? (
         <Box component="main" sx={{ flexGrow: 1, p: 6 }}>
           <table class="table table-bordered">
             <thead>
@@ -149,12 +109,21 @@ function Msc() {
               "Loading...."
             ) : (
               <tbody>
-                {all.map((el) => {
+                {all.map((el, index) => {
                   return (
-                    <tr className="text-center">
+                    <tr key={index} className="text-center">
                       <td>{el.name}</td>
                       <td>{el.message}</td>
-                      <td>{el.status}</td>
+                      <td>
+                        {" "}
+                        {el.status === "Pending"
+                          ? approval
+                            ? "Approved"
+                            : Reject
+                            ? "Rejected"
+                            : el.status
+                          : null}{" "}
+                      </td>
                       <td onClick={() => handleDel(el.id)}>
                         <DeleteOutlined />
                       </td>
@@ -167,8 +136,30 @@ function Msc() {
                         />
                         <ModalDialog open={open} handleClose={handleClose} />
                       </td>
-                      <td >{el.status === "Pending" ? <button className="btn btn-outline-success"><CheckOutlinedIcon /> </button>: null} &nbsp;
-                      {el.status === "Pending" ?  <button className="btn btn-outline-danger"><ClearOutlinedIcon /> </button>: null}
+                      <td>
+                        {" "}
+                        {Reject === false ? (
+                          el.status === "Pending" ? (
+                            <button
+                              className="btn btn-outline-success btn-sm"
+                              onClick={(e) => handleApprove(e, index)}
+                            >
+                              <CheckOutlinedIcon />{" "}
+                            </button>
+                          ) : null
+                        ) : null}{" "}
+                        &nbsp;
+                        {approval === false ? (
+                          el.status === "Pending" ? (
+                            <button
+                              className="btn btn-outline-danger btn-sm"
+                              onClick={handleReject}
+                            >
+                              {" "}
+                              <ClearOutlinedIcon />{" "}
+                            </button>
+                          ) : null
+                        ) : null}
                       </td>
                     </tr>
                   );
@@ -177,9 +168,14 @@ function Msc() {
             )}
           </table>
         </Box>
-      ) : null} */}
+      ) : null}
+      <div className="text-end mb-5">
+        <button className="btn btn-primary" onClick={(e) => handleEdit(e)}>
+          Submit
+        </button>
+      </div>
     </div>
   );
 }
 
-export default Msc;
+export default Admin;

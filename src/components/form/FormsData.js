@@ -28,7 +28,7 @@ const FormsData = () => {
       email: email,
       mobile: mobile,
       message: message,
-      status:true,
+      status:'Pending',
       tm: new Date(),
       userId: sessionValue.id
     }
