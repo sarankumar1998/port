@@ -11,7 +11,6 @@ export default function Home() {
 
   const stringifiedPerson = localStorage.getItem("user");
   const personAsObjectAgain = JSON.parse(stringifiedPerson);
-  console.log(personAsObjectAgain);
   const [users, setUsers] = useState(personAsObjectAgain);
 
   useEffect(() => {
@@ -22,7 +21,7 @@ export default function Home() {
 
   return (
     <div style={{ marginTop: "5rem" }}>
-      <Navbars />
+{users === null ? " ":      <Navbars/>}
       <div style={{ margin: "2rem" }} className="row g-2">
         <div className="col-xl-8">
           <div style={{ marginBottom: "-2rem" }}>

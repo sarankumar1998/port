@@ -17,10 +17,8 @@ const FormsData = () => {
   const [email, setEmail] = useState("");
   const [mobile, setMobile] = useState("");
   const [message, setMessage] = useState("");
-  const[vendor,setVendor] = useState([])
 
 
- 
   const onFinish = async () => {
     let  sessionValue =  JSON.parse(localStorage.getItem("user"))
     let user = {
@@ -39,8 +37,6 @@ const FormsData = () => {
         form.resetFields()
         window.localStorage.setItem('details', JSON.stringify(res.data),true);
         toast.success("Sent Successfully");
-
-        // window.sessionStorage.setItem('user', JSON.stringify(res.data));
       },
  
       (err) => {

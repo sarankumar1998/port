@@ -8,7 +8,8 @@ import mysql from "../assets/mysql.png";
 import Navbars from "../components/Navbars";
 import { useNavigate } from "react-router-dom";
 
-function Skills() {
+function Skills({usersId}) {
+  console.log(usersId,'lll');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -18,7 +19,7 @@ function Skills() {
   }, [navigate]);
   return (
     <div>
-      <Navbars />
+ <Navbars />
        <div classNameName="bg">
       <div classNameName="container ">
         <div classNameName="row justify-content-center ">

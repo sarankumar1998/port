@@ -8,6 +8,7 @@ const jwt = require("jsonwebtoken");
 const router = express.Router();
 
 router.post("/register", async (req, res) => {
+  
   //CHECK USER IF EXISTS
   const alreadyUser = "SELECT * FROM users WHERE username = ?";
 

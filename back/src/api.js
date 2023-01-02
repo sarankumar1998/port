@@ -1,6 +1,7 @@
 const express = require("express");
 const Router = express.Router();
 const con = require("./db");
+var moment = require("moment")
 
 // byId
 Router.get("/special/Obj/:id", function (req, res) {
@@ -37,12 +38,12 @@ Router.post("/members", function (req, res) {
   var message = req.body.message;
   var mobile = req.body.mobile;
   var status = req.body.status;
-  // var tm = moment(created_at).utc().utcOffset(-4).format('MM/DD/YYYY, h:mm a');
+  var tm = moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
   var userId = req.body.userId;
 
   var query = `INSERT INTO vendorview 
-	(name, email, message, mobile,status,userId) 
-	VALUES ("${name}", "${email}", "${message}", "${mobile}","${status}","${userId}")`;
+	(name, email, message, mobile,status,tm,userId) 
+	VALUES ("${name}", "${email}", "${message}", "${mobile}","${status}","${tm}","${userId}")`;
 
   con.query(query, function (error, data) {
     if (error) {
@@ -65,16 +66,18 @@ Router.put('/members/update/:id', (req, res)=>{
   const {id} = req.params;
   // ID
   const {status} = req.body;
+  const {Remarks} = req.body;
   // Query
-  let myQuery = `UPDATE vendorview SET status='${status}' WHERE id=${id}`;
+  let query = `UPDATE vendorview SET status='${status}', Remarks='${Remarks}'WHERE id=${id}`;
   // Run the query
-  con.query(myQuery, (error, result)=>{
-      if(error){
-          res.status(500).json(error);
-      }else{
-          res.status(201).json({result, message:'updated successfully'});
-          
-      }
+  con.query(query, function (error, data) {
+    if (error) {
+      console.log(error);
+      return res.status(500).json(error);
+    } else {
+      res.status(200)
+      .send({...data});
+    }
   });
 });
 

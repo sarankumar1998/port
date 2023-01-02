@@ -3,7 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import pic3 from "../assets/web.jpg";
 import Navbars from "../components/Navbars";
 
-export default function About() {
+export default function About({usersId}) {
+  console.log(usersId, 'checkkkkkkkkkk');
   const navigate  = useNavigate()
 
   useEffect(() => {
@@ -15,7 +16,7 @@ export default function About() {
 
   return (
     <div className="container">
-      <Navbars/>
+ <Navbars />
       <section>
           <div className="row">
             <div className="col-sm-9 col-md-8 col-xl-5">

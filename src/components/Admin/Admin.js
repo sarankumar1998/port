@@ -1,69 +1,71 @@
-import { DeleteOutlined, Edit, EditOutlined } from "@material-ui/icons";
+import { Edit, EditOutlined } from "@material-ui/icons";
 import { Box } from "@mui/material";
-import { Button } from "antd";
+import DeleteIcon from '@mui/icons-material/Delete';
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import { injectStyle } from "react-toastify/dist/inject-style";
 import Navbars from "../../components/Navbars";
 import ModalDialog from "../../components/update/Modal";
 import CheckOutlinedIcon from "@mui/icons-material/CheckOutlined";
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
-import { Approval } from "@mui/icons-material";
+import Search from "antd/lib/transfer/search";
+import TextArea from "antd/lib/input/TextArea";
 
-function Admin(id) {
-  const [approval, setApproval] = useState(false);
+function Admin({usersId}) {
+ // CALL IT ONCE IN YOUR APP
+ if (typeof window !== "undefined") {
+    injectStyle();
+  }
+
+  const [Approval, setApproval] = useState(false);
+  const [search, setSearch] = useState("");
   const [Reject, setReject] = useState(false);
   const [all, setAll] = useState([]);
   const [load, setLoad] = useState(true);
   const [open, setOpen] = React.useState(false);
-  //   const [edit, setEdit] = useState({
-  //     status:"Approved"
-  //   })
+  const [remarks, setremarks] = useState("");
+
 
   useEffect(() => {
     getProduct();
   }, []);
+  
 
   const getProduct = async () => {
     await axios
       .get(`http://localhost:4000/api/v1/special/Obj/`)
       .then((res) => {
-        // if (id === 2) {
+        console.log(res)
         setAll(res.data);
         setLoad(false);
-        // }
       })
       .catch((err) => console.log(err));
   };
-  console.log(all, "ookk");
+
+  const onfilterchng = (e) => {
+    console.log()
+    const change = all.filter((el) => el.name.toLowerCase().includes(e.toLowerCase()))
+    setSearch(change)
+    setAll(change)
+   }
+  
+
 
   const handleDel = async (id) => {
     let confirm = window.confirm("Are you sure you want to delete");
     if (confirm) {
       try {
         await axios.delete("http://localhost:4000/api/v1/member/remove/" + id);
-        // toast.error("Deleted Successfully");
-        setTimeout(() => {
+        toast.error("Deleted Successfully");
           window.location.reload();
-        }, 2000);
+    
       } catch (err) {
         console.log(err);
       }
     }
   };
 
-  const handleEdit = async (id) => {
-    try {
-      await axios.put("http://localhost:4000/api/v1/members/update" + id);
-
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000);
-    } catch (err) {
-      console.log(err);
-    }
-    // }
-  };
 
   const handleOpen = () => {
     setOpen(true);
@@ -74,26 +76,61 @@ function Admin(id) {
     setOpen(false);
   };
 
-  const handleApprove = (event, id) => {
+  const handleApprove = async (event, id) => {
     setApproval(true);
     setReject(false);
-    console.log(approval, "ooo");
     console.log(event, id, "check");
-  };
+    const updateStatus = {
+      status: "Approved",
+      Remarks:remarks
+    };
+    let confirm = window.confirm("Are you sure you want to Approve");
+    if(confirm){
+    try {
+      await axios.put(
+        "http://localhost:4000/api/v1/members/update/" + id,
+        updateStatus
+      );
+      toast.success("Approved Successfully");
+    } catch (err) {
+      console.log(err);
+    }
+    window.location.reload();
+  }}
 
-  const handleReject = () => {
+  const handleReject = async (event,id) => {
     setReject(true);
     setApproval(false);
-    console.log(Reject, "fail");
-  };
+    // console.log(event, id, "check");
+    const updateStatus = {
+      status: "Rejected",
+      Remarks:remarks   
+    };
+    let confirm = window.confirm("Are you sure you want to Reject");
+
+    if(confirm){
+    try {
+      await axios.put(
+        "http://localhost:4000/api/v1/members/update/" + id,updateStatus
+      );
+      toast.error("Rejected Successfully");
+    } catch (err) {
+      console.log(err);
+    }
+    window.location.reload();
+  }};
 
   return (
-    <div className="container mt-5">
-      <Navbars />
-      <div style={{ marginTop: "5rem" }}></div>
+    <div className="container mt-3">
+        {/* {usersId === undefined ? "" :  <Navbars />} */}
+      <ToastContainer />
+      <label>Search:</label>
+        <input className="mb-2" onChange={(e) => onfilterchng(e.target.value)}/>
+
       {/* ADMIN */}
       {all.length > 1 ? (
         <Box component="main" sx={{ flexGrow: 1, p: 6 }}>
+
           <table class="table table-bordered">
             <thead>
               <tr className="text-center">
@@ -102,6 +139,7 @@ function Admin(id) {
                 <th>Status</th>
                 <th>Delete</th>
                 <th>Edit</th>
+                <th>Reason</th>
                 <th>Approval</th>
               </tr>
             </thead>
@@ -109,23 +147,15 @@ function Admin(id) {
               "Loading...."
             ) : (
               <tbody>
+                
                 {all.map((el, index) => {
                   return (
                     <tr key={index} className="text-center">
                       <td>{el.name}</td>
-                      <td>{el.message}</td>
-                      <td>
-                        {" "}
-                        {el.status === "Pending"
-                          ? approval
-                            ? "Approved"
-                            : Reject
-                            ? "Rejected"
-                            : el.status
-                          : null}{" "}
-                      </td>
+                      <td style={{width:'25rem'}}>{el.message}</td>
+                      <td> {el.status} </td>
                       <td onClick={() => handleDel(el.id)}>
-                        <DeleteOutlined />
+                        <DeleteIcon />
                       </td>
                       <td>
                         {" "}
@@ -136,30 +166,40 @@ function Admin(id) {
                         />
                         <ModalDialog open={open} handleClose={handleClose} />
                       </td>
-                      <td>
-                        {" "}
-                        {Reject === false ? (
-                          el.status === "Pending" ? (
-                            <button
-                              className="btn btn-outline-success btn-sm"
-                              onClick={(e) => handleApprove(e, index)}
-                            >
-                              <CheckOutlinedIcon />{" "}
-                            </button>
-                          ) : null
-                        ) : null}{" "}
+                      <td><TextArea disabled={el.status === "Approved" || el.status === "Rejected"} onChange={(e) => setremarks(e.target.value)} placeholder={el.Remarks} /></td>
+                      <td >
+                          <button
+                            className="btn btn-outline-success btn-sm"
+                            onClick={(e) => handleApprove(e, el.id)}
+                            disabled={el.status === "Approved"}
+                            style={{
+                              display:
+                                el.status === "Approved" ||
+                                el.status === "Pending"
+                                  ? "inline"
+                                  : "none",
+                            }}
+                          >
+                            <CheckOutlinedIcon />{" "}
+                          </button>
+                        
                         &nbsp;
-                        {approval === false ? (
-                          el.status === "Pending" ? (
-                            <button
-                              className="btn btn-outline-danger btn-sm"
-                              onClick={handleReject}
-                            >
-                              {" "}
-                              <ClearOutlinedIcon />{" "}
-                            </button>
-                          ) : null
-                        ) : null}
+                          <button
+                            className="btn btn-outline-danger btn-sm"
+                            onClick={(e) => handleReject(e, el.id)}
+                            disabled={el.status === "Rejected"}
+                            style={{
+                              display:
+                                el.status === "Rejected" ||
+                                el.status === "Pending"
+                                  ? "inline"
+                                  : "none",
+                            }}
+                          >
+                            {" "}
+                            <ClearOutlinedIcon />{" "}
+                          </button>
+                        
                       </td>
                     </tr>
                   );
@@ -169,11 +209,9 @@ function Admin(id) {
           </table>
         </Box>
       ) : null}
-      <div className="text-end mb-5">
-        <button className="btn btn-primary" onClick={(e) => handleEdit(e)}>
-          Submit
-        </button>
-      </div>
+      {/* <div className="text-end mb-5">
+        No data
+      </div> */}
     </div>
   );
 }

@@ -7,13 +7,9 @@ import { getAPI } from './API';
 import Navbars from "../components/Navbars";
 
 
-function Contact() {
-
+function Contact({usersId}) {
 
   const navigate  = useNavigate()
-
-
-
   useEffect(() => {
     if (!!!localStorage.getItem("user") ) {
       navigate("/login");
@@ -24,7 +20,7 @@ function Contact() {
 
   return (
     <div>
-      <Navbars/>
+      <Navbars />
       <img src={blue} alt="" style={{ height: '50vh' }} />
       <h3 className='centered'> Contact us
       </h3>

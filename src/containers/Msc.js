@@ -1,22 +1,16 @@
 import { DeleteOutlined, Edit, EditOutlined } from "@material-ui/icons";
 import { Box } from "@mui/material";
-import { Button } from "antd";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbars from "../components/Navbars";
-import ModalDialog from "../components/update/Modal";
-import CheckOutlinedIcon from "@mui/icons-material/CheckOutlined"; 
-import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined';
 import Admin from "../components/Admin/Admin";
  
 
-function Msc() {
+function Msc({}) {
   const [det, setDet] = useState([]);
-  const [all, setAll] = useState([]);
   const [load, setLoad] = useState(true);
-  const [open, setOpen] = React.useState(false);
-  const { id } = JSON.parse(localStorage.getItem("user"));
+  const { id } = JSON.parse(localStorage.getItem("user")) ;
   console.log(id, "ooo");
 
   const navigate = useNavigate();
@@ -29,7 +23,6 @@ function Msc() {
 
   useEffect(() => {
     getProductById();
-    getProduct();
   }, []);
 
   const getProductById = async () => {
@@ -44,61 +37,11 @@ function Msc() {
 
   console.log(det, "det");
 
-  const getProduct = async () => {
-    await axios
-      .get(`http://localhost:4000/api/v1/special/Obj/`)
-      .then((res) => {
-        if (id === 2) {
-          setAll(res.data);
-          setLoad(false);
-        }
-      })
-      .catch((err) => console.log(err));
-  };
-  console.log(all, "ookk");
 
-  const handleDel = async (id) => {
-    let confirm = window.confirm("Are you sure you want to delete");
-    if (confirm) {
-      try {
-        await axios.delete("http://localhost:4000/api/v1/member/remove/" + id);
-        // toast.error("Deleted Successfully");
-        setTimeout(() => {
-          window.location.reload();
-        }, 2000);
-      } catch (err) {
-        console.log(err);
-      }
-    }
-  };
-
-  const handleEdit = async (id) => {
-    // let confirm = window.confirm("Are you sure you want to delete");
-    // if(confirm){
-    try {
-      await axios.put("http://localhost:4000/api/v1//members/update" + id);
-      // toast.error("Deleted Successfully");
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000);
-    } catch (err) {
-      console.log(err);
-    }
-    // }
-  };
-
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
-  // function to handle modal close
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   return (
     <div className="container mt-5">
-      <Navbars />
+      {id === null ? "" :  <Navbars />}
       <div style={{ marginTop: "5rem" }}></div>
       {id !== 2 ? (
         <Box component="main" sx={{ flexGrow: 1, p: 6 }}>
@@ -108,9 +51,10 @@ function Msc() {
                 <th>Name</th>
                 <th>Message</th>
                 <th>Status</th>
+                <th>Reason</th>
               </tr>
             </thead>
-            {load ? (
+            {det.length > 0 ?   load ? (
               "Loading...."
             ) : (
               <tbody>
@@ -120,64 +64,15 @@ function Msc() {
                       <td>{el.name}</td>
                       <td>{el.message}</td>
                       <td>{el.status}</td>
+                      <td>{el.Remarks === null ? "-" : el.Remarks}</td>
                     </tr>
                   );
                 })}
               </tbody>
-            )}
+            ) : "No Records..."}
           </table>
         </Box>
-      ) : <Admin id={id} />}
-
-
-
-{/* ADMIN */}
-      {/* {all.length > 1 ? (
-        <Box component="main" sx={{ flexGrow: 1, p: 6 }}>
-          <table class="table table-bordered">
-            <thead>
-              <tr className="text-center">
-                <th>Name</th>
-                <th>Message</th>
-                <th>Status</th>
-                <th>Delete</th>
-                <th>Edit</th>
-                <th>Approval</th>
-              </tr>
-            </thead>
-            {load ? (
-              "Loading...."
-            ) : (
-              <tbody>
-                {all.map((el) => {
-                  return (
-                    <tr className="text-center">
-                      <td>{el.name}</td>
-                      <td>{el.message}</td>
-                      <td>{el.status}</td>
-                      <td onClick={() => handleDel(el.id)}>
-                        <DeleteOutlined />
-                      </td>
-                      <td>
-                        {" "}
-                        <Edit
-                          variant="contained"
-                          color="primary"
-                          onClick={handleOpen}
-                        />
-                        <ModalDialog open={open} handleClose={handleClose} />
-                      </td>
-                      <td >{el.status === "Pending" ? <button className="btn btn-outline-success"><CheckOutlinedIcon /> </button>: null} &nbsp;
-                      {el.status === "Pending" ?  <button className="btn btn-outline-danger"><ClearOutlinedIcon /> </button>: null}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            )}
-          </table>
-        </Box>
-      ) : null} */}
+      ) : <Admin />}
     </div>
   );
 }
