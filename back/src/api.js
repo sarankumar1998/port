@@ -17,12 +17,11 @@ Router.get("/special/Obj/:id", function (req, res) {
 });
 
 
-// byallId
+// getall
 Router.get("/special/Obj/", function (req, res) {
 
   con.query(
     "SELECT * FROM vendorview ",
-
     function (error, results ) {
       if (error) throw error;
       return res.send(results);
@@ -33,6 +32,8 @@ Router.get("/special/Obj/", function (req, res) {
 // results[0]
 
 Router.post("/members", function (req, res) {
+
+  // reqn  ody
   var name = req.body.name;
   var email = req.body.email;
   var message = req.body.message;
@@ -41,10 +42,12 @@ Router.post("/members", function (req, res) {
   var tm = moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
   var userId = req.body.userId;
 
+  // query
   var query = `INSERT INTO vendorview 
 	(name, email, message, mobile,status,tm,userId) 
 	VALUES ("${name}", "${email}", "${message}", "${mobile}","${status}","${tm}","${userId}")`;
 
+  // Run the query
   con.query(query, function (error, data) {
     if (error) {
       console.log(error);
@@ -55,20 +58,22 @@ Router.post("/members", function (req, res) {
     }
   });
 
-  //   var tm = new Date();
-  //  var userId= req.body.userId;
+
 });
 
 
 
 Router.put('/members/update/:id', (req, res)=>{
-  console.log(req.body);
-  const {id} = req.params;
-  // ID
-  const {status} = req.body;
-  const {Remarks} = req.body;
+  // ID via params
+  var {id} = req.params;
+
+  // req body
+  var {status} = req.body;
+  var {Remarks} = req.body;
+
   // Query
-  let query = `UPDATE vendorview SET status='${status}', Remarks='${Remarks}'WHERE id=${id}`;
+  var query = `UPDATE vendorview SET status='${status}', Remarks='${Remarks}'WHERE id=${id}`;
+
   // Run the query
   con.query(query, function (error, data) {
     if (error) {

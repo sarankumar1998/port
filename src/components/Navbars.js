@@ -1,7 +1,7 @@
 import * as React from "react";
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
-import MuiDrawer from "@mui/material/Drawer";
+import moment from "moment";
 import MuiAppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
@@ -9,11 +9,11 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
+import MessageIcon from "@mui/icons-material/Message";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
 import { Link, useNavigate } from "react-router-dom";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
@@ -22,17 +22,14 @@ import InfoIcon from "@mui/icons-material/Info";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import ContactsIcon from "@mui/icons-material/Contacts";
-import {
-  AccountCircle,
-  Home,
-  ViewAgenda,
-} from "@material-ui/icons";
+import { AccountCircle, Home, ViewAgenda } from "@material-ui/icons";
 import { Badge, Menu, MenuItem } from "@mui/material";
 import { useEffect } from "react";
 import axios from "axios";
+import { useState } from "react";
+import { Offcanvas } from "react-bootstrap";
 
 const drawerWidth = 240;
-
 
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
@@ -62,34 +59,34 @@ const AppBar = styled(MuiAppBar, {
 }));
 
 export default function MiniDrawer() {
-
+  const [show, setShow] = useState(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
   const [open, setOpen] = React.useState(false);
   const navigate = useNavigate();
-  console.log(navigate, "lll");
-  const [all, setAll] = React.useState('');
-  console.log(all,'no');
+
+  const [all, setAll] = React.useState([]);
   const stringifiedPerson = localStorage.getItem("user");
   const personAsObjectAgain = JSON.parse(stringifiedPerson);
   console.log(personAsObjectAgain);
   const [users, setUsers] = React.useState(personAsObjectAgain);
 
+  useEffect(() => {
+    getProduct();
+  }, []);
+
   const getProduct = async () => {
     await axios
       .get(`http://localhost:4000/api/v1/special/Obj/`)
       .then((res) => {
-const data  = res.data.filter((e) => e.status === "Pending")
-setAll(data.length)
-console.log(data.length, 'datss');
+        // const data = res.data.filter((e) => e.status === "Pending");
+        setAll(res.data.filter((e) => e.status === "Pending"));
+        console.log(all.length, "datss");
       })
       .catch((err) => console.log(err));
   };
 
-
-  useEffect(() => {
-    getProduct();
-  });
-
-
+  const handleCloseCanva = () => setShow(false);
+  const handleShowCanva = () => setShow(true);
 
   const handleClick = () => {
     let confirm = window.confirm("Are you sure you want to logout");
@@ -101,7 +98,6 @@ console.log(data.length, 'datss');
 
   const theme = useTheme();
 
-
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -109,11 +105,6 @@ console.log(data.length, 'datss');
   const handleDrawerClose = () => {
     setOpen(false);
   };
-
-
-  const [anchorEl, setAnchorEl] = React.useState(null);
-
-
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -133,53 +124,102 @@ console.log(data.length, 'datss');
           <AppBar position="fixed" open={open}>
             <Toolbar>
               <IconButton
-                //  style={{flexDirectio'}}
                 color="inherit"
                 aria-label="open drawer"
                 onClick={handleDrawerOpen}
                 edge="start"
-                sx={{
-                  my: 2,
-                  marginRight: 5,
-                  ...(open && { display: "none" }),
-                }}
+                sx={{ mr: 2 }}
               >
                 <MenuIcon />
               </IconButton>
-              <div>
-                <Menu
-                  id="menu-appbar"
-                  anchorEl={anchorEl}
-                  anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  open={Boolean(anchorEl)}
-                  onClose={handleClose}
-                >
-                  <MenuItem onClick={handleClose}>{users.username}</MenuItem>
-                  <MenuItem onClick={handleClick}>logout</MenuItem>
-                </Menu>
-                <IconButton
-                  size="large"
-                  aria-label="account of current user"
-                  aria-controls="menu-appbar"
-                  aria-haspopup="true"
-                  onClick={handleMenu}
-                  color="inherit"
-                >
-                  <AccountCircle />
-                </IconButton>
-              </div>
+              <Typography
+                variant="h6"
+                noWrap
+                component="div"
+                sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
+              >
+                ZOCK
+              </Typography>
 
-          {users.id === 2 ?     <Badge color="secondary" badgeContent={all} showZero>
-                <CircleNotificationsIcon />
-              </Badge> : null}
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+              >
+                <MenuItem onClick={handleClose}>{users.username}</MenuItem>
+                <MenuItem onClick={handleClick}>logout</MenuItem>
+              </Menu>
+              <IconButton
+                size="large"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleMenu}
+                color="inherit"
+              >
+                <AccountCircle />
+              </IconButton>
+
+              {users.id === 2 ? (
+                <Badge color="secondary" badgeContent={all.length} showZero>
+                  <CircleNotificationsIcon onClick={handleShowCanva} />
+                </Badge>
+              ) : null}
+
+              <Offcanvas
+                style={{ marginTop: "4rem" }}
+                show={show}
+                placement={"end"}
+                onHide={handleCloseCanva}
+              >
+                <Offcanvas.Header closeButton>
+                  <Offcanvas.Title>Notification</Offcanvas.Title>
+                </Offcanvas.Header>
+                <hr />
+                <Offcanvas.Body>
+                <Link  style={{textDecoration: 'none', color:"grey"}}  to="/msc">
+                  <div>
+                    {all.map((e) => (
+                      <div
+
+                        style={{
+                          textAlign: "start",
+                          fontSize: "15px",
+                          fontFamily: "sans-serif",
+                        }}
+                      >
+                        <h6
+
+                          className="text-end"
+                          style={{
+                            fontSize: "12px",
+                            marginTop: "1rem",
+                            fontStyle: "italic",
+                          }}
+                        >
+                          ({moment(e.tm).format("DD/MM/YYYY")})
+                        </h6>
+                        <span>
+                          <MessageIcon style={{ color: "grey" }} />
+                        </span>{" "}
+                        You have req from {e.name} status is <span style={{color:'red'}}>{e.status}</span>.
+                        <hr />
+                      </div>
+                    ))}
+                  </div>
+                  </Link>
+                </Offcanvas.Body>
+              </Offcanvas>
             </Toolbar>
           </AppBar>
           <SwipeableDrawer
@@ -252,7 +292,6 @@ console.log(data.length, 'datss');
                 ""
               ) : (
                 <Link to="/contact">
-                   
                   <ListItem
                     button
                     style={{ marginTop: 20 }}
