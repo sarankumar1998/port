@@ -33,7 +33,7 @@ Router.get("/special/Obj/", function (req, res) {
 
 Router.post("/members", function (req, res) {
 
-  // reqn  ody
+  // reqn  body
   var name = req.body.name;
   var email = req.body.email;
   var message = req.body.message;
@@ -49,12 +49,13 @@ Router.post("/members", function (req, res) {
 
   // Run the query
   con.query(query, function (error, data) {
+    console.log(data);
     if (error) {
       console.log(error);
       return res.status(500).json(error);
     } else {
       res.status(200)
-      .send({...data});
+      .json({...data});
     }
   });
 
@@ -71,8 +72,9 @@ Router.put('/members/update/:id', (req, res)=>{
   var {status} = req.body;
   var {Remarks} = req.body;
 
+
   // Query
-  var query = `UPDATE vendorview SET status='${status}', Remarks='${Remarks}'WHERE id=${id}`;
+  var query = `UPDATE vendorview SET status='${status}', Remarks='${Remarks},'WHERE id=${id}`;
 
   // Run the query
   con.query(query, function (error, data) {

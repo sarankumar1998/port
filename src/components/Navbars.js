@@ -65,7 +65,7 @@ export default function MiniDrawer() {
   const navigate = useNavigate();
 
   const [all, setAll] = React.useState([]);
-  const stringifiedPerson = localStorage.getItem("user");
+  const stringifiedPerson = sessionStorage.getItem("user");
   const personAsObjectAgain = JSON.parse(stringifiedPerson);
   console.log(personAsObjectAgain);
   const [users, setUsers] = React.useState(personAsObjectAgain);
@@ -91,7 +91,7 @@ export default function MiniDrawer() {
   const handleClick = () => {
     let confirm = window.confirm("Are you sure you want to logout");
     if (confirm) {
-      localStorage.clear();
+      sessionStorage.clear();
       window.location.reload();
     }
   };
@@ -156,7 +156,11 @@ export default function MiniDrawer() {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleClose}>{users.username}</MenuItem>
+                <Link style={{ textDecoration: "none" }} to="/Myprofile">
+                  {" "}
+                  <MenuItem onClick={handleClose}>{users.username}</MenuItem>
+                </Link>
+
                 <MenuItem onClick={handleClick}>logout</MenuItem>
               </Menu>
               <IconButton
@@ -187,36 +191,38 @@ export default function MiniDrawer() {
                 </Offcanvas.Header>
                 <hr />
                 <Offcanvas.Body>
-                <Link  style={{textDecoration: 'none', color:"grey"}}  to="/msc">
-                  <div>
-                    {all.map((e) => (
-                      <div
-
-                        style={{
-                          textAlign: "start",
-                          fontSize: "15px",
-                          fontFamily: "sans-serif",
-                        }}
-                      >
-                        <h6
-
-                          className="text-end"
+                  <Link
+                    style={{ textDecoration: "none", color: "grey" }}
+                    to="/msc"
+                  >
+                    <div>
+                      {all.map((e) => (
+                        <div
                           style={{
-                            fontSize: "12px",
-                            marginTop: "1rem",
-                            fontStyle: "italic",
+                            textAlign: "start",
+                            fontSize: "15px",
+                            fontFamily: "sans-serif",
                           }}
                         >
-                          ({moment(e.tm).format("DD/MM/YYYY")})
-                        </h6>
-                        <span>
-                          <MessageIcon style={{ color: "grey" }} />
-                        </span>{" "}
-                        You have req from {e.name} status is <span style={{color:'red'}}>{e.status}</span>.
-                        <hr />
-                      </div>
-                    ))}
-                  </div>
+                          <h6
+                            className="text-end"
+                            style={{
+                              fontSize: "12px",
+                              marginTop: "1rem",
+                              fontStyle: "italic",
+                            }}
+                          >
+                            ({moment(e.tm).format("DD/MM/YYYY")})
+                          </h6>
+                          <span>
+                            <MessageIcon style={{ color: "grey" }} />
+                          </span>{" "}
+                          You have req from {e.name} status is{" "}
+                          <span style={{ color: "red" }}>{e.status}</span>.
+                          <hr />
+                        </div>
+                      ))}
+                    </div>
                   </Link>
                 </Offcanvas.Body>
               </Offcanvas>

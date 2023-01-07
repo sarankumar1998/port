@@ -9,15 +9,16 @@ import { Box, Card } from "@mui/material";
 export default function Home() {
   const navigate = useNavigate();
 
-  const stringifiedPerson = localStorage.getItem("user");
+  const stringifiedPerson = sessionStorage.getItem("user");
   const personAsObjectAgain = JSON.parse(stringifiedPerson);
   const [users, setUsers] = useState(personAsObjectAgain);
-
+console.log(stringifiedPerson)
   useEffect(() => {
-    if (!!!localStorage.getItem("user")) {
+    if (!!!sessionStorage.getItem("user")) {
       navigate("/login");
     }
   }, [navigate]);
+  
 
   return (
     <div style={{ marginTop: "5rem" }}>

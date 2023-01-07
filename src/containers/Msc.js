@@ -10,7 +10,7 @@ import Admin from "../components/Admin/Admin";
 function Msc({}) {
   const [det, setDet] = useState([]);
   const [load, setLoad] = useState(true);
-  const { id } = JSON.parse(localStorage.getItem("user")) ;
+  const { id } = JSON.parse(sessionStorage.getItem("user")) ;
   console.log(id, "ooo");
 
   const navigate = useNavigate();
@@ -63,7 +63,7 @@ function Msc({}) {
                     <tr>
                       <td>{el.name}</td>
                       <td>{el.message}</td>
-                      <td>{el.status}</td>
+                      <td style={{color: el.status === "Approved" ? "green" : "red"}}>{el.status}</td>
                       <td>{el.Remarks === null ? "-" : el.Remarks}</td>
                     </tr>
                   );

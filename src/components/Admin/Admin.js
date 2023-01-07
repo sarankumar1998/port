@@ -82,7 +82,8 @@ function Admin({usersId}) {
     console.log(event, id, "check");
     const updateStatus = {
       status: "Approved",
-      Remarks:remarks
+      Remarks:remarks,
+     
     };
     let confirm = window.confirm("Are you sure you want to Approve");
     if(confirm){
@@ -104,7 +105,8 @@ function Admin({usersId}) {
     // console.log(event, id, "check");
     const updateStatus = {
       status: "Rejected",
-      Remarks:remarks   
+      Remarks:remarks,
+      updatetimeByadmin:new Date()
     };
     let confirm = window.confirm("Are you sure you want to Reject");
 

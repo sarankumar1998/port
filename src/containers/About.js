@@ -8,7 +8,7 @@ export default function About({usersId}) {
   const navigate  = useNavigate()
 
   useEffect(() => {
-    if (!!!localStorage.getItem("user")) {
+    if (!!!sessionStorage.getItem("user")) {
       navigate("/login");
     }
     

@@ -20,7 +20,7 @@ const FormsData = () => {
 
 
   const onFinish = async () => {
-    let  sessionValue =  JSON.parse(localStorage.getItem("user"))
+    let  sessionValue =  JSON.parse(sessionStorage.getItem("user"))
     let user = {
       name: name,
       email: email,
@@ -35,7 +35,7 @@ const FormsData = () => {
     await axios.post(`http://localhost:4000/api/v1//members`, user)
     .then((res) => {
         form.resetFields()
-        window.localStorage.setItem('details', JSON.stringify(res.data),true);
+        sessionStorage.setItem('usersss', JSON.stringify(res.data));
         toast.success("Sent Successfully");
       },
  

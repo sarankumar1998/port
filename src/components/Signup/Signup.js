@@ -14,18 +14,33 @@ const Signup = () => {
   }
   const avatarStyle = { backgroundColor: "#1bbd7e" };
   const navigate = useNavigate();
-  const [name, setName] = useState("");
+  const [firstName, setfirstName] = useState("");
+  const [lastName, setlastName] = useState("");
+  const [gender, setgender] = useState("");
+  const [country, setcountry] = useState("");
+  const [address, setaddress] = useState("");
+  const [role, setrole] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
+  const [mobile, setMobile] = useState("")
   const [password, setPassword] = useState("");
+
+  let nombres = ["Ivan", "Dragmon", "Guilmon", "Voz Rasposa", "Omar"];
 
   const onFinish = async () => {
     let user = {
-      name: name,
+      firstName: firstName,
+      lastName: lastName,
+      gender: gender,
+      country: country,
+      address: address,
+      role: role,
+      mobile:mobile,
       email: email,
       username: username,
       password: password,
       status: true,
+      createdOn: new Date()
     };
     await axios.post(`http://localhost:4000/api/v2/register`, user).then(
       (res) => {
@@ -60,36 +75,91 @@ const Signup = () => {
             {/* start  */}
             <Form
               name="sign-up"
-              className="sign-up"
+              className="sign-up mt-4"
               initialValues={{ remember: true }}
               onFinish={onFinish}
             >
-              <Form.Item
-                name="name"
-                label="Name"
-                rules={[
-                  {
-                    required: true,
-                    message: (
-                      <span style={{ fontSize: "9px", color: "red" }}>
-                        Required!
-                      </span>
-                    ),
-                  },
-                ]}
-              >
-                <input
-                  type="text"
-                  id="form3Example3"
-                  className="form-control form-control-sm"
-                  value={name}
-                  onChange={(event) => setName(event.target.value)}
-                />
-              </Form.Item>
+              <div className="row">
+                <div className="col-xl-6">
+                  <Form.Item
+                    name="name"
+                    label="FirstName"
+                    rules={[
+                      {
+                        required: true,
+                        message: (
+                          <span style={{ fontSize: "9px", color: "red" }}>
+                            Required!
+                          </span>
+                        ),
+                      },
+                    ]}
+                  >
+                    <input
+                      type="text"
+                      id="form3Example3"
+                      className="form-control form-control-sm"
+                      value={firstName}
+                      onChange={(event) => setfirstName(event.target.value)}
+                    />
+                  </Form.Item>
+                </div>
 
+                <div className="col-xl-6">
+                  <Form.Item
+                    name="lastname"
+                    label="LastName"
+                    className=""
+                    rules={[
+                      {
+                        required: true,
+                        message: (
+                          <span style={{ fontSize: "9px", color: "red" }}>
+                            Required!
+                          </span>
+                        ),
+                      },
+                    ]}
+                  >
+                    <input
+                      type="text"
+                      id="form3Example3"
+                      className="form-control form-control-sm "
+                      value={lastName}
+                      onChange={(event) => setlastName(event.target.value)}
+                    />
+                  </Form.Item>
+                </div>
+
+                <div className="col-xl-6">
+                <Form.Item
+                  name="username"
+                  label="Username"
+                  className="mt-2"
+                  rules={[
+                    {
+                      required: true,
+                      message: (
+                        <span style={{ fontSize: "9px", color: "red" }}>
+                          Required!
+                        </span>
+                      ),
+                    },
+                  ]}
+                >
+                  <input
+                    type="username"
+                    id="form3Example3"
+                    className="form-control form-control-sm"
+                    value={username}
+                    onChange={(event) => setUsername(event.target.value)}
+                  />
+                </Form.Item>
+              </div>
+              <div className="col-xl-6">
               <Form.Item
-                name="username"
-                label="Username"
+                name="mobile"
+                label="Mobile"
                 className="mt-2"
                 rules={[
                   {
@@ -103,61 +173,154 @@ const Signup = () => {
                 ]}
               >
                 <input
-                  type="text"
-                  id="form3Example3"
-                  className="form-control form-control-sm "
-                  value={username}
-                  onChange={(event) => setUsername(event.target.value)}
-                />
-              </Form.Item>
+                  type="number"
 
-              <Form.Item
-                name="email"
-                label="Email"
-                className="mt-2"
-                rules={[
-                  {
-                    required: true,
-                    message: (
-                      <span style={{ fontSize: "9px", color: "red" }}>
-                        Please input your Email!
-                      </span>
-                    ),
-                  },
-                ]}
-              >
-                <input
-                  type="email"
-                  id="form3Example3"
                   className="form-control form-control-sm"
-                  value={email}
-                  onChange={(event) => setEmail(event.target.value)}
+                  value={mobile}
+                  onChange={(event) => setMobile(event.target.value)}
                 />
               </Form.Item>
+              </div>
 
+
+              <div className="col-xl">
               <Form.Item
-                className="mt-2"
-                name="password"
-                label="Password"
-                rules={[
-                  {
-                    required: true,
-                    message: (
-                      <span style={{ fontSize: "9px", color: "red" }}>
-                        Please input your Password!
-                      </span>
-                    ),
-                  },
-                ]}
-              >
-                <input
-                  type="password"
-                  id="form3Example4"
-                  className="form-control form-control-sm"
-                  value={password}
-                  onChange={(event) => setPassword(event.target.value)}
-                />
-              </Form.Item>
+                  name="email"
+                  label="Email"
+                  className="mt-2"
+                  rules={[
+                    {
+                      required: true,
+                      message: (
+                        <span style={{ fontSize: "9px", color: "red" }}>
+                          Please input your Email!
+                        </span>
+                      ),
+                    },
+                  ]}
+                >
+                  <input
+                    type="email"
+                    id="form3Example3"
+                    className="form-control form-control-sm"
+                    value={email}
+                    onChange={(event) => setEmail(event.target.value)}
+                  />
+                </Form.Item>
+              </div>
+              </div>
+
+                           <div className="mt-4">
+                <h5>Personal Info</h5>
+                <div className="col-xl-6">
+                <select >
+          {nombres.map(n => (
+            <option value={n}>{n}</option>
+          ))}
+        </select>
+                {/* <Form.Item
+                  className="mt-2"
+                  name="role"
+                  label="Role"
+                  rules={[
+                    {
+                      required: true,
+                      message: (
+                        <span style={{ fontSize: "9px", color: "red" }}>
+                          Required!
+                        </span>
+                      ),
+                    },
+                  ]}
+                >
+                  <input
+                    type="role"
+                          className="form-control form-control-sm"
+                    value={role}
+                    onChange={(event) => setrole(event.target.value)}
+                  />
+                </Form.Item> */}
+              </div>
+
+              <div className="col-xl-6">
+                <Form.Item
+                  className="mt-2"
+                  name="country"
+                  label="Country"
+                  rules={[
+                    {
+                      required: true,
+                      message: (
+                        <span style={{ fontSize: "9px", color: "red" }}>
+                          Required!
+                        </span>
+                      ),
+                    },
+                  ]}
+                >
+                  <input
+                    type="country"
+                          className="form-control form-control-sm"
+                    value={country}
+                    onChange={(event) => setcountry(event.target.value)}
+                  />
+                </Form.Item>
+              </div>
+
+              <div className="col-xl-6">
+                <Form.Item
+                  className="mt-2"
+                  name="address"
+                  label="Address"
+                  rules={[
+                    {
+                      required: true,
+                      message: (
+                        <span style={{ fontSize: "9px", color: "red" }}>
+                          Required!
+                        </span>
+                      ),
+                    },
+                  ]}
+                >
+                  <textArea
+        
+        type="text"
+        className="form-control form-control-sm"
+        value={address}
+        name="address"
+        onChange={(event) => setaddress(event.target.value)}
+      />
+                </Form.Item>
+              </div>
+              <div className="col-xl-6">
+                <Form.Item
+                  className="mt-2"
+                  name="password"
+                  label="Password"
+                  rules={[
+                    {
+                      required: true,
+                      message: (
+                        <span style={{ fontSize: "9px", color: "red" }}>
+                          Please input your Password!
+                        </span>
+                      ),
+                    },
+                  ]}
+                >
+                  <input
+                    type="password"
+                    id="form3Example4"
+                    className="form-control form-control-sm"
+                    value={password}
+                    onChange={(event) => setPassword(event.target.value)}
+                  />
+                </Form.Item>
+              </div>
+              </div>
+
+ 
 
               <div className="d-grid mt-4">
                 <Button

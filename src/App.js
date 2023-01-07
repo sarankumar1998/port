@@ -9,6 +9,7 @@ import Msc from "./containers/Msc";
 import Footer from "./components/footer/Footer";
 import Login from "./components/Login/Login";
 import Signup from "./components/Signup/Signup";
+import Myprofile from "./components/Myprofile/Myprofile";
 
 
 function App() {  
@@ -27,6 +28,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/msc" element={<Msc />} />
+          <Route path="/myprofile" element={<Myprofile/>} />
      
         </Routes>
       </Router>

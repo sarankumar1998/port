@@ -2,13 +2,13 @@ const express = require("express");
 const con = require("./db");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+var moment = require("moment");
 // let pwd = bcrypt.hashSync('12345',6)
 // console.log(pwd);
 
 const router = express.Router();
 
 router.post("/register", async (req, res) => {
-  
   //CHECK USER IF EXISTS
   const alreadyUser = "SELECT * FROM users WHERE username = ?";
 
@@ -22,13 +22,19 @@ router.post("/register", async (req, res) => {
     const hashedPassword = bcrypt.hashSync(req.body.password, salt);
 
     const newUser =
-      "INSERT INTO users (`username`,`email`,`password`,`name`) VALUE (?)";
+      "INSERT INTO users (`email`,`username`,`password`,`firstName`,`lastName`,`address`,`country`,`role`,`mobile`, createdOn) VALUE (?)";
 
     const values = [
-      req.body.username,
       req.body.email,
-      hashedPassword, 
-      req.body.name,
+      req.body.username,
+      hashedPassword,
+      req.body.firstName,
+      req.body.lastName,
+      req.body.address,
+      req.body.country,
+      req.body.role,
+      req.body.mobile,
+      (req.body.createdOn = moment(Date.now()).format("YYYY-MM-DD HH:mm:ss")),
     ];
 
     con.query(newUser, [values], (err, data) => {
@@ -39,28 +45,25 @@ router.post("/register", async (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
-
   const userLogin = "SELECT * FROM users WHERE username = ?";
   con.query(userLogin, [req.body.username], (err, data) => {
     if (err) return res.status(500).json(err);
     if (data.length === 0) return res.status(404).json("User not found!");
 
-    const checkPassword = bcrypt.compareSync(
-      req.body.password,
-      data[0].password
-    );
+    const checkPassword = bcrypt.compareSync(req.body.password,data[0].password);
 
     if (!checkPassword)
       return res.status(400).json("Wrong password or username!");
     const token = jwt.sign({ id: data[0].id }, "secretkey");
+    console.log(token);
 
-    const { password, ...others } = data[0];
-    res.cookie("accessToken", token, {httpOnly: true})
+    // const { password, ...others } = data[0];
+    res
+      .cookie("accessToken", token, { httpOnly: true })
       .status(200)
       .json(...data);
   });
 });
-
 
 
 //  const logout = (req, res) => {
@@ -69,6 +72,5 @@ router.post("/login", async (req, res) => {
 //     sameSite:"none"
 //   }).status(200).json("User has been logged out.")
 // };
-
 
 module.exports = router;

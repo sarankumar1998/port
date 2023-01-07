@@ -26,7 +26,7 @@ const Login = () => {
     await axios.post(`http://localhost:4000/api/v2/login`, user).then(
       (res) => {
         toast.success("Successfully login");
-        window.localStorage.setItem('user', JSON.stringify(res.data),true);
+        sessionStorage.setItem('user', JSON.stringify(res.data));
         navigate("/home");
    
       },
