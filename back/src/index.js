@@ -3,6 +3,7 @@ const cookieParser = require ("cookie-parser")
 const bodyParser = require('body-parser')
 const PeopleRouter = require('./api')
 const autho = require('./auth')
+const sports = require('./sportsApi')
 const cors = require('cors');
 
 var app = express()
@@ -12,6 +13,7 @@ app.use(express.json())
 app.use(bodyParser.json())
 app.use('/api/v1',PeopleRouter)
 app.use('/api/v2',autho)
+app.use('/api/v3',sports)
 
 
 app.use((req, res, next) => {

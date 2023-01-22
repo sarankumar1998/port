@@ -43,14 +43,15 @@ function Admin({usersId}) {
       .catch((err) => console.log(err));
   };
 
-  const onfilterchng = (e) => {
-    console.log()
-    const change = all.filter((el) => el.name.toLowerCase().includes(e.toLowerCase()))
-    setSearch(change)
-    setAll(change)
-   }
-  
+  const bySearch = (all, search) => {
+    if (search) {
+      return all.name.toLowerCase().includes(search.toLowerCase());
+    } else return all;
+  };
 
+  const filteredList = (all,  search) => {
+    return all.filter(all => bySearch(all, search));
+  };
 
   const handleDel = async (id) => {
     let confirm = window.confirm("Are you sure you want to delete");
@@ -127,7 +128,7 @@ function Admin({usersId}) {
         {/* {usersId === undefined ? "" :  <Navbars />} */}
       <ToastContainer />
       <label>Search:</label>
-        <input className="mb-2" onChange={(e) => onfilterchng(e.target.value)}/>
+        <input className="mb-2" onChange={e => setSearch(e.target.value)}/>
 
       {/* ADMIN */}
       {all.length > 1 ? (
@@ -150,7 +151,9 @@ function Admin({usersId}) {
             ) : (
               <tbody>
                 
-                {all.map((el, index) => {
+                {
+                
+                filteredList(all, search).map((el, index) => {
                   return (
                     <tr key={index} className="text-center">
                       <td>{el.name}</td>

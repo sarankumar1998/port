@@ -10,6 +10,10 @@ import Footer from "./components/footer/Footer";
 import Login from "./components/Login/Login";
 import Signup from "./components/Signup/Signup";
 import Myprofile from "./components/Myprofile/Myprofile";
+import Product from "./containers/Product/Product";
+import Cart from "./containers/Cart/Cart";
+import Sports from "./components/Sports/Sports";
+import Checkout from "./containers/Checkout/Checkout";
 
 
 function App() {  
@@ -29,6 +33,10 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/msc" element={<Msc />} />
           <Route path="/myprofile" element={<Myprofile/>} />
+          <Route path="/product" element={<Product/>} />
+          <Route path="/cart" element={<Cart/>} />
+          <Route path="/sports" element={<Sports/>} /> 
+          <Route path="/checkout" element={<Checkout/>} />  
      
         </Routes>
       </Router>

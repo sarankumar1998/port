@@ -28,6 +28,7 @@ import { useEffect } from "react";
 import axios from "axios";
 import { useState } from "react";
 import { Offcanvas } from "react-bootstrap";
+import AddCart from "../containers/AddCart/AddCart";
 
 const drawerWidth = 240;
 
@@ -58,7 +59,8 @@ const AppBar = styled(MuiAppBar, {
   }),
 }));
 
-export default function MiniDrawer() {
+export default function Navbars({lengthcart}) {
+  // console.log(lengthcart.length,'ca');
   const [show, setShow] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [open, setOpen] = React.useState(false);
@@ -67,7 +69,7 @@ export default function MiniDrawer() {
   const [all, setAll] = React.useState([]);
   const stringifiedPerson = sessionStorage.getItem("user");
   const personAsObjectAgain = JSON.parse(stringifiedPerson);
-  console.log(personAsObjectAgain);
+  // console.log(personAsObjectAgain);
   const [users, setUsers] = React.useState(personAsObjectAgain);
 
   useEffect(() => {
@@ -80,7 +82,7 @@ export default function MiniDrawer() {
       .then((res) => {
         // const data = res.data.filter((e) => e.status === "Pending");
         setAll(res.data.filter((e) => e.status === "Pending"));
-        console.log(all.length, "datss");
+        // console.log(all.length, "datss");
       })
       .catch((err) => console.log(err));
   };
@@ -140,6 +142,8 @@ export default function MiniDrawer() {
               >
                 ZOCK
               </Typography>
+
+          
 
               <Menu
                 id="menu-appbar"
@@ -321,6 +325,30 @@ export default function MiniDrawer() {
                     <ViewAgenda />
                   </ListItemIcon>
                   <ListItemText primary={"View"} />
+                </ListItem>
+              </Link>
+              <Link to="/product">
+                <ListItem
+                  button
+                  style={{ marginTop: 20 }}
+                  onClick={handleDrawerClose}
+                >
+                  <ListItemIcon>
+                    <ViewAgenda />
+                  </ListItemIcon>
+                  <ListItemText primary={"Product"} />
+                </ListItem>
+              </Link>
+              <Link to="/sports">
+                <ListItem
+                  button
+                  style={{ marginTop: 20 }}
+                  onClick={handleDrawerClose}
+                >
+                  <ListItemIcon>
+                    <ViewAgenda />
+                  </ListItemIcon>
+                  <ListItemText primary={"Sports"} />
                 </ListItem>
               </Link>
             </List>

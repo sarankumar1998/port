@@ -1,0 +1,4 @@
+.Card:hover,
+.Card:focus-within {
+  transform: scale(1.01);
+}

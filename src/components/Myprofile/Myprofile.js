@@ -17,7 +17,6 @@ import Navbars from "../Navbars";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import moment from "moment";
 
-
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
   return <IconButton {...other} />;
@@ -30,14 +29,11 @@ const ExpandMore = styled((props) => {
 }));
 
 export default function Myprofile() {
+  
   const [expanded, setExpanded] = React.useState(false);
-
-
   const stringifiedPerson = sessionStorage.getItem("user");
-  const [isBlue, setIsBlue] = React.useState(false)
-  console.log(isBlue,'bbbbb');
+  const [isBlue, setIsBlue] = React.useState(false);
   const personAsObjectAgain = JSON.parse(stringifiedPerson);
-  console.log(personAsObjectAgain);
   const [users, setUsers] = React.useState(personAsObjectAgain);
 
   const handleExpandClick = () => {
@@ -49,9 +45,14 @@ export default function Myprofile() {
       <Navbars />
 
       <div
-        style={{ display: "flex", marginTop: "7rem", padding:'1rem', justifyContent: "center" }}
+        style={{
+          display: "flex",
+          marginTop: "7rem",
+          padding: "1rem",
+          justifyContent: "center",
+        }}
       >
-        <Card sx={{ maxWidth: 745 }} style={{padding:'2rem'}}>
+        <Card sx={{ maxWidth: 745 }} style={{ padding: "2rem" }}>
           <CardHeader
             action={
               <IconButton aria-label="settings">
@@ -59,7 +60,7 @@ export default function Myprofile() {
               </IconButton>
             }
             title="Edit Profile"
-            subheader={moment(users.createdOn).format("DD/MM/YYYY")} 
+            subheader={moment(users.createdOn).format("DD/MM/YYYY")}
           />
 
           <Form name="sign-up" className="sign-up mt-4">
@@ -79,7 +80,7 @@ export default function Myprofile() {
                   ]}
                 >
                   <input
-                  disabled
+                    disabled
                     className="form-control form-control-sm"
                     placeholder={users.firstName}
                   />
@@ -102,9 +103,9 @@ export default function Myprofile() {
                   ]}
                 >
                   <input
-                   disabled
-                   className="form-control form-control-sm"
-                   placeholder={users.lastName}
+                    disabled
+                    className="form-control form-control-sm"
+                    placeholder={users.lastName}
                   />
                 </Form.Item>
               </div>
@@ -148,9 +149,9 @@ export default function Myprofile() {
                   ]}
                 >
                   <input
-                 disabled
-                 className="form-control form-control-sm"
-                 placeholder={users.mobile}
+                    disabled
+                    className="form-control form-control-sm"
+                    placeholder={users.mobile}
                   />
                 </Form.Item>
               </div>
@@ -171,9 +172,9 @@ export default function Myprofile() {
                   ]}
                 >
                   <input
-                 disabled
-                 className="form-control form-control-sm"
-                 placeholder={users.email}
+                    disabled
+                    className="form-control form-control-sm"
+                    placeholder={users.email}
                   />
                 </Form.Item>
               </div>
@@ -197,9 +198,9 @@ export default function Myprofile() {
                   ]}
                 >
                   <input
-                disabled
-                className="form-control form-control-sm"
-                placeholder={users.role}
+                    disabled
+                    className="form-control form-control-sm"
+                    placeholder={users.role}
                   />
                 </Form.Item>
               </div>
@@ -220,9 +221,9 @@ export default function Myprofile() {
                   ]}
                 >
                   <input
-                disabled
-                className="form-control form-control-sm"
-                placeholder={users.country}
+                    disabled
+                    className="form-control form-control-sm"
+                    placeholder={users.country}
                   />
                 </Form.Item>
               </div>
@@ -243,9 +244,9 @@ export default function Myprofile() {
                   ]}
                 >
                   <input
-                  disabled
-                  className="form-control form-control-sm"
-                  placeholder={users.address}
+                    disabled
+                    className="form-control form-control-sm"
+                    placeholder={users.address}
                   />
                 </Form.Item>
               </div>
@@ -277,8 +278,11 @@ export default function Myprofile() {
           </Form>
 
           <CardActions disableSpacing>
-            <IconButton    onClick={() => setIsBlue(!isBlue)} aria-label="add to favorites">
-              <FavoriteIcon style={{color:   isBlue ? 'red' : 'grey'} }  />
+            <IconButton
+              onClick={() => setIsBlue(!isBlue)}
+              aria-label="add to favorites"
+            >
+              <FavoriteIcon style={{ color: isBlue ? "red" : "grey" }} />
             </IconButton>
             <IconButton aria-label="share">
               <ShareIcon />

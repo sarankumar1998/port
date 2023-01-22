@@ -19,13 +19,20 @@ const Signup = () => {
   const [gender, setgender] = useState("");
   const [country, setcountry] = useState("");
   const [address, setaddress] = useState("");
-  const [role, setrole] = useState("");
+  // const [role, setrole] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [mobile, setMobile] = useState("")
   const [password, setPassword] = useState("");
 
   let nombres = ["Ivan", "Dragmon", "Guilmon", "Voz Rasposa", "Omar"];
+
+  const [role, setrole] = useState(nombres);
+  // console.log(role);
+
+  const handleChange = (e) => {
+         setrole(e.target.value)
+  }
 
   const onFinish = async () => {
     let user = {
@@ -213,9 +220,9 @@ const Signup = () => {
                            <div className="mt-4">
                 <h5>Personal Info</h5>
                 <div className="col-xl-6">
-                <select >
-          {nombres.map(n => (
-            <option value={n}>{n}</option>
+                <select value={role} onChange={handleChange}>
+          {nombres.map((n,e) => (
+            <option key={e} >{n}</option>
           ))}
         </select>
                 {/* <Form.Item
