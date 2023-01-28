@@ -351,6 +351,19 @@ export default function Navbars({lengthcart}) {
                   <ListItemText primary={"Sports"} />
                 </ListItem>
               </Link>
+              <Link to="/clientmail">
+                <ListItem
+                  button
+                  style={{ marginTop: 20 }}
+                  onClick={handleDrawerClose}
+                >
+                  <ListItemIcon>
+                    <MessageIcon />
+                  </ListItemIcon>
+                  <ListItemText primary={"Mail"} />
+                </ListItem>
+              </Link>
+
             </List>
             <Divider />
           </SwipeableDrawer>

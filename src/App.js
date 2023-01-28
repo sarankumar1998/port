@@ -14,6 +14,7 @@ import Product from "./containers/Product/Product";
 import Cart from "./containers/Cart/Cart";
 import Sports from "./components/Sports/Sports";
 import Checkout from "./containers/Checkout/Checkout";
+import ClientMail from "./containers/ClientMail/ClientMail";
 
 
 function App() {  
@@ -37,6 +38,7 @@ function App() {
           <Route path="/cart" element={<Cart/>} />
           <Route path="/sports" element={<Sports/>} /> 
           <Route path="/checkout" element={<Checkout/>} />  
+          <Route path="/clientmail" element={<ClientMail/>} />  
      
         </Routes>
       </Router>

@@ -1,5 +1,9 @@
 var mysql = require('mysql');
 
+
+
+console.log(`${process.env.DB_Credential}`,'lo');
+
 var con = mysql.createConnection({
   host: "localhost",
   user: "root",

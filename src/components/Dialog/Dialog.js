@@ -96,7 +96,7 @@ function MyVerticallyCenteredModal(props) {
 }
 
 export default function Dialog({ sports, setID }) {
-  console.log(sports, "oll");
+  // console.log(sports, "oll");
   const [modalShow, setModalShow] = React.useState(false);
 
   return (

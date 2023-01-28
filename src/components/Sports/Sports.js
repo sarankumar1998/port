@@ -33,7 +33,7 @@ export default function Sports() {
   const [five, setFive] = useState(false);
 
   const onFirst = () => {
-    setView("first");
+    setView(first);
     setFirst(true);
     setSecond(false);
     setThird(false);
@@ -103,7 +103,6 @@ export default function Sports() {
                 >
                   <FormControlLabel
                     value="first"
-                    status={view === "first" ? "checked" : "unchecked"}
                     onClick={() => onFirst()}
                     control={<Radio />}
                     label="Turf"
@@ -111,28 +110,26 @@ export default function Sports() {
 
                   <FormControlLabel
                     value="second"
-                    status={view === "second" ? "checked" : "unchecked"}
                     onClick={() => onSecond()}
                     control={<Radio />}
                     label="Badminton"
                   />
                   <FormControlLabel
                     value="three"
-                    status={view === "three" ? "checked" : "unchecked"}
                     onClick={() => onThird()}
                     control={<Radio />}
                     label="Tennis"
                   />
                   <FormControlLabel
                     value="four"
-                    status={view === "four" ? "checked" : "unchecked"}
+
                     onClick={() => onFourth()}
                     control={<Radio />}
                     label="VolleyBall"
                   />
                   <FormControlLabel
                     value="five"
-                    status={view === "five" ? "checked" : "unchecked"}
+                 
                     onClick={() => onFifth()}
                     control={<Radio />}
                     label="ThrowBall"

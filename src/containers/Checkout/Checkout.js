@@ -14,6 +14,7 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import "./Checkout.css";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useEffect } from "react";
 
 function Checkout() {
   const [value, onChange] = React.useState(new Date());
@@ -21,133 +22,174 @@ function Checkout() {
   const location = useLocation();
   const [isActive, setIsActive] = useState(false);
   const [data, setData] = useState(location);
+  const [eChip, seteChip] = useState(0);
 
-//   const [time, setTime] = useState('')
+  const [alltime, setAllTime] = useState([]);
+  console.log(alltime);
 
-
-
-// const [time, setTime] = useState('')
-var currentTime = new Date();
-var time = currentTime.getHours()
-
-console.log(time,'lof');
-
-  const handleClick = () => {
-
-//     var selectedTime = time;
-//     var currentTime = new Date();
-//     console.log(currentTime)
-//     var selectedTimeStamp = (currentTime.getMonth() + 1) + "/" + currentTime.getDate() + "/" + currentTime.getFullYear() + " " + selectedTime;
-//     var uservalue = new Date(selectedTimeStamp);
-//     console.log("user Input", uservalue, "Current value", currentTime)
-//     if (uservalue < currentTime) {
-//    console.log(data.state.data.e.start);
-//     }
-//     else {
-           
-//     }
+  var currentTime = new Date();
+  console.log(currentTime,'rime');
 
 
+  var time = currentTime.getHours();
+  
 
-
-    setIsActive((isActive) => !isActive);
-
+  // };
+  const getTime = () => {
+    axios.get("http://localhost:4000/api/v3/getalltime").then((res) => {
+      setAllTime(res.data);
+    });
   };
- 
 
-    return (
-      <div>
-        <Navbars />
+  useEffect(() => {
+    getTime();
+  }, []);
 
+  const handleSave = async () => {
+    console.log(eChip, "echip");
+    let sessionValue = JSON.parse(sessionStorage.getItem("user"));
 
-        <div
-          style={{ display: "flex", justifyContent: "center", margin: "7rem" }}
-        >
-      
-          <Card sx={{ maxWidth: "200%" }} style={{ background: "#f2f4f7" }}>
-            <div className="row" style={{ marginTop: "3rem" }}>
-              <div className="col-xl-5 container">
-                <p style={{ fontWeight: "700", color: "green" }}>
-                  {" "}
-                  <EventNoteIcon /> {data.state.data.e.areazone}
-                </p>
-                <div>
-                  <img src={data.state.data.e.images} />
+    const updateStatusSp = {
+      status: "Closed",
+      userId: sessionValue.id,
+    };
+    let confirm = window.confirm("Are you sure you want to Book the slot");
+
+    if (confirm) {
+      try {
+        await axios.put(
+          "http://localhost:4000/api/v3/up/" + eChip,
+          updateStatusSp
+        );
+        console.log("done");
+      } catch (err) {
+        console.log(err);
+      }
+      window.location.reload();
+    }
+  };
+
+  const handleChip = async (e, id) => {
+    console.log(e, id, "event");
+    seteChip(e,id);
+    setIsActive(!isActive);
+  };
+
+  return (
+    <div>
+      <Navbars />
+
+      <div
+        style={{ display: "flex", justifyContent: "center", margin: "7rem" }}
+      >
+        <Card sx={{ maxWidth: "200%" }} style={{ background: "#f2f4f7" }}>
+          <div className="row" style={{ marginTop: "3rem" }}>
+            <div className="col-xl-5 container">
+              <p style={{ fontWeight: "700", color: "green" }}>
+                {" "}
+                <EventNoteIcon /> {data.state.data.e.areazone}
+              </p>
+              <div>
+                <img src={data.state.data.e.images} />
+              </div>
+              <CardContent>
+                <div className="row">
+                  <div className="col-xl-1">
+                    <LocationOnIcon />
+                  </div>
+                  <div className="col-xl-10">
+                    <h5 style={{ fontWeight: "600" }}>
+                      {data.state.data.e.areaName}
+                    </h5>
+                    <p>{data.state.data.e.location}</p>
+                  </div>
                 </div>
-                <CardContent>
-                  <div className="row">
-                    <div className="col-xl-1">
-                      <LocationOnIcon />
-                    </div>
-                    <div className="col-xl-10">
-                      <h5 style={{ fontWeight: "600" }}>
-                        {data.state.data.e.areaName}
-                      </h5>
-                      <p>{data.state.data.e.location}</p>
-                    </div>
+
+                <div className="row">
+                  <div className="col-xl-1">
+                    <AddCircleIcon />
                   </div>
 
-                  <div className="row">
-                    <div className="col-xl-1">
-                      <AddCircleIcon />
+                  <div className="col-xl mt-2" style={{ fontWeight: "600" }}>
+                    <div style={{ lineHeight: "1px" }}>
+                      <p style={{}}>Ideal: {data.state.data.e.ideal}</p>
+                      <p style={{}}>Type: {data.state.data.e.type}</p>
+                      <p style={{}}>Size: {data.state.data.e.areasize}</p>
                     </div>
+                  </div>
+                </div>
+              </CardContent>
+            </div>
+            <div className="col-xl-6">
+              <label style={{ fontSize: "20px", fontWeight: "600" }}>
+                Choose Date:
+              </label>
 
-                    <div className="col-xl mt-2" style={{ fontWeight: "600" }}>
-                      <div style={{ lineHeight: "1px" }}>
-                        <p style={{}}>Ideal: {data.state.data.e.ideal}</p>
-                        <p style={{}}>Type: {data.state.data.e.type}</p>
-                        <p style={{}}>Size: {data.state.data.e.areasize}</p>
+              <div>
+                <DatePicker
+                  minDate={new Date()}
+                  onChange={onChange}
+                  value={value}
+                />
+              </div>
+              <p>{time}</p>
+              <CardContent style={{ marginTop: "6rem" }}>
+                <label style={{ fontSize: "20px", fontWeight: "600" }}>
+                  Pick a slot
+                </label>
+                <p style={{ fontStyle: "italic", color: "#a8a7a7" }}>
+                  [ available = green; not-available = red; selected = amber ]
+                </p>
+                <Stack spacing={1}>
+                  {alltime.map((e, i) => (
+                    <div className="row">
+                      <div className="col-xl">
+                        {" "}
+                        <Chip
+                 
+                         label={e.name}
+                          name={e.id}
+                          disabled={
+                            time >= e.timeId || e.status === "Closed"
+                              ? true
+                              : false
+                          }
+                          color="success"
+                          style={{
+                            backgroundColor: time >= e.timeId ? '' :
+                              e.status === "opened"
+                                ? ""
+                                : e.status === "Closed"
+                                ? "red"
+                                : "orange",
+                          }}
+                          onClick={() => handleChip(e.id, i)}
+                       
+                        />
                       </div>
                     </div>
-                  </div>
-                </CardContent>
-              </div>
-              <div className="col-xl-5 ">
-                <label style={{ fontSize: "20px", fontWeight: "600" }}>
-                  Choose Date:
-                </label>
-
-                <div>
-                  <DatePicker
-                    minDate={new Date()}
-                    onChange={onChange}
-                    value={value}
-                  />
-                </div>
-<p>{time}</p>
-                <CardContent style={{ marginTop: "6rem" }}>
-                  <label style={{ fontSize: "20px", fontWeight: "600" }}>
-                    Pick a slot
-                  </label>
-                  <p style={{ fontStyle: "italic", color: "#a8a7a7" }}>
-                    [ available = green; not-available = red; selected = amber ]
-                  </p>
-                  <Stack direction="row" spacing={1}>
-                    <Chip
-                    // disabled 
-                      color="success"
-                      style={{
-                        backgroundColor: isActive
-                          ? "salmon"
-                          : "" || data.state.data.e.status === "opened"
-                          ? ""
-                          : "red",
-                      }}
-                      onClick={handleClick}
-                      label={data.state.data.e.name}
-                    />
-                  </Stack>
-                </CardContent>
-              </div>
+                  ))}
+                </Stack>
+              </CardContent>
             </div>
-<div className="text-center py-5"> 
-<button type="" className="btn  btn-dark btn-sm">Back</button> &nbsp; <button  className="btn  btn-success btn-sm" type="">Save</button> 
-</div>
-
-          </Card>
-        </div>
+          </div>
+          <div className="text-center py-5">
+            <button type="" className="btn  btn-dark btn-sm">
+              Back
+            </button>{" "}
+            &nbsp;{" "}
+            <button
+              onClick={() => handleSave()}
+              className="btn  btn-success btn-sm"
+              type=""
+            >
+              Save
+            </button>
+          </div>
+        </Card>
       </div>
-    );
+    </div>
+  );
 }
 
 export default Checkout;

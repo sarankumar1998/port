@@ -21,7 +21,8 @@ export default function Product() {
   const [pushCart, setPushCart] = useState([]);
 
   const addCart = (e) => {
-    console.log(e,'ind');
+    console.log(e,'eree');
+
     setData((state) =>state.map((item, num) => {
         if (e === num) {
           console.log(e,num, 'ere');
@@ -37,7 +38,12 @@ export default function Product() {
     );
   };
 
+const dam = (a,d) => {
+let c = a+d
+console.log(c);
+}
 
+dam(876,98)
 
   
   const increment = {
