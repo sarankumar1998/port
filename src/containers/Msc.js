@@ -41,7 +41,7 @@ function Msc({}) {
 
   return (
     <div className="container mt-5">
-      {id === null ? "" :  <Navbars />}
+<Navbars />
       <div style={{ marginTop: "5rem" }}></div>
       {id !== 2 ? (
         <Box component="main" sx={{ flexGrow: 1, p: 6 }}>

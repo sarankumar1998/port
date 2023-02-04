@@ -19,7 +19,7 @@ router.post("/register", async (req, res) => {
     //CREATE A NEW USER
     //Hash the password
     const salt = bcrypt.genSaltSync(10);
-    const hashedPassword = bcrypt.hashSync(req.body.password, salt);
+    // const hashedPassword = bcrypt.hashSync(req.body.password, salt);
 
     const newUser =
       "INSERT INTO users (`email`,`username`,`password`,`firstName`,`lastName`,`address`,`country`,`role`,`mobile`, createdOn) VALUE (?)";
@@ -27,7 +27,8 @@ router.post("/register", async (req, res) => {
     const values = [
       req.body.email,
       req.body.username,
-      hashedPassword,
+      // hashedPassword
+      req.body.password,
       req.body.firstName,
       req.body.lastName,
       req.body.address,
@@ -50,7 +51,10 @@ router.post("/login", async (req, res) => {
     if (err) return res.status(500).json(err);
     if (data.length === 0) return res.status(404).json("User not found!");
 
-    const checkPassword = bcrypt.compareSync(req.body.password,data[0].password);
+    // below command is hashing the password
+    // const checkPassword = bcrypt.compareSync(req.body.password,data[0].password);
+
+    const checkPassword = (req.body.password, data[0].password);
 
     if (!checkPassword)
       return res.status(400).json("Wrong password or username!");
@@ -65,6 +69,41 @@ router.post("/login", async (req, res) => {
   });
 });
 
+
+
+
+router.put("/profile/update/:id", (req, res) => {
+  // ID via params
+  var { id } = req.params;
+
+  // req body
+  var { email } = req.body;
+  var { username } = req.body;
+  var { firstName } = req.body;
+  var { lastName } = req.body;
+  var { address } = req.body;
+  var { country } = req.body;
+  var { mobile } = req.body;
+var createdOn = moment(Date.now()).format("YYYY-MM-DD HH:mm:ss")(req.body)
+
+
+  // Query
+  var query = `UPDATE users SET email='${email}', username='${username}' ,firstName='${firstName}' ,lastName='${lastName}' ,address='${address}',country='${country}',mobile='${mobile}',createdOn='${createdOn} ' WHERE id=${id}`;
+
+  // Run the query
+  con.query(query, function (error, data) {
+    if (error) {
+      console.log(error);
+      return res.status(500).json(error);
+    } else {
+      res.status(200).json({message:'update done'})
+    }
+  });
+
+
+
+  
+});
 
 //  const logout = (req, res) => {
 //   res.clearCookie("accessToken",{

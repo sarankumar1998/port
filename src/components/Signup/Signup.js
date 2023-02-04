@@ -344,7 +344,7 @@ const Signup = () => {
 
             {/* <div className="forgot-link md-5 d-flex justify-content-between align-items-center">
               <div>
-                <Link
+              <Link
                   to="/recaptcha"
                   style={{
                     color: "grey",

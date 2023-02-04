@@ -1,45 +1,55 @@
 const express = require("express");
 const Router = express.Router();
 const con = require("./db");
-var moment = require("moment")
+var moment = require("moment");
 
 // byId
 Router.get("/special/Obj/:id", function (req, res) {
   let user_id = req.params.id;
   con.query(
     "SELECT * FROM vendorview where userId=?",
-     user_id,
-    function (error, results ) {
+    user_id,
+    function (error, results) {
       if (error) throw error;
       return res.send(results);
     }
   );
 });
 
+Router.get("/special/users/:id", function (req, res) {
+  let user_id = req.params.id;
+  con.query(
+    "SELECT * FROM users where id=?",
+    user_id,
+    function (error, results) {
+      if (error) {
+        console.log(error);
+        return res.status(500).json(error);
+      } else {
+        res.status(200).send(...results );
+      }
+    }
+  );
+});
 
 // getall
 Router.get("/special/Obj/", function (req, res) {
-
-  con.query(
-    "SELECT * FROM vendorview ",
-    function (error, results ) {
-      if (error) throw error;
-      return res.send(results);
-    }
-  );
+  con.query("SELECT * FROM vendorview ", function (error, results) {
+    if (error) throw error;
+    return res.json(results);
+  });
 });
 
 // results[0]
 
 Router.post("/members", function (req, res) {
-
   // reqn  body
   var name = req.body.name;
   var email = req.body.email;
   var message = req.body.message;
   var mobile = req.body.mobile;
   var status = req.body.status;
-  var tm = moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
+  var tm = moment(Date.now()).format("YYYY-MM-DD HH:mm:ss");
   var userId = req.body.userId;
 
   // query
@@ -54,24 +64,18 @@ Router.post("/members", function (req, res) {
       console.log(error);
       return res.status(500).json(error);
     } else {
-      res.status(200)
-      .json({...data});
+      res.status(200).json({ ...data });
     }
   });
-
-
 });
 
-
-
-Router.put('/members/update/:id', (req, res)=>{
+Router.put("/members/update/:id", (req, res) => {
   // ID via params
-  var {id} = req.params;
+  var { id } = req.params;
 
   // req body
-  var {status} = req.body;
-  var {Remarks} = req.body;
-
+  var { status } = req.body;
+  var { Remarks } = req.body;
 
   // Query
   var query = `UPDATE vendorview SET status='${status}', Remarks='${Remarks},'WHERE id=${id}`;
@@ -82,25 +86,25 @@ Router.put('/members/update/:id', (req, res)=>{
       console.log(error);
       return res.status(500).json(error);
     } else {
-      res.status(200)
-      .send({...data});
+      res.status(200).send({ ...data });
     }
   });
 });
 
-
-
- Router.delete('/member/remove/:id', function (req, res) {
-    console.log(req.body);
-    con.query('DELETE FROM vendorview WHERE id=?', [req.params.id], function (error, results, fields) {
-       if (error){
-        return res.status(500).json(error)
-       }
-       else
-       res.json({
-        message:'deleted successfully'
-       })
-     });
- });
+Router.delete("/member/remove/:id", function (req, res) {
+  console.log(req.body);
+  con.query(
+    "DELETE FROM vendorview WHERE id=?",
+    [req.params.id],
+    function (error, results, fields) {
+      if (error) {
+        return res.status(500).json(error);
+      } else
+        res.json({
+          message: "deleted successfully",
+        });
+    }
+  );
+});
 
 module.exports = Router;

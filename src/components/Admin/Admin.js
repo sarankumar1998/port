@@ -16,7 +16,8 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import TextArea from "antd/lib/input/TextArea";
 import Table from "@mui/material/Table";
-import { Form } from "react-bootstrap";
+import CircularProgress from '@mui/material/CircularProgress';
+import LoadingSpinner from "../Loader/LoadingSpinner";
 
 function Admin({ usersId }) {
   // CALL IT ONCE IN YOUR APP
@@ -28,23 +29,25 @@ function Admin({ usersId }) {
   const [search, setSearch] = useState("");
   const [all, setAll] = useState([]);
   const [Reject, setReject] = useState(false);
-  const [load, setLoad] = useState(true);
+  const [load, setLoad] = useState(false);
   const [open, setOpen] = React.useState(false);
+  
   const [remarks, setremarks] = useState("");
 
-  const [email, setEmail] = useState("");
-  const mailObj = all.values((el) => el);
-  console.log(mailObj);
 
-  const sendEmail = async (e) => {
-    e.preventDefault();
+  const sendEmail = async (id, mail, message) => {  
+    console.log(id, mail,'maill');
+    setLoad(true);
+
     let user = {
-      email: mailObj.email,
-      // text: mailObj.Remarks,
+      email: mail,
+      text: message,
     };
 
     try {
-      await axios.post("http://localhost:4000/api/v4/register", user);
+      await axios.post("http://localhost:4000/api/v4/register", user)
+      setLoad(false);
+      toast.success("Mail sent Successfully");
     } catch (err) {
       console.log(err);
     }
@@ -88,19 +91,11 @@ function Admin({ usersId }) {
     }
   };
 
-  const handleOpen = () => {
-    setOpen(true);
-  };
 
-  // function to handle modal close
-  const handleClose = () => {
-    setOpen(false);
-  };
 
-  const handleApprove = async (event, id) => {
+  const handleApprove = async (id) => {
     setApproval(true);
     setReject(false);
-    console.log(event, id, "check");
     const updateStatus = {
       status: "Approved",
       Remarks: remarks,
@@ -120,10 +115,10 @@ function Admin({ usersId }) {
     }
   };
 
-  const handleReject = async (event, id) => {
+  const handleReject = async (id) => {
     setReject(true);
     setApproval(false);
-    // console.log(event, id, "check");
+
     const updateStatus = {
       status: "Rejected",
       Remarks: remarks,
@@ -159,6 +154,11 @@ function Admin({ usersId }) {
 
   return (
     <div className="container mt-3">
+            {load ? 
+            // <Box sx={{ display:'end' }}>
+            <LoadingSpinner message="Please wait while the mail is being sent"/> 
+          // </Box>
+               : (  <>
       {/* {usersId === undefined ? "" :  <Navbars />} */}
       <ToastContainer />
       <label>Search:</label>
@@ -179,14 +179,12 @@ function Admin({ usersId }) {
                   <TableCell>Message</TableCell>
                   <TableCell>Status</TableCell>
                   <TableCell>Delete</TableCell>
-                  <TableCell>Edit</TableCell>
                   <TableCell>Reason</TableCell>
                   <TableCell>Approval</TableCell>
+                  <TableCell>Mail</TableCell>
                 </TableRow>
               </TableHead>
-              {load ? (
-                "Loading...."
-              ) : (
+        
                 <TableBody>
                   {filteredList(all, search).map((el, index) => {
                     return (
@@ -203,21 +201,14 @@ function Admin({ usersId }) {
                         <TableCell style={{ width: "25rem" }}>
                           {el.message}
                         </TableCell>
-                        <TableCell> {el.status} </TableCell>
+                        <TableCell style={{color: el.status === "Approved" ? 'green' : 'red' }}> {el.status} </TableCell>
                         <TableCell onClick={() => handleDel(el.id)}>
                           <DeleteIcon />
                         </TableCell>
+          
                         <TableCell>
-                          {" "}
-                          <Edit
-                            variant="contained"
-                            color="primary"
-                            onClick={handleOpen}
-                          />
-                          <ModalDialog open={open} handleClose={handleClose} />
-                        </TableCell>
-                        <TableCell>
-                          <TextArea
+                          <TextArea 
+                       
                             disabled={
                               el.status === "Approved" ||
                               el.status === "Rejected"
@@ -257,18 +248,19 @@ function Admin({ usersId }) {
                             {" "}
                             <ClearOutlinedIcon />{" "}
                           </button>
-                          <button
+           
+                        </TableCell>
+                        <TableCell>               <button
                             className="btn btn-danger btn-sm"
-                            onClick={sendEmail}
+                            onClick={() => sendEmail(el.id,el.email, el.message)}
                           >
                             Email
-                          </button>
-                        </TableCell>
+                          </button></TableCell>
                       </TableRow>
                     );
                   })}
                 </TableBody>
-              )}
+             
             </Table>
           </TableContainer>
           {/* <hr> */}
@@ -290,6 +282,8 @@ function Admin({ usersId }) {
           </div>
         </Paper>
       ) : null}
+
+</> )}
     </div>
   );
 }

@@ -9,7 +9,6 @@ import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
-import FormLabel from "@mui/material/FormLabel";
 import Badminton from "../../containers/Badminton";
 import SportsCard from "../../containers/SportsCard";
 import Navbars from "../Navbars";
@@ -122,14 +121,12 @@ export default function Sports() {
                   />
                   <FormControlLabel
                     value="four"
-
                     onClick={() => onFourth()}
                     control={<Radio />}
                     label="VolleyBall"
                   />
                   <FormControlLabel
                     value="five"
-                 
                     onClick={() => onFifth()}
                     control={<Radio />}
                     label="ThrowBall"

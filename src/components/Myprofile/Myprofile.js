@@ -1,43 +1,113 @@
 import * as React from "react";
-import { styled } from "@mui/material/styles";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
-import CardMedia from "@mui/material/CardMedia";
-import CardContent from "@mui/material/CardContent";
-import CardActions from "@mui/material/CardActions";
-import Collapse from "@mui/material/Collapse";
-import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import { Form, Button } from "antd";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import ShareIcon from "@mui/icons-material/Share";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { Form } from "antd";
 import Navbars from "../Navbars";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import moment from "moment";
-
-const ExpandMore = styled((props) => {
-  const { expand, ...other } = props;
-  return <IconButton {...other} />;
-})(({ theme, expand }) => ({
-  transform: !expand ? "rotate(0deg)" : "rotate(180deg)",
-  marginLeft: "auto",
-  transition: theme.transitions.create("transform", {
-    duration: theme.transitions.duration.shortest,
-  }),
-}));
+import { useState } from "react";
+import { Menu, MenuItem } from "@mui/material";
+import axios from "axios";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import { injectStyle } from "react-toastify/dist/inject-style";
 
 export default function Myprofile() {
-  
-  const [expanded, setExpanded] = React.useState(false);
+  // CALL IT ONCE IN YOUR APP
+  if (typeof window !== "undefined") {
+    injectStyle();
+  }
+
   const stringifiedPerson = sessionStorage.getItem("user");
-  const [isBlue, setIsBlue] = React.useState(false);
+  const [edit, setEdit] = useState(true);
+  const [username, setUsername] = useState("");
+  const [firstName, setfirstName] = useState("");
+  const [lastName, setlastName] = useState("");
+  const [email, setemail] = useState("");
+  const [address, setaddress] = useState("");
+  const [mobile, setmobile] = useState("");
+  const [country, setcountry] = useState("");
+
   const personAsObjectAgain = JSON.parse(stringifiedPerson);
   const [users, setUsers] = React.useState(personAsObjectAgain);
+  const [newPass, setNewPass] = useState("");
+  const [det, setDet] = useState({});
+  console.log(det, "okl");
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
 
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
+  const { id } = JSON.parse(sessionStorage.getItem("user"));
+  console.log(id, "ooo");
+
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (id === null) {
+      navigate("/login");
+    }
+  }, [navigate]);
+
+  useEffect(() => {
+    getProductById();
+  }, []);
+
+  const getProductById = async () => {
+    await axios
+      .get(`http://localhost:4000/api/v1/special/users/${id}`)
+      .then((res) => {
+        setDet(res.data);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const onSaved = async (e, id) => {
+    console.log(e, id, "ss");
+    e.preventDefault();
+    if (users.password === newPass) {
+      toast.error("Check Your ");
+
+      const updateStatus = {
+        firstName: firstName || det.firstName,
+        lastName: lastName || det.lastName,
+        email: email || det.email,
+        mobile: mobile || det.mobile,
+        country: country || det.country,
+        address: address || det.address,
+        username: username || det.username,
+        createdOn: new Date()
+        // password: newPass,
+      };
+      let confirm = window.confirm("Are you sure you want to Edit");
+
+      if (confirm) {
+        try {
+          await axios.put(
+            "http://localhost:4000/api/v2/profile/update/" + id,
+            updateStatus
+          );
+          toast.warning("Updated Successfully");
+          setEdit(true);
+        } catch (err) {
+          console.log("err");
+        }
+      }
+    } else {
+      toast.error("Check Your password");
+    }
+  };
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const onChange = (e) => {
+    setAnchorEl(null);
+    e.preventDefault();
+    setEdit(false);
   };
 
   return (
@@ -52,284 +122,267 @@ export default function Myprofile() {
           justifyContent: "center",
         }}
       >
-        <Card sx={{ maxWidth: 745 }} style={{ padding: "2rem" }}>
-          <CardHeader
-            action={
-              <IconButton aria-label="settings">
-                <MoreVertIcon />
-              </IconButton>
-            }
-            title="Edit Profile"
-            subheader={moment(users.createdOn).format("DD/MM/YYYY")}
-          />
+        <ToastContainer />
+        {/* {det.map((det) => ( */}
+        <>
+          <Card sx={{ maxWidth: 745 }} style={{ padding: "2rem" }}>
+            <CardHeader
+              action={
+                <IconButton aria-label="settings">
+                  <MoreVertIcon
+                    id="basic-button"
+                    aria-controls={open ? "basic-menu" : undefined}
+                    aria-haspopup="true"
+                    aria-expanded={open ? "true" : undefined}
+                    onClick={handleClick}
+                  />
 
-          <Form name="sign-up" className="sign-up mt-4">
-            <div className="row">
-              <div className="col-xl-6">
-                <Form.Item
-                  label="FirstName"
-                  rules={[
-                    {
-                      required: true,
-                      message: (
-                        <span style={{ fontSize: "9px", color: "red" }}>
-                          Required!
-                        </span>
-                      ),
-                    },
-                  ]}
-                >
-                  <input
-                    disabled
-                    className="form-control form-control-sm"
-                    placeholder={users.firstName}
-                  />
-                </Form.Item>
-              </div>
-
-              <div className="col-xl-6">
-                <Form.Item
-                  label="LastName"
-                  className=""
-                  rules={[
-                    {
-                      required: true,
-                      message: (
-                        <span style={{ fontSize: "9px", color: "red" }}>
-                          Required!
-                        </span>
-                      ),
-                    },
-                  ]}
-                >
-                  <input
-                    disabled
-                    className="form-control form-control-sm"
-                    placeholder={users.lastName}
-                  />
-                </Form.Item>
-              </div>
-
-              <div className="col-xl-6">
-                <Form.Item
-                  label="Username"
-                  className="mt-2"
-                  rules={[
-                    {
-                      required: true,
-                      message: (
-                        <span style={{ fontSize: "9px", color: "red" }}>
-                          Required!
-                        </span>
-                      ),
-                    },
-                  ]}
-                >
-                  <input
-                    type="username"
-                    disabled
-                    className="form-control form-control-sm"
-                    placeholder={users.username}
-                  />
-                </Form.Item>
-              </div>
-              <div className="col-xl-6">
-                <Form.Item
-                  label="Mobile"
-                  className="mt-2"
-                  rules={[
-                    {
-                      required: true,
-                      message: (
-                        <span style={{ fontSize: "9px", color: "red" }}>
-                          Required!
-                        </span>
-                      ),
-                    },
-                  ]}
-                >
-                  <input
-                    disabled
-                    className="form-control form-control-sm"
-                    placeholder={users.mobile}
-                  />
-                </Form.Item>
-              </div>
-
-              <div className="col-xl">
-                <Form.Item
-                  label="Email"
-                  className="mt-2"
-                  rules={[
-                    {
-                      required: true,
-                      message: (
-                        <span style={{ fontSize: "9px", color: "red" }}>
-                          Please input your Email!
-                        </span>
-                      ),
-                    },
-                  ]}
-                >
-                  <input
-                    disabled
-                    className="form-control form-control-sm"
-                    placeholder={users.email}
-                  />
-                </Form.Item>
-              </div>
+                  <Menu
+                    id="basic-menu"
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                    MenuListProps={{
+                      "aria-labelledby": "basic-button",
+                    }}
+                  >
+                    <MenuItem onClick={onChange}>Edit</MenuItem>
+                  </Menu>
+                </IconButton>
+              }
+              title="Profile"
+              
+            />
+            <div style={{marginTop:'-1rem',marginLeft:'2.5%'}}>
+              <p>last update on:{moment(det.createdOn).format("DD/MM/YYYY")}</p>
             </div>
 
-            <div className="mt-4">
-              <h5>Personal Info</h5>
-              <div className="col-xl-6">
-                <Form.Item
-                  className="mt-2"
-                  label="Role"
-                  rules={[
-                    {
-                      required: true,
-                      message: (
-                        <span style={{ fontSize: "9px", color: "red" }}>
-                          Required!
-                        </span>
-                      ),
-                    },
-                  ]}
-                >
-                  <input
-                    disabled
-                    className="form-control form-control-sm"
-                    placeholder={users.role}
-                  />
-                </Form.Item>
+            <Form name="sign-up" className="sign-up mt-4">
+              <div className="row">
+                <div className="col-xl-6">
+                  <Form.Item
+                    label="FirstName"
+                    rules={[
+                      {
+                        required: true,
+                        message: (
+                          <span style={{ fontSize: "9px", color: "red" }}>
+                            Required!
+                          </span>
+                        ),
+                      },
+                    ]}
+                  >
+                    <input
+                      style={{ fontSize: "1rem" }}
+                      type="firstName"
+                      disabled={edit}
+                      onChange={(e) => setfirstName(e.target.value)}
+                      className="form-control form-control-sm"
+                      defaultValue={det.firstName}
+                    />
+                  </Form.Item>
+                </div>
+
+                <div className="col-xl-6">
+                  <Form.Item
+                    label="LastName"
+                    rules={[
+                      {
+                        required: true,
+                        message: (
+                          <span style={{ fontSize: "9px", color: "red" }}>
+                            Required!
+                          </span>
+                        ),
+                      },
+                    ]}
+                  >
+                    <input
+                      style={{ fontSize: "1rem" }}
+                      type="lastName"
+                      onChange={(e) => setlastName(e.target.value)}
+                      disabled={edit}
+                      className="form-control form-control-sm"
+                      defaultValue={det.lastName}
+                    />
+                  </Form.Item>
+                </div>
+
+                <div className="col-xl-6">
+                  <Form.Item
+                    label="Username"
+                    className="mt-2"
+                    rules={[
+                      {
+                        required: true,
+                        message: (
+                          <span style={{ fontSize: "9px", color: "red" }}>
+                            Required!
+                          </span>
+                        ),
+                      },
+                    ]}
+                  >
+                    <input
+                      type="username"
+                      style={{ fontSize: "1rem" }}
+                      disabled={edit}
+                      onChange={(e) => setUsername(e.target.value)}
+                      defaultValue={det.username}
+                      className="form-control form-control-sm"
+                    />
+                  </Form.Item>
+                </div>
+                <div className="col-xl-6">
+                  <Form.Item
+                    label="Mobile"
+                    className="mt-2"
+                    rules={[
+                      {
+                        required: true,
+                        message: (
+                          <span style={{ fontSize: "9px", color: "red" }}>
+                            Required!
+                          </span>
+                        ),
+                      },
+                    ]}
+                  >
+                    <input
+                      disabled={edit}
+                      style={{ fontSize: "1rem" }}
+                      onChange={(e) => setmobile(e.target.value)}
+                      className="form-control form-control-sm"
+                      defaultValue={det.mobile}
+                    />
+                  </Form.Item>
+                </div>
+
+                <div className="col-xl">
+                  <Form.Item
+                    label="Email"
+                    className="mt-2"
+                    rules={[
+                      {
+                        required: true,
+                        message: (
+                          <span style={{ fontSize: "9px", color: "red" }}>
+                            Please input your Email!
+                          </span>
+                        ),
+                      },
+                    ]}
+                  >
+                    <input
+                      onChange={(e) => setemail(e.target.value)}
+                      disabled={edit}
+                      style={{ fontSize: "1rem" }}
+                      className="form-control form-control-sm"
+                      defaultValue={det.email}
+                    />
+                  </Form.Item>
+                </div>
               </div>
 
-              <div className="col-xl-6">
-                <Form.Item
-                  className="mt-2"
-                  label="Country"
-                  rules={[
-                    {
-                      required: true,
-                      message: (
-                        <span style={{ fontSize: "9px", color: "red" }}>
-                          Required!
-                        </span>
-                      ),
-                    },
-                  ]}
-                >
-                  <input
-                    disabled
-                    className="form-control form-control-sm"
-                    placeholder={users.country}
-                  />
-                </Form.Item>
-              </div>
+              <div className="mt-4">
+                <h5>Personal Info</h5>
+                <div className="col-xl-6">
+                  <Form.Item
+                    className="mt-2"
+                    label="Role"
+                    rules={[
+                      {
+                        required: true,
+                        message: (
+                          <span style={{ fontSize: "9px", color: "red" }}>
+                            Required!
+                          </span>
+                        ),
+                      },
+                    ]}
+                  >
+                    <input
+                      disabled={edit}
+                      style={{ fontSize: "1rem" }}
+                      className="form-control form-control-sm"
+                      defaultValue={det.role}
+                    />
+                  </Form.Item>
+                </div>
 
-              <div className="col-xl">
-                <Form.Item
-                  className="mt-2"
-                  label="Address"
-                  rules={[
-                    {
-                      required: true,
-                      message: (
-                        <span style={{ fontSize: "9px", color: "red" }}>
-                          Required!
-                        </span>
-                      ),
-                    },
-                  ]}
-                >
-                  <input
-                    disabled
-                    className="form-control form-control-sm"
-                    placeholder={users.address}
-                  />
-                </Form.Item>
-              </div>
-              {/* <div className="col-xl-6">
-                <Form.Item
-                  className="mt-2"
-         
-                  label="Password"
-                  rules={[
-                    {
-                      required: true,
-                      message: (
-                        <span style={{ fontSize: "9px", color: "red" }}>
-                          Please input your Password!
-                        </span>
-                      ),
-                    },
-                  ]}
-                >
-                  <input
-                    type="password"
-                    id="form3Example4"
-                    className="form-control form-control-sm"
-                    placeholder=''
-                  />
-                </Form.Item>
-              </div> */}
-            </div>
-          </Form>
+                <div className="col-xl-6">
+                  <Form.Item
+                    className="mt-2"
+                    label="Country"
+                    rules={[
+                      {
+                        required: true,
+                        message: (
+                          <span style={{ fontSize: "9px", color: "red" }}>
+                            Required!
+                          </span>
+                        ),
+                      },
+                    ]}
+                  >
+                    <input
+                      style={{ fontSize: "1rem" }}
+                      disabled={edit}
+                      onChange={(e) => setcountry(e.target.value)}
+                      className="form-control form-control-sm"
+                      defaultValue={det.country}
+                    />
+                  </Form.Item>
+                </div>
 
-          <CardActions disableSpacing>
-            <IconButton
-              onClick={() => setIsBlue(!isBlue)}
-              aria-label="add to favorites"
-            >
-              <FavoriteIcon style={{ color: isBlue ? "red" : "grey" }} />
-            </IconButton>
-            <IconButton aria-label="share">
-              <ShareIcon />
-            </IconButton>
-            <ExpandMore
-              expand={expanded}
-              onClick={handleExpandClick}
-              aria-expanded={expanded}
-              aria-label="show more"
-            >
-              <ExpandMoreIcon />
-            </ExpandMore>
-          </CardActions>
-          <Collapse in={expanded} timeout="auto" unmountOnExit>
-            <CardContent>
-              <Typography paragraph>Method:</Typography>
-              <Typography paragraph>
-                Heat 1/2 cup of the broth in a pot until simmering, add saffron
-                and set aside for 10 minutes.
-              </Typography>
-              <Typography paragraph>
-                Heat oil in a (14- to 16-inch) paella pan or a large, deep
-                skillet over medium-high heat. Add chicken, shrimp and chorizo,
-                and cook, stirring occasionally until lightly browned, 6 to 8
-                minutes. Transfer shrimp to a large plate and set aside, leaving
-                chicken and chorizo in the pan. Add pimentón, bay leaves,
-                garlic, tomatoes, onion, salt and pepper, and cook, stirring
-                often until thickened and fragrant, about 10 minutes. Add
-                saffron broth and remaining 4 1/2 cups chicken broth; bring to a
-                boil.
-              </Typography>
-              <Typography paragraph>
-                Add rice and stir very gently to distribute. Top with artichokes
-                and peppers, and cook without stirring, until most of the liquid
-                is absorbed, 15 to 18 minutes. Reduce heat to medium-low, add
-                reserved shrimp and mussels, tucking them down into the rice,
-                and cook again without stirring, until mussels have opened and
-                rice is just tender, 5 to 7 minutes more. (Discard any mussels
-                that don&apos;t open.)
-              </Typography>
-              <Typography>
-                Set aside off of the heat to let rest for 10 minutes, and then
-                serve.
-              </Typography>
-            </CardContent>
-          </Collapse>
-        </Card>
+                <div className="col-xl">
+                  <Form.Item
+                    className="mt-2"
+                    label="Address"
+                    rules={[
+                      {
+                        required: true,
+                        message: (
+                          <span style={{ fontSize: "9px", color: "red" }}>
+                            Required!
+                          </span>
+                        ),
+                      },
+                    ]}
+                  >
+                    <input
+                      style={{ fontSize: "1rem" }}
+                      disabled={edit}
+                      onChange={(e) => setaddress(e.target.value)}
+                      className="form-control form-control-sm"
+                      defaultValue={det.address}
+                    />
+                  </Form.Item>
+                </div>
+                {edit === false ? (
+                  <div className="mt-4">
+                    <input
+                      type=""
+                      name={newPass}
+                      onChange={(e) => setNewPass(e.target.value)}
+                    />
+                    &nbsp;
+                    <button
+                      onClick={(e) => onSaved(e, users.id)}
+                      className="btn  btn-primary btn-sm"
+                    >
+                      save
+                    </button>
+                  </div>
+                ) : (
+                  ""
+                )}
+              </div>
+            </Form>
+          </Card>
+        </>
+        {/* ))} */}
       </div>
     </div>
   );

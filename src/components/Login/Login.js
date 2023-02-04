@@ -6,6 +6,8 @@ import { Grid, Paper, Avatar } from "@material-ui/core";
 import { Link, useNavigate } from "react-router-dom";
 import { Form, Button } from "antd";
 import axios from "axios";
+import  secureLocalStorage  from  "react-secure-storage";
+import { EyeTwoTone } from '@ant-design/icons';
 const Login = () => {
   // CALL IT ONCE IN YOUR APP
   if (typeof window !== "undefined") {
@@ -16,7 +18,7 @@ const Login = () => {
   const avatarStyle = { backgroundColor: "#1bbd7e" };
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
+  const [passwordVisible, setPasswordVisible] = React.useState(false);
   const onFinish = async () => {
     let user = {
       username: username,
@@ -26,13 +28,11 @@ const Login = () => {
     await axios.post(`http://localhost:4000/api/v2/login`, user).then(
       (res) => {
         toast.success("Successfully login");
-        sessionStorage.setItem('user', JSON.stringify(res.data));
+        sessionStorage.setItem("user", JSON.stringify(res.data));
         navigate("/home");
-   
       },
       (err) => {
         if (err) {
-         
           toast.error("please check your details and try again");
         }
       }
@@ -89,6 +89,7 @@ const Login = () => {
                 className="mt-3"
                 name="password"
                 label="Password"
+          
                 rules={[
                   {
                     required: true,
@@ -103,6 +104,8 @@ const Login = () => {
                 <input
                   type="password"
                   id="form3Example4"
+                  iconRender={<EyeTwoTone /> }
+          
                   class="form-control form-control-sm"
                   value={password}
                   onChange={(event) => setPassword(event.target.value)}
@@ -136,7 +139,10 @@ const Login = () => {
                 <div style={{ fontSize: "11px" }}>
                   Don't have an account ?{" "}
                   <span>
-                    <a href="Signup" style={{ textDecoration: "none", fontSize:'13px' }}>
+                    <a
+                      href="Signup"
+                      style={{ textDecoration: "none", fontSize: "13px" }}
+                    >
                       Sign up
                     </a>
                   </span>
