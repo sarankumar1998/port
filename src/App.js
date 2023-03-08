@@ -18,49 +18,50 @@ import { useEffect } from "react";
 import { useState } from "react";
 
 export const AppContext = createContext(null)
+import News from "./containers/News";
 
 function App() {
-const stringifiedPerson = sessionStorage.getItem("user");
-const personAsObjectAgain = JSON.parse(stringifiedPerson);
-const [usersVal, setUsersVal] = useState(personAsObjectAgain);
+  const stringifiedPerson = sessionStorage.getItem("user");
+  const personAsObjectAgain = JSON.parse(stringifiedPerson);
+  const [usersVal, setUsersVal] = useState(personAsObjectAgain);
 
-// const navigate  = useNavigate()
-useEffect(() => {
-  setUsersVal(sessionStorage.getItem("user"));
+  // const navigate  = useNavigate()
+  useEffect(() => {
+    setUsersVal(sessionStorage.getItem("user"));
     // navigate("/login");
 
-}, []);
+  }, []);
 
 
 
-// useEffect(() => {
-//   const usersVal = sessionStorage.getItem("user");
-//   // console.log(usersVal);
-// }, []);
+  // useEffect(() => {
+  //   const usersVal = sessionStorage.getItem("user");
+  //   // console.log(usersVal);
+  // }, []);
   return (
     <div className="App">
-              <AppContext.Provider value={{usersVal}} >
-      <Router>
-        {/* <Navbars /> */}
-        <Routes>
-  
-          <Route path="/" element={<Login />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/home" element={<Home/>} />
-          <Route path="/skills" element={<Skills />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/msc" element={<Msc />} />
-          <Route path="/myprofile" element={<Myprofile />} />
-          <Route path="/product" element={<Product />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/sports" element={<Sports />} />
-          <Route path="/checkout" element={<Checkout />} />
-          <Route path="/clientmail" element={<ClientMail />} />
-   
-        </Routes>
-      </Router>
+      <AppContext.Provider value={{ usersVal }} >
+        <Router>
+          {/* <Navbars /> */}
+          <Routes>
+
+            <Route path="/" element={<Login />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/skills" element={<Skills />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/msc" element={<Msc />} />
+            <Route path="/myprofile" element={<Myprofile />} />
+            <Route path="/product" element={<Product />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/sports" element={<Sports />} />
+            <Route path="/checkout" element={<Checkout />} />
+            <Route path="/clientmail" element={<ClientMail />} />
+
+          </Routes>
+        </Router>
       </AppContext.Provider>
       {/* <Footer /> */}
     </div>

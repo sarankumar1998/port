@@ -26,7 +26,7 @@ Router.get("/special/users/:id", function (req, res) {
         console.log(error);
         return res.status(500).json(error);
       } else {
-        res.status(200).send(...results );
+        res.status(200).send(...results);
       }
     }
   );
@@ -39,6 +39,24 @@ Router.get("/special/Obj/", function (req, res) {
     return res.json(results);
   });
 });
+// PLAIN OBJ
+// Router.get('/special/Obj',(req,res) => {
+//     con.query('SELECT * FROM vendorview', (err, result) => {
+//         if(!err) {
+//             Object.keys(result).forEach(function(key){
+//                 var row = result[key];
+//                 console.log(result.name)
+//             })
+//             res.send(result)
+//         }
+//         else{
+//             throw err
+//         }
+//     })
+// })
+
+
+
 
 // results[0]
 
