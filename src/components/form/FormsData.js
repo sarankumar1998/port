@@ -4,9 +4,12 @@ import axios from "axios";
 import { injectStyle } from "react-toastify/dist/inject-style";
 import { ToastContainer, toast } from "react-toastify";
 import './FormData.css'
+import DatePicker from "react-date-picker";
+
 
 
 const FormsData = () => {
+
 
  // CALL IT ONCE IN YOUR APP
  if (typeof window !== "undefined") {
@@ -17,6 +20,9 @@ const FormsData = () => {
   const [email, setEmail] = useState("");
   const [mobile, setMobile] = useState("");
   const [message, setMessage] = useState("");
+  // const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState();
+  console.log(date,'datee');
 
 
   const onFinish = async () => {
@@ -27,7 +33,7 @@ const FormsData = () => {
       mobile: mobile,
       message: message,
       status:'Pending',
-      tm: new Date(),
+      tm: date,
       userId: sessionValue.id
     }
   
@@ -163,6 +169,12 @@ const FormsData = () => {
                   onChange={(event) => setMessage(event.target.value)}
                 />
               </Form.Item>
+              <div>
+                <input                
+                type="date"
+                onChange={e => setDate(e.target.value)}
+                />
+              </div>
 
               <div className="mt-4">
                 <button
@@ -175,6 +187,7 @@ const FormsData = () => {
               </div>
               {/* {loadData ? <Spinner/> : null} */}
             </Form>
+     
           </div>
         </div>
       </div>

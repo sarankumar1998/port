@@ -18,7 +18,6 @@ import { useEffect } from "react";
 
 function Checkout() {
   const [value, onChange] = React.useState(new Date());
-  const [valueDay, onChangeDay] = useState("10:00");
   const location = useLocation();
   const [isActive, setIsActive] = useState(false);
   const [data, setData] = useState(location);

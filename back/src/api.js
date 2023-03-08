@@ -49,7 +49,7 @@ Router.post("/members", function (req, res) {
   var message = req.body.message;
   var mobile = req.body.mobile;
   var status = req.body.status;
-  var tm = moment(Date.now()).format("YYYY-MM-DD HH:mm:ss");
+  var tm = req.body.tm
   var userId = req.body.userId;
 
   // query
@@ -78,7 +78,7 @@ Router.put("/members/update/:id", (req, res) => {
   var { Remarks } = req.body;
 
   // Query
-  var query = `UPDATE vendorview SET status='${status}', Remarks='${Remarks},'WHERE id=${id}`;
+  var query = `UPDATE vendorview SET status='${status}', Remarks='${Remarks} 'WHERE id=${id}`;
 
   // Run the query
   con.query(query, function (error, data) {
@@ -90,7 +90,6 @@ Router.put("/members/update/:id", (req, res) => {
     }
   });
 });
-
 Router.delete("/member/remove/:id", function (req, res) {
   console.log(req.body);
   con.query(

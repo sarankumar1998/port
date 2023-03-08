@@ -6,7 +6,6 @@ import { Grid, Paper, Avatar } from "@material-ui/core";
 import { Link, useNavigate } from "react-router-dom";
 import { Form, Button } from "antd";
 import axios from "axios";
-import  secureLocalStorage  from  "react-secure-storage";
 import { EyeTwoTone } from '@ant-design/icons';
 const Login = () => {
   // CALL IT ONCE IN YOUR APP
@@ -14,11 +13,12 @@ const Login = () => {
     injectStyle();
   }
 
+  
   const navigate = useNavigate();
   const avatarStyle = { backgroundColor: "#1bbd7e" };
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [passwordVisible, setPasswordVisible] = React.useState(false);
+  const [block, setBlock] = React.useState(1);
   const onFinish = async () => {
     let user = {
       username: username,
@@ -33,6 +33,7 @@ const Login = () => {
       },
       (err) => {
         if (err) {
+          setBlock(block => block + 1)
           toast.error("please check your details and try again");
         }
       }
@@ -125,7 +126,7 @@ const Login = () => {
 
               <div className="d-grid mt-4">
                 <Button
-                  // disabled={}
+                  disabled={block === 4 }
                   type="primary"
                   htmlType="submit"
                   className="btn btn-primary btn-sm"

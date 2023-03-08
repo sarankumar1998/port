@@ -13,7 +13,7 @@ import "./Cricket.css";
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 import { Link,useLocation } from "react-router-dom";
 import Skeleton from '@mui/material/Skeleton';
-
+import LoadingSpinner from "../components/Loader/LoadingSpinner";
 
 
 
@@ -43,6 +43,15 @@ export default function SportsCard() {
   };
 
   return (
+
+    <>
+    
+    
+    {load ? 
+            // <Box sx={{ display:'end' }}>
+            <LoadingSpinner/> 
+          // </Box>
+               : (  <>
     <div className="row">
       <h6 style={{ fontWeight: "600" }}>{sports.length} Result Found</h6>
       <ThemeProvider theme={theme}>
@@ -85,5 +94,7 @@ export default function SportsCard() {
         ))}
       </ThemeProvider>
     </div>
+    </> )}
+    </>
   );
 }

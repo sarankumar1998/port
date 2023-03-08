@@ -84,11 +84,10 @@ router.put("/profile/update/:id", (req, res) => {
   var { address } = req.body;
   var { country } = req.body;
   var { mobile } = req.body;
-var createdOn = moment(Date.now()).format("YYYY-MM-DD HH:mm:ss")(req.body)
-
+// var createdOn = moment(Date.now()).format("YYYY-MM-DD HH:mm:ss")(req.body)
 
   // Query
-  var query = `UPDATE users SET email='${email}', username='${username}' ,firstName='${firstName}' ,lastName='${lastName}' ,address='${address}',country='${country}',mobile='${mobile}',createdOn='${createdOn} ' WHERE id=${id}`;
+  var query = `UPDATE users SET email='${email}', username='${username}' ,firstName='${firstName}' ,lastName='${lastName}' ,address='${address}',country='${country}',mobile='${mobile}' WHERE id=${id}`;
 
   // Run the query
   con.query(query, function (error, data) {
@@ -99,10 +98,6 @@ var createdOn = moment(Date.now()).format("YYYY-MM-DD HH:mm:ss")(req.body)
       res.status(200).json({message:'update done'})
     }
   });
-
-
-
-  
 });
 
 //  const logout = (req, res) => {

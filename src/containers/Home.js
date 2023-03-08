@@ -2,22 +2,29 @@ import React, { useEffect, useState } from "react";
 import theme from "../assets/lap.jpg";
 import Navbars from "../components/Navbars";
 import { Link, useNavigate } from "react-router-dom";
-
+import { useContext } from "react";
+import { AppContext } from "../App";  
 import "./Home.css";
 import { Box, Card } from "@mui/material";
 
 export default function Home() {
+
+const{usersVal} = useContext(AppContext)
+console.log(usersVal,'i');
+
   const navigate = useNavigate();
 
 
-  const stringifiedPerson = sessionStorage.getItem("user");
-  const personAsObjectAgain = JSON.parse(stringifiedPerson);
-  const [users, setUsers] = useState(personAsObjectAgain);
+
+  const [users, setUsers] = useState(usersVal);
 
 
   useEffect(() => {
+    
     if (!!!sessionStorage.getItem("user")) {
+      setUsers()
       navigate("/login");
+    
     }
   }, [navigate]);
 

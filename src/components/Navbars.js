@@ -28,7 +28,7 @@ import { useEffect } from "react";
 import axios from "axios";
 import { useState } from "react";
 import { Offcanvas } from "react-bootstrap";
-import AddCart from "../containers/AddCart/AddCart";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 const drawerWidth = 240;
 
@@ -59,7 +59,7 @@ const AppBar = styled(MuiAppBar, {
   }),
 }));
 
-export default function Navbars({lengthcart}) {
+export default function Navbars({ lengthcart }) {
   // console.log(lengthcart.length,'ca');
   const [show, setShow] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -72,7 +72,7 @@ export default function Navbars({lengthcart}) {
   // console.log(personAsObjectAgain);
   const [users, setUsers] = React.useState(personAsObjectAgain);
 
-  useEffect(() => {
+  useEffect(() => { 
     getProduct();
   }, []);
 
@@ -104,9 +104,9 @@ export default function Navbars({lengthcart}) {
     setOpen(true);
   };
 
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
+    const handleDrawerClose = () => {
+      setOpen(false);
+    };
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -140,12 +140,10 @@ export default function Navbars({lengthcart}) {
                 component="div"
                 sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
               >
-                ZOCK
+                Mars
               </Typography>
-
-          
-
-            <Menu
+              <IconButton aria-label="settings">
+              <Menu
                 id="menu-appbar"
                 anchorEl={anchorEl}
                 anchorOrigin={{
@@ -165,8 +163,11 @@ export default function Navbars({lengthcart}) {
                   <MenuItem onClick={handleClose}>{users.username}</MenuItem>
                 </Link>
 
-                <MenuItem onClick={handleClick}>logout</MenuItem>
+                <MenuItem onClick={handleClick}>logout &nbsp;   <LogoutIcon /></MenuItem>
+
+             
               </Menu>
+              </IconButton>
               <IconButton
                 size="large"
                 aria-label="account of current user"
@@ -363,7 +364,6 @@ export default function Navbars({lengthcart}) {
                   <ListItemText primary={"Mail"} />
                 </ListItem>
               </Link>
-
             </List>
             <Divider />
           </SwipeableDrawer>

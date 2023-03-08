@@ -6,7 +6,7 @@ const autho = require("./auth");
 const sports = require("./sportsApi");
 const mail = require("./Mailauth/Mail");
 const order = require("./Payment/Payment");
-const image = require("./ImageUpload/imageUpload");
+const image = require("./ImageUpload/Ig");
 const cors = require("cors");
 
 var app = express();

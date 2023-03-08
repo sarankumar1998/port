@@ -13,6 +13,9 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { injectStyle } from "react-toastify/dist/inject-style";
+import { useContext } from "react";
+import { AppContext } from "../../App";  
+
 
 export default function Myprofile() {
   // CALL IT ONCE IN YOUR APP
@@ -20,6 +23,16 @@ export default function Myprofile() {
     injectStyle();
   }
 
+  const{usersVal} = useContext(AppContext)
+  console.log(usersVal,'myy');
+  
+    // const navigate = useNavigate();
+  
+  
+  
+    // const [users, setUsers] = useState(usersVal);
+
+  const { id } = JSON.parse(sessionStorage.getItem("user")) ;
   const stringifiedPerson = sessionStorage.getItem("user");
   const [edit, setEdit] = useState(true);
   const [username, setUsername] = useState("");
@@ -38,14 +51,13 @@ export default function Myprofile() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
-  const { id } = JSON.parse(sessionStorage.getItem("user"));
-  console.log(id, "ooo");
+  const navigate  = useNavigate()
 
-  const navigate = useNavigate();
   useEffect(() => {
     if (id === null) {
       navigate("/login");
     }
+    
   }, [navigate]);
 
   useEffect(() => {
@@ -65,7 +77,7 @@ export default function Myprofile() {
     console.log(e, id, "ss");
     e.preventDefault();
     if (users.password === newPass) {
-      toast.error("Check Your ");
+      // toast.error("Check Your ");
 
       const updateStatus = {
         firstName: firstName || det.firstName,
@@ -75,7 +87,7 @@ export default function Myprofile() {
         country: country || det.country,
         address: address || det.address,
         username: username || det.username,
-        createdOn: new Date()
+        // createdOn: new Date()
         // password: newPass,
       };
       let confirm = window.confirm("Are you sure you want to Edit");
@@ -154,7 +166,7 @@ export default function Myprofile() {
               
             />
             <div style={{marginTop:'-1rem',marginLeft:'2.5%'}}>
-              <p>last update on:{moment(det.createdOn).format("DD/MM/YYYY")}</p>
+              <p>Created on: {moment(det.createdOn).format("DD/MM/YYYY")}</p>
             </div>
 
             <Form name="sign-up" className="sign-up mt-4">
