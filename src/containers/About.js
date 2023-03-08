@@ -23,7 +23,7 @@ export default function About({usersId}) {
               <img src={pic3} width="70%" alt="" />
             </div>
             <div className="col-sm col-md mt-5">
-              <h2>Hello! <br /> I'm <span style={{ color: "#0275d8" }}>Saran K</span> </h2>
+              <h2>Hello! <br /> I'm <span style={{ color: "#0275d8" }}>Saran K SATAN</span> </h2>
               <h3 style={{ color: "gray" }}>Web Developer</h3>
               <p> <span>I</span>
                 am the admin of this page, Saran Kumar. To know about me in a nutshell, I am tech wizard and always
