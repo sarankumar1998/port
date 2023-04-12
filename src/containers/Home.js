@@ -14,7 +14,12 @@ console.log(usersVal,'i');
 
   const navigate = useNavigate();
 
+  const onkey = (e)=>{
+    if(e.key === "Enter"){
+console.log(e,"okk");
 
+    }
+  }
 
   const [users, setUsers] = useState(usersVal);
 
@@ -32,6 +37,7 @@ console.log(usersVal,'i');
   return (
     <div style={{ marginTop: "5rem" }}>
    <Navbars />
+   <input onkeydown={onkey} />
       <div style={{ margin: "2rem" }} className="row g-2">
         <div className="col-xl-8">
           <div style={{ marginBottom: "-2rem" }}>

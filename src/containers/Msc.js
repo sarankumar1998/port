@@ -8,10 +8,12 @@ import Admin from "../components/Admin/Admin";
  
 
 function Msc({}) {
-  const [det, setDet] = useState([]);
+  const [allData, setallData] = useState([]);
   const [load, setLoad] = useState(true);
   const { id } = JSON.parse(sessionStorage.getItem("user")) ;
-  console.log(id, "ooo");
+  const [changeVendorId, setChangeVendorId] = useState(null)
+  const [secData, secSecData] = useState([]);
+  console.log(secData, "ooo");
 
   const navigate = useNavigate();
 
@@ -21,28 +23,46 @@ function Msc({}) {
     }
   }, [navigate]);
 
-  useEffect(() => {
-    getProductById();
-  }, []);
+  // useEffect(() => {
+  //   getProductById();
+  // }, []);
 
-  const getProductById = async () => {
-    await axios
-      .get(`http://localhost:4000/api/v1/special/Obj/${id}`)
+  const handleVendorIdChange = (e) => {
+    setChangeVendorId(e.target.value)
+  }
+
+
+  const getProductById = async (e) => {
+    if (e.key === "Enter") {
+    await axios.get(`http://localhost:4000/api/v1/special/Obj/${changeVendorId}`)
       .then((res) => {
-        setDet(res.data);
+        setallData(res.data);
         setLoad(false);
       })
-      .catch((err) => console.log(err));
-  };
+   
+  }
+else{
+  
+}
 
-  console.log(det, "det");
+};
+  console.log(secData, "det");
+
+  useEffect(() => {
+    if (allData) {
+      secSecData(allData)
+    }
+  }, [allData])
+
+
 
 
 
   return (
     <div className="container mt-5">
 <Navbars />
-      <div style={{ marginTop: "5rem" }}></div>
+
+      <div style={{ marginTop: "5rem" }}><input type="text" onChange={handleVendorIdChange} onKeyDown={getProductById}/></div>
       {id !== 2 ? (
         <Box component="main" sx={{ flexGrow: 1, p: 6 }}>
           <table class="table table-bordered">
@@ -54,13 +74,13 @@ function Msc({}) {
                 <th>Reason</th>
               </tr>
             </thead>
-            {det.length > 0 ?   load ? (
+            {secData?.length > 0 ?   load ? (
               "Loading...."
             ) : (
               <tbody>
-                {det.map((el) => {
+                {secData?.map((el,e) => {
                   return (
-                    <tr>
+                    <tr key={e}>
                       <td>{el.name}</td>
                       <td>{el.message}</td>
                       <td style={{color: el.status === "Approved" ? "green" : "red"}}>{el.status}</td>

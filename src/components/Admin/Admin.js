@@ -61,7 +61,6 @@ function Admin({ usersId }) {
     await axios
       .get(`http://localhost:4000/api/v1/special/Obj/`)
       .then((res) => {
-        console.log(res.data.slice(1, 8), 'sllll');
         setAll(res.data);
         setLoad(false);
       })

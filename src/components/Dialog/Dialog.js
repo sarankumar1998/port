@@ -46,7 +46,7 @@ function MyVerticallyCenteredModal(props) {
                     <LocationOnIcon />
                   </div>
                   <div className="col-xl-10">
-                    <p style={{}}>{details.location}</p>
+                    <p >{details.location}</p>
                   </div>
                 </div>
 
@@ -57,9 +57,9 @@ function MyVerticallyCenteredModal(props) {
 
                   <div className="col-xl mt-2" style={{ fontWeight: "600" }}>
                     <div style={{ lineHeight: "1px" }}>
-                      <p style={{}}>Ideal: {details.ideal}</p>
-                      <p style={{}}>Type: {details.type}</p>
-                      <p style={{}}>Size: {details.areasize}</p>
+                      <p >Ideal: {details.ideal}</p>
+                      <p >Type: {details.type}</p>
+                      <p >Size: {details.areasize}</p>
                     </div>
                   </div>
                 </div>
@@ -70,7 +70,7 @@ function MyVerticallyCenteredModal(props) {
                 style={{ width: "20rem", height: "20rem" }}
                 className="text-center"
               >
-                Map coming soon!
+                <iframe src={details.map} width="600" height="450" style={{border:"0"}} allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
               </Card>
               <div className="mt-4">
                 <div className="row">
@@ -78,8 +78,8 @@ function MyVerticallyCenteredModal(props) {
                     <SettingsIcon />
                   </div>
                   <div className="col-xl-10">
-                    <p style={{ fontWeight: "600"}}> Facilities:</p>
-                    <p style={{marginTop:'-1rem'}}>{details.facilites}</p>
+                    <p style={{ fontWeight: "600" }}> Facilities:</p>
+                    <p style={{ marginTop: '-1rem' }}>{details.facilites}</p>
                   </div>
                 </div>
               </div>
