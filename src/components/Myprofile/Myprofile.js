@@ -42,12 +42,11 @@ export default function Myprofile() {
   const [address, setaddress] = useState("");
   const [mobile, setmobile] = useState("");
   const [country, setcountry] = useState("");
-
   const personAsObjectAgain = JSON.parse(stringifiedPerson);
   const [users, setUsers] = React.useState(personAsObjectAgain);
   const [newPass, setNewPass] = useState("");
-  const [det, setDet] = useState({});
-  console.log(det, "okl");
+  const [details, setdetails] = useState({});
+  console.log(details, "okl");
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
@@ -68,7 +67,7 @@ export default function Myprofile() {
     await axios
       .get(`http://localhost:4000/api/v1/special/users/${id}`)
       .then((res) => {
-        setDet(res.data);
+        setdetails(res.data);
       })
       .catch((err) => console.log(err));
   };
@@ -80,13 +79,13 @@ export default function Myprofile() {
       // toast.error("Check Your ");
 
       const updateStatus = {
-        firstName: firstName || det.firstName,
-        lastName: lastName || det.lastName,
-        email: email || det.email,
-        mobile: mobile || det.mobile,
-        country: country || det.country,
-        address: address || det.address,
-        username: username || det.username,
+        firstName: firstName || details.firstName,
+        lastName: lastName || details.lastName,
+        email: email || details.email,
+        mobile: mobile || details.mobile,
+        country: country || details.country,
+        address: address || details.address,
+        username: username || details.username,
         // createdOn: new Date()
         // password: newPass,
       };
@@ -135,7 +134,7 @@ export default function Myprofile() {
         }}
       >
         <ToastContainer />
-        {/* {det.map((det) => ( */}
+        {/* {details.map((details) => ( */}
         <>
           <Card sx={{ maxWidth: 745 }} style={{ padding: "2rem" }}>
             <CardHeader
@@ -166,7 +165,7 @@ export default function Myprofile() {
               
             />
             <div style={{marginTop:'-1rem',marginLeft:'2.5%'}}>
-              <p>Created on: {moment(det.createdOn).format("DD/MM/YYYY")}</p>
+              <p>Created on: {moment(details.createdOn).format("DD/MM/YYYY")}</p>
             </div>
 
             <Form name="sign-up" className="sign-up mt-4">
@@ -191,7 +190,7 @@ export default function Myprofile() {
                       disabled={edit}
                       onChange={(e) => setfirstName(e.target.value)}
                       className="form-control form-control-sm"
-                      defaultValue={det.firstName}
+                      defaultValue={details.firstName}
                     />
                   </Form.Item>
                 </div>
@@ -216,7 +215,7 @@ export default function Myprofile() {
                       onChange={(e) => setlastName(e.target.value)}
                       disabled={edit}
                       className="form-control form-control-sm"
-                      defaultValue={det.lastName}
+                      defaultValue={details.lastName}
                     />
                   </Form.Item>
                 </div>
@@ -241,7 +240,7 @@ export default function Myprofile() {
                       style={{ fontSize: "1rem" }}
                       disabled={edit}
                       onChange={(e) => setUsername(e.target.value)}
-                      defaultValue={det.username}
+                      defaultValue={details.username}
                       className="form-control form-control-sm"
                     />
                   </Form.Item>
@@ -266,7 +265,7 @@ export default function Myprofile() {
                       style={{ fontSize: "1rem" }}
                       onChange={(e) => setmobile(e.target.value)}
                       className="form-control form-control-sm"
-                      defaultValue={det.mobile}
+                      defaultValue={details.mobile}
                     />
                   </Form.Item>
                 </div>
@@ -291,7 +290,7 @@ export default function Myprofile() {
                       disabled={edit}
                       style={{ fontSize: "1rem" }}
                       className="form-control form-control-sm"
-                      defaultValue={det.email}
+                      defaultValue={details.email}
                     />
                   </Form.Item>
                 </div>
@@ -318,7 +317,7 @@ export default function Myprofile() {
                       disabled={edit}
                       style={{ fontSize: "1rem" }}
                       className="form-control form-control-sm"
-                      defaultValue={det.role}
+                      defaultValue={details.role}
                     />
                   </Form.Item>
                 </div>
@@ -343,7 +342,7 @@ export default function Myprofile() {
                       disabled={edit}
                       onChange={(e) => setcountry(e.target.value)}
                       className="form-control form-control-sm"
-                      defaultValue={det.country}
+                      defaultValue={details.country}
                     />
                   </Form.Item>
                 </div>
@@ -368,7 +367,7 @@ export default function Myprofile() {
                       disabled={edit}
                       onChange={(e) => setaddress(e.target.value)}
                       className="form-control form-control-sm"
-                      defaultValue={det.address}
+                      defaultValue={details.address}
                     />
                   </Form.Item>
                 </div>
