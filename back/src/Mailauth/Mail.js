@@ -13,7 +13,7 @@ router.post("/register", (req, res) => {
       service: "gmail",
       auth: {
         user: "saran07rose@gmail.com",
-        pass: "bfsxmxnvxyjdcwec",
+        pass: "pxfoftapwtgpdfya",
       },
     });
 
@@ -22,7 +22,7 @@ router.post("/register", (req, res) => {
       to: email,
       subject: "Here from saran!",
       html: `<h1 style={{color:'red'}}>Alert *</h1> <h3> You have to pay your fees this month before </h3> <p>${text}</p>`,
-    };
+    };  
 
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {

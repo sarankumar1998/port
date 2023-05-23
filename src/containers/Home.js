@@ -9,8 +9,9 @@ import { Box, Card } from "@mui/material";
 
 export default function Home() {
 
-const{usersVal} = useContext(AppContext)
-console.log(usersVal,'i');
+  const [UserInfo, setUserInfo] = useState(
+    JSON.parse(sessionStorage.getItem("user"))
+  );
 
   const navigate = useNavigate();
 
@@ -21,13 +22,11 @@ console.log(e,"okk");
     }
   }
 
-  const [users, setUsers] = useState(usersVal);
-
 
   useEffect(() => {
     
     if (!!!sessionStorage.getItem("user")) {
-      setUsers()
+      setUserInfo(UserInfo)
       navigate("/login");
     
     }
@@ -43,7 +42,7 @@ console.log(e,"okk");
           <div style={{ marginBottom: "-2rem" }}>
             <Box component="main" sx={{ flexGrow: 1, p: 6 }}>
               <Card sx={{ maxWidth: 800 }} style={{ padding: ".5rem" }}>
-                {users === null ? (
+                {UserInfo === null ? (
                   ""
                 ) : (
                   <h4>
@@ -51,7 +50,7 @@ console.log(e,"okk");
                     <span
                       style={{ color: "rgb(209, 45, 94)", fontWeight: "600" }}
                     >
-                      {users.username}
+                      {UserInfo.username}
                     </span>{" "}
                     <br />
                     Welcome Back!

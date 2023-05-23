@@ -31,6 +31,7 @@ const Login = () => {
       (res) => {
         toast.success("Successfully login");
         sessionStorage.setItem("user", JSON.stringify(res.data));
+        console.log(res.data ,"resss");
         navigate("/home");
       },
       (err) => {
@@ -107,7 +108,7 @@ const Login = () => {
                 <input
                   type="password"
                   id="form3Example4"
-                  iconRender={<EyeTwoTone /> }
+                  iconrender={<EyeTwoTone /> }
           
                   class="form-control form-control-sm"
                   value={password}

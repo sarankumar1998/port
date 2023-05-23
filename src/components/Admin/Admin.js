@@ -50,6 +50,7 @@ function Admin({ usersId }) {
       toast.success("Mail sent Successfully");
     } catch (err) {
       console.log(err);
+      setLoad(false);
     }
   };
 
@@ -69,7 +70,7 @@ function Admin({ usersId }) {
 
   const bySearch = (all, search) => {
     if (search) {
- 
+
       // return all.name && all.message.toLowerCase().includes(search.toLowerCase());
       return all.id.toString().includes(search.toString());
     } else return all;
@@ -117,7 +118,7 @@ function Admin({ usersId }) {
   };
 
   const handleReject = async (id) => {
-    setReject(true);
+    setReject(true); 
     setApproval(false);
 
     const updateStatus = {
@@ -176,7 +177,7 @@ function Admin({ usersId }) {
                 >
                   <TableHead>
                     <TableRow>
-                    <TableCell>Id</TableCell>
+                      <TableCell>Id</TableCell>
                       <TableCell>Name</TableCell>
                       <TableCell>Message</TableCell>
                       <TableCell>Status</TableCell>
@@ -199,7 +200,7 @@ function Admin({ usersId }) {
                             },
                           }}
                         >
-                                 <TableCell component="th">{el.id}</TableCell>
+                          <TableCell component="th">{el.id}</TableCell>
                           <TableCell component="th">{el.name}</TableCell>
                           <TableCell style={{ width: "25rem" }}>
                             {el.message}
@@ -253,7 +254,8 @@ function Admin({ usersId }) {
                             </button>
 
                           </TableCell>
-                          <TableCell>               <button
+                          <TableCell>              
+                             <button
                             className="btn btn-danger btn-sm"
                             onClick={() => sendEmail(el.id, el.email, el.message)}
                           >

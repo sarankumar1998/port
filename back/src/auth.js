@@ -48,6 +48,8 @@ router.post("/register", async (req, res) => {
 router.post("/login", async (req, res) => {
   const userLogin = "SELECT * FROM users WHERE username = ?";
   con.query(userLogin, [req.body.username], (err, data) => {
+    console.log(data,"datas");
+
     if (err) return res.status(500).json(err);
     if (data.length === 0) return res.status(404).json("User not found!");
 
@@ -65,7 +67,7 @@ router.post("/login", async (req, res) => {
     res
       .cookie("accessToken", token, { httpOnly: true })
       .status(200)
-      .json(...data);
+      .json(...data, ...token);
   });
 });
 

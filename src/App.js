@@ -20,16 +20,19 @@ import { useState } from "react";
 export const AppContext = createContext(null)
 
 function App() {
-const stringifiedPerson = sessionStorage.getItem("user");
-const personAsObjectAgain = JSON.parse(stringifiedPerson);
-const [usersVal, setUsersVal] = useState(personAsObjectAgain);
+
+const [routeState, setRouteState] = useState(JSON.parse(sessionStorage.getItem("user")))
+console.log(routeState, "routeState");
+// const stringifiedPerson = sessionStorage.getItem("user");
+// const personAsObjectAgain = JSON.parse(stringifiedPerson);
+// const [usersVal, setUsersVal] = useState(personAsObjectAgain);
 
 // const navigate  = useNavigate()
-useEffect(() => {
-  setUsersVal(sessionStorage.getItem("user"));
-    // navigate("/login");
+// useEffect(() => {
+//   setUsersVal(sessionStorage.getItem("user"));
+//     // navigate("/login");
 
-}, []);
+// }, []);
 
 
 
@@ -39,7 +42,7 @@ useEffect(() => {
 // }, []);
   return (
     <div className="App">
-              <AppContext.Provider value={{usersVal}} >
+              <AppContext.Provider value={{routeState}} >
       <Router>
         {/* <Navbars /> */}
         <Routes>
