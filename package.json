@@ -25,6 +25,8 @@
     "react-secure-storage": "^1.0.22",
     "react-time-picker": "^5.2.0",
     "react-toastify": "^9.0.1",
+    "styled": "^1.0.0",
+    "styled-components": "^5.0.0",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
