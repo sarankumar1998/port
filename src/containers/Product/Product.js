@@ -1,36 +1,26 @@
-import React from "react";
-import { useState } from "react";
-import Card from "@material-ui/core/Card";
-import { makeStyles } from "@material-ui/core/styles";
+import React, { useState } from "react";
+import ReactDOM from "react-dom";
+import styled from "styled-components";
+import API from "./mockAPI";
+import { ListedItems } from "./ListedItems";
+import { FixedCart } from "./FixedCart";
+import { CartDetails } from "./CartDetails";
+import { Overlay } from "./Overlay";
 import Navbars from "../../components/Navbars";
-import MockApi from "./dummy";
-import { CardHeader } from "@mui/material";
-import Cart from "../Cart/Cart";
-import AddCart from "../AddCart/AddCart";
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    maxWidth: 3405,
-    maxHeight: 4080,
-  },
-}));
 
 export default function Product() {
-  const classes = useStyles();
-  const [Data, setData] = useState(MockApi);
-  const [pushCart, setPushCart] = useState([]);
+  const [cart, setCart] = useState([]);
+  const [items, setItems] = useState(API);
+  const [cartOpen, isCartOpen] = useState(false);
 
-  const addCart = (e) => {
-    console.log(e,'eree');
-
-    setData((state) =>state.map((item, num) => {
-        if (e === num) {
-          console.log(e,num, 'ere');
-          setPushCart([
-            ...pushCart,
-            { name: item.name, price: item.price, quantity: item.quantity },
+  const addToCart = i => {
+    setItems(state =>
+      state.map((item, p) => {
+        if (i === p) {
+          setCart([
+            ...cart,
+            { name: item.name, price: item.price, quantity: item.quantity }
           ]);
-
           return { ...item, inCart: true };
         }
         return item;
@@ -38,17 +28,9 @@ export default function Product() {
     );
   };
 
-const dam = (a,d) => {
-let c = a+d
-console.log(c);
-}
-
-dam(876,98)
-
-  
-  const increment = {
+  const increaseQuantity = {
     inCart: i => {
-      setData(state =>
+      setCart(state =>
         state.map((item, o) => {
           if (i === o && item.quantity < 10) {
             return { ...item, quantity: item.quantity + 1 };
@@ -58,7 +40,7 @@ dam(876,98)
       );
     },
     inItems: i => {
-      setData(state =>
+      setItems(state =>
         state.map((item, o) => {
           if (o === i && item.quantity < 10) {
             return { ...item, quantity: item.quantity + 1 };
@@ -69,24 +51,81 @@ dam(876,98)
     }
   };
 
+  const decreaseQuantity = {
+    inCart: i => {
+      setCart(prevCart =>
+        prevCart.map((item, o) => {
+          if (i === o && item.quantity > 1) {
+            return { ...item, quantity: item.quantity - 1 };
+          }
+          return item;
+        })
+      );
+    },
+    inItems: i => {
+      setItems(state =>
+        state.map((item, o) => {
+          if (i === o && item.quantity > 1) {
+            return { ...item, quantity: item.quantity - 1 };
+          }
+          return item;
+        })
+      );
+    }
+  };
+
+  const removeFromCart = i => {
+    let chosenItem, index;
+    index = 0;
+    while (index < cart.length) {
+      if (index === i) {
+        chosenItem = cart[index].name;
+        break;
+      }
+      index++;
+    }
+    setCart(state => state.filter(item => chosenItem !== item.name));
+    setItems(state =>
+      state.map(item => {
+        if (item.name === chosenItem) {
+          return { ...item, inCart: false, quantity: 1 };
+        }
+        return item;
+      })
+    );
+  };
+
+  const cartCountTotal = cart.reduce((acc, item) => acc + item.quantity, 0);
 
   return (
-    <div>
-      <Navbars cart={pushCart}/>
-      <div style={{ marginTop: "10rem" }} className="text-end ml-3">
-      <AddCart pushCart={pushCart} increment={increment.inItems} />
-      </div>
-      <div style={{ marginTop: "10rem" }}>
-        <h4 className="text-center" style={{ fontWeight: "600" }}>
-          Shopping time
-        </h4>
-                  <div className="py-3 ">
-                    <Cart items={Data} addCart={addCart} className={classes.root} />
-                  </div>
-           
+    <>
+      <Navbars />
 
-    </div>
-    
-    </div>
+      <div style={{ margin: '2rem', marginTop: '5rem' }}>
+        <CartDetails
+          open={cartOpen}
+          onClose={() => isCartOpen(false)}
+          cart={cart}
+          increaseQ={increaseQuantity.inCart}
+          decreaseQ={decreaseQuantity.inCart}
+          cartCountTotal={cartCountTotal}
+          removeFromCart={removeFromCart}
+        />
+
+        <FixedCart  onOpen={() => isCartOpen(true)} cartItems={cartCountTotal} />
+        <Overlay onClick={() => isCartOpen(false)} open={cartOpen} />
+
+        {/* <Wrapper> */}
+        <h1>Shopping Cart App</h1>
+        <ListedItems
+          items={items}
+          increaseCount={increaseQuantity.inItems}
+          decreaseCount={decreaseQuantity.inItems}
+          addToCart={addToCart}
+        />
+        {/* </Wrapper> */}
+      </div>
+    </>
   );
 }
+
