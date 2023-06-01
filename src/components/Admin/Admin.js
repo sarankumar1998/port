@@ -35,13 +35,13 @@ function Admin({ usersId }) {
   const [remarks, setremarks] = useState("");
 
 
-  const sendEmail = async (id, mail, message) => {
+  const sendEmail = async (id, mail, Remarks) => {
     console.log(id, mail, 'maill');
     setLoad(true);
 
     let user = {
       email: mail,
-      text: message,
+      text: Remarks,
     };
 
     try {
@@ -257,7 +257,7 @@ function Admin({ usersId }) {
                           <TableCell>              
                              <button
                             className="btn btn-danger btn-sm"
-                            onClick={() => sendEmail(el.id, el.email, el.message)}
+                            onClick={() => sendEmail(el.id, el.email, el.Remarks)}
                           >
                             Email
                           </button></TableCell>
