@@ -18,7 +18,7 @@ const Login = () => {
   const avatarStyle = { backgroundColor: "#1bbd7e" };
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [block, setBlock] = React.useState(1);
+
 
   
   const onFinish = async () => {
@@ -36,7 +36,7 @@ const Login = () => {
       },
       (err) => {
         if (err) {
-          setBlock(block => block + 1)
+    
           toast.error("please check your details and try again");
         }
       }
@@ -129,7 +129,7 @@ const Login = () => {
 
               <div className="d-grid mt-4">
                 <Button
-                  disabled={block === 4 }
+       
                   type="primary"
                   htmlType="submit"
                   className="btn btn-primary btn-sm"

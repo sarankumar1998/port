@@ -3,6 +3,7 @@ const con = require("./db");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 var moment = require("moment");
+const file = require("./dumm.json")
 // let pwd = bcrypt.hashSync('12345',6)
 // console.log(pwd);
 
@@ -46,31 +47,49 @@ router.post("/register", async (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
+
   const userLogin = "SELECT * FROM users WHERE username = ?";
   con.query(userLogin, [req.body.username], (err, data) => {
     console.log(data,"datas");
 
     if (err) return res.status(500).json(err);
     if (data.length === 0) return res.status(404).json("User not found!");
-
+    let user = data[0]
     // below command is hashing the password
     // const checkPassword = bcrypt.compareSync(req.body.password,data[0].password);
 
-    const checkPassword = (req.body.password, data[0].password);
-
-    if (!checkPassword)
-      return res.status(400).json("Wrong password or username!");
-    const token = jwt.sign({ id: data[0].id }, "secretkey");
-    console.log(token);
-
-    // const { password, ...others } = data[0];
+    const checkPassword = (req.body.password, user.password);
+    if (!checkPassword) return res.status(400).json("Wrong password or username!");
+    delete user.password
+    const token = jwt.sign({ id: user.id }, "secretkey");
+    user.token = token
     res
-      .cookie("accessToken", token, { httpOnly: true })
+      // .cookie("accessToken", token, { httpOnly: true })
       .status(200)
       .json(...data, ...token);
   });
 });
 
+function checkToken(req, res){
+  let token = req.headers["authorization"]
+  token = token.replace("Bearer ", "")
+  console.log(token)
+  if(token){
+    jwt.verify(token, "secretkey", (err, decoded) => {
+      if(err){
+        res.status(401).send({message:'accessd denied'})
+        return;
+      }
+      req.id = decoded.id
+      console.log(decoded,"decoded");
+      const fil = file.filter((e) => e.id === req.id)
+      res.status(200).send(fil)
+    })
+  }
+}
+
+
+router.get("/detail",checkToken)
 
 
 
