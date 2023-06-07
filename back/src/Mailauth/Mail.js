@@ -1,12 +1,14 @@
 const express = require("express");
 const router = new express.Router();
 const nodemailer = require("nodemailer");
+const otpGenerator = require('otp-generator');
 
 // send mail
 router.post("/register", (req, res) => {
   console.log(req.body);
 
   const { email, text } = req.body;
+  
 
   try {
     const transporter = nodemailer.createTransport({
@@ -17,11 +19,13 @@ router.post("/register", (req, res) => {
       },
     });
 
+    const otp = otpGenerator.generate(6, { upperCase: false, specialChars: false });
+
     const mailOptions = {
       from: "saran07rose@gmail.com",
       to: email,
       subject: "Here from saran!",
-      html: `<h1 style={{color:'red'}}>Alert *</h1> <h3> You have to pay your fees this month before </h3> <p>${text}</p>`,
+      html: `<h1 style={{color:'red'}}>Alert *</h1> <h3> You have to pay your fees this month before </h3> <p>${text, otp}</p>`,
     };  
 
     transporter.sendMail(mailOptions, (error, info) => {
