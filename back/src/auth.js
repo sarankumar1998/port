@@ -20,21 +20,21 @@ router.post("/register", async (req, res) => {
     //CREATE A NEW USER
     //Hash the password
     const salt = bcrypt.genSaltSync(10);
-    // const hashedPassword = bcrypt.hashSync(req.body.password, salt);
+    const hashedPassword = bcrypt.hashSync(req.body.password, salt);
 
     const newUser =
-      "INSERT INTO users (`email`,`username`,`password`,`firstName`,`lastName`,`address`,`country`,`role`,`mobile`, createdOn) VALUE (?)";
+      "INSERT INTO users (`email`,`username`,`password`,`firstName`,`lastName`,`address`,`country`,`mobile`, createdOn) VALUE (?)";
 
     const values = [
       req.body.email,
       req.body.username,
-      // hashedPassword
-      req.body.password,
+      hashedPassword,
+      // req.body.password,
       req.body.firstName,
       req.body.lastName,
       req.body.address,
       req.body.country,
-      req.body.role,
+      // req.body.role,
       req.body.mobile,
       (req.body.createdOn = moment(Date.now()).format("YYYY-MM-DD HH:mm:ss")),
     ];
@@ -56,12 +56,12 @@ router.post("/login", async (req, res) => {
     if (data.length === 0) return res.status(404).json("User not found!");
     let user = data[0]
     // below command is hashing the password
-    // const checkPassword = bcrypt.compareSync(req.body.password,data[0].password);
+    const checkPassword = bcrypt.compareSync(req.body.password,user.password);
 
-    const checkPassword = (req.body.password, user.password);
+    // const checkPassword = (req.body.password, user.password);
     if (!checkPassword) return res.status(400).json("Wrong password or username!");
     delete user.password
-    const token = jwt.sign({ id: user.id }, "secretkey");
+    const token = jwt.sign({ id: user.id }, "secretkey",  { expiresIn: "1200s" });
     user.token = token
     res
       // .cookie("accessToken", token, { httpOnly: true })
@@ -70,26 +70,32 @@ router.post("/login", async (req, res) => {
   });
 });
 
-function checkToken(req, res){
+function checkToken(req, res, next){
   let token = req.headers["authorization"]
   token = token.replace("Bearer ", "")
   console.log(token)
   if(token){
     jwt.verify(token, "secretkey", (err, decoded) => {
       if(err){
-        res.status(401).send({message:'accessd denied'})
+        res.status(401).send({message:'access denied'})
         return;
       }
       req.id = decoded.id
-      console.log(decoded,"decoded");
-      const fil = file.filter((e) => e.id === req.id)
-      res.status(200).send(fil)
+      next();
     })
+  }  else {
+    res.sendStatus(401); // Unauthorized
   }
 }
 
 
-router.get("/detail",checkToken)
+router.get("/detail",checkToken,(req,res)=>{
+  const fil = file.filter((e) => e.id === req.id)
+  res.status(200).send({fil:fil})
+})
+// router.get('/detail', checkToken, (req, res) => {
+//   res.json({ message: 'Protected route accessed successfully' });
+// });
 
 
 

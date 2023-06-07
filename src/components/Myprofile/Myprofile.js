@@ -298,7 +298,7 @@ export default function Myprofile() {
 
               <div className="mt-4">
                 <h5>Personal Info</h5>
-                <div className="col-xl-6">
+                {/* <div className="col-xl-6">
                   <Form.Item
                     className="mt-2"
                     label="Role"
@@ -320,7 +320,7 @@ export default function Myprofile() {
                       defaultValue={details.role}
                     />
                   </Form.Item>
-                </div>
+                </div> */}
 
                 <div className="col-xl-6">
                   <Form.Item

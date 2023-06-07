@@ -7,19 +7,17 @@ import { Link, useNavigate } from "react-router-dom";
 import { Form, Button } from "antd";
 import axios from "axios";
 import { EyeTwoTone } from '@ant-design/icons';
+
 const Login = () => {
   // CALL IT ONCE IN YOUR APP
   if (typeof window !== "undefined") {
     injectStyle();
   }
-
   
   const navigate = useNavigate();
   const avatarStyle = { backgroundColor: "#1bbd7e" };
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
-
   
   const onFinish = async () => {
     let user = {
@@ -31,7 +29,7 @@ const Login = () => {
       (res) => {
         toast.success("Successfully login");
         sessionStorage.setItem("user", JSON.stringify(res.data));
-        console.log(res.data ,"resss");
+        console.log(res.data ,"res");
         navigate("/home");
       },
       (err) => {
@@ -46,7 +44,6 @@ const Login = () => {
   return (
     <div className="row  justify-content-center align-items-center">
       <div className="col-md-3 col-lg-6 col-xl-7 mt-5">
-        {/* <img src={companyLogo} width="110%" id="logo" alt="" /> */}
       </div>
       <div className="col col-sm-5 col-md-4 col-lg-4">
         <div className="card mt-4 ">
@@ -129,7 +126,6 @@ const Login = () => {
 
               <div className="d-grid mt-4">
                 <Button
-       
                   type="primary"
                   htmlType="submit"
                   className="btn btn-primary btn-sm"
