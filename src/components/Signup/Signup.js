@@ -27,12 +27,12 @@ const Signup = () => {
 
   let nombres = ["Ivan", "Dragmon", "Guilmon", "Voz Rasposa", "Omar"];
 
-  const [role, setrole] = useState(nombres);
+  // const [role, setrole] = useState(nombres);
   // console.log(role);
 
-  const handleChange = (e) => {
-         setrole(e.target.value)
-  }
+  // const handleChange = (e) => {
+  //        setrole(e.target.value)
+  // }
 
   const onFinish = async () => {
     let user = {
@@ -41,7 +41,7 @@ const Signup = () => {
       gender: gender,
       country: country,
       address: address,
-      role: role,
+      // role: role,
       mobile:mobile,
       email: email,
       username: username,
@@ -220,11 +220,11 @@ const Signup = () => {
                            <div className="mt-4">
                 <h5>Personal Info</h5>
                 <div className="col-xl-6">
-                <select value={role} onChange={handleChange}>
+                {/* <select value={role} onChange={handleChange}>
           {nombres.map((n,e) => (
             <option key={e} >{n}</option>
           ))}
-        </select>
+        </select> */}
                 {/* <Form.Item
                   className="mt-2"
                   name="role"

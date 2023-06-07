@@ -2,16 +2,42 @@ import React, { useEffect, useState } from "react";
 import theme from "../assets/lap.jpg";
 import Navbars from "../components/Navbars";
 import { Link, useNavigate } from "react-router-dom";
-import { useContext } from "react";
-import { AppContext } from "../App";  
+import axios from "axios";
 import "./Home.css";
 import { Box, Card } from "@mui/material";
 
 export default function Home() {
 
+  const [data, setData] = useState(null);
   const [UserInfo, setUserInfo] = useState(
     JSON.parse(sessionStorage.getItem("user"))
   );
+
+
+
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const token = JSON.parse(sessionStorage.getItem('user'));
+        console.log(data,"tokyo");
+        if (token) {
+          const response = await axios.get('localhost:4000/api/v2/detail', {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          setData(response.data);
+          console.log(data);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const navigate = useNavigate();
 
@@ -59,6 +85,17 @@ console.log(e,"okk");
               </Card>
             </Box>
           </div>
+
+          <div>
+      {/* Render the data */}
+      {data && (
+        <ul>
+          {data.map((item) => (
+            <li key={item.id}>{item.location}</li>
+          ))}
+        </ul>
+      )}
+    </div>
 
           <Box component="main" sx={{ p: 6 }}>
             <Card sx={{ maxWidth: 800 }} style={{ padding: ".5rem" }}>
