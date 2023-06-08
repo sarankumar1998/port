@@ -6,6 +6,7 @@ const autho = require("./auth");
 const sports = require("./sportsApi");
 const mail = require("./Mailauth/Mail");
 const order = require("./Payment/Payment");
+const mailLogin = require("./MailLogin/MailLogin");
 // const image = require("./ImageUpload/Ig");
 const cors = require("cors");
 
@@ -19,6 +20,7 @@ app.use("/api/v2", autho);
 app.use("/api/v3", sports);
 app.use("/api/v4", mail);
 app.use("/api/v5", order);
+app.use("/api/v6", mailLogin);
 // app.use("/api/v6", image);
 
 app.use((req, res, next) => {
