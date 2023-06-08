@@ -1,56 +1,56 @@
-import React, { useRef, useState } from "react";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
-import Alert from "react-bootstrap/Alert";
-import axios from "axios";
+import React, { useState } from 'react';
+import axios from 'axios';
 
-const ClientMail = () => {
+function ClientMail() {
+  const [email, setEmail] = useState('');
+  const [otp, setOTP] = useState('');
+  const [message, setMessage] = useState('');
 
+  const handleGenerateOTP = () => {
+    axios
+      .post('http://localhost:4000/api/v6/generate-otp', { email })
+      .then(response => {
+        setMessage(response.data.message);
+      })
+      .catch(error => {
+        console.error(error);
+        setMessage('Failed to generate OTP.');
+      });
+  };
 
-  const [file, setFile] = useState(''); // storing the uploaded file
-  // storing the recived file from backend
-  const [data, getFile] = useState({ name: "", path: "" });
-  const [progress, setProgess] = useState(0); // progess bar
-  const el = useRef(); // accesing input element
-
-  const handleChange = (e) => {
-      setProgess(0)
-      const file = e.target.files[0]; // accessing file
-      console.log(file);
-      setFile(file); // storing file
-  }
-
-  const uploadFile = () => {
-      const formData = new FormData();
-      formData.append('file', file); // appending file
-      axios.post('http://localhost:4000/upload', formData, {
-          onUploadProgress: (ProgressEvent) => {
-              let progress = Math.round(
-              ProgressEvent.loaded / ProgressEvent.total * 100) + '%';
-              setProgess(progress);
-          }
-      }).then(res => {
-          console.log(res);
-          getFile({ name: res.data.name,
-                   path: 'http://localhost:4000' + res.data.path
-                 })
-      }).catch(err => console.log(err))}
+  const handleVerifyOTP = () => {
+    axios
+      .post('http://localhost:4000/api/v6/verify-otp', { email, otp })
+      .then(response => {
+        setMessage(response.data.message);
+      })
+      .catch(error => {
+        console.error(error);
+        setMessage('Failed to verify OTP.');
+      });
+  };
 
   return (
-      <div>
-          <div className="file-upload">
-              <input type="file" ref={el} onChange={handleChange} />
-              <div className="progessBar" style={{ width: progress }}>
-                 {progress}
-              </div>
-              <button onClick={uploadFile} className="upbutton">
-                 Upload
-              </button>
-          <hr />
-          {/* displaying received image*/}
-          {data.path && <img src={data.path} alt={data.name} />}
-          </div>
-      </div>
+    <div>
+      <h1>Login via OTP</h1>
+      <input
+        type="email"
+        placeholder="Enter your email"
+        value={email}
+        onChange={e => setEmail(e.target.value)}
+      />
+      <button onClick={handleGenerateOTP}>Generate OTP</button>
+
+      <input
+        type="text"
+        placeholder="Enter OTP"
+        value={otp}
+        onChange={e => setOTP(e.target.value)}
+      />
+      <button onClick={handleVerifyOTP}>Verify OTP</button>
+
+      <p>{message}</p>
+    </div>
   );
 }
 
