@@ -41,7 +41,7 @@ const FormsData = () => {
     await axios.post(`http://localhost:4000/api/v1//members`, user)
     .then((res) => {
         form.resetFields()
-        sessionStorage.setItem('usersss', JSON.stringify(res.data));
+        // sessionStorage.setItem('usersss', JSON.stringify(res.data));
         toast.success("Sent Successfully");
       },
  

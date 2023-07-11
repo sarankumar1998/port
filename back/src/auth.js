@@ -60,7 +60,8 @@ router.post("/login", async (req, res) => {
 
     // const checkPassword = (req.body.password, user.password);
     if (!checkPassword) return res.status(400).json("Wrong password or username!");
-    delete user.password
+
+    delete user.password;
     const token = jwt.sign({ id: user.id }, "secretkey",  { expiresIn: "1200s" });
     user.token = token
     res
