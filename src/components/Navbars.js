@@ -59,8 +59,8 @@ const AppBar = styled(MuiAppBar, {
   }),
 }));
 
-export default function Navbars({ lengthcart }) {
-  // console.log(lengthcart.length,'ca');
+export default function Navbars({ handleLogout }) {
+  // console.log(getData,'ca');
   const [show, setShow] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [open, setOpen] = React.useState(false);
@@ -69,7 +69,6 @@ export default function Navbars({ lengthcart }) {
   const [all, setAll] = React.useState([]);
   const stringifiedPerson = sessionStorage.getItem("user");
   const personAsObjectAgain = JSON.parse(stringifiedPerson);
-  // console.log(personAsObjectAgain);
   const [users, setUsers] = React.useState(personAsObjectAgain);
 
   useEffect(() => { 
@@ -80,23 +79,22 @@ export default function Navbars({ lengthcart }) {
     await axios
       .get(`http://localhost:4000/api/v1/special/Obj/`)
       .then((res) => {
-        // const data = res.data.filter((e) => e.status === "Pending");
-        setAll(res.data.filter((e) => e.status === "Pending"));
-        // console.log(all.length, "datss");
-      })
+        setAll(res.data.filter((e) => e.status === "Pending"))})
+  
       .catch((err) => console.log(err));
   };
+
 
   const handleCloseCanva = () => setShow(false);
   const handleShowCanva = () => setShow(true);
 
-  const handleClick = () => {
-    let confirm = window.confirm("Are you sure you want to logout");
-    if (confirm) {
-      sessionStorage.clear();
-      window.location.reload();
-    }
-  };
+  // const handleClick = () => {
+  //   let confirm = window.confirm("Are you sure you want to logout");
+  //   if (confirm) {
+  //     sessionStorage.clear();
+  //     window.location.reload();
+  //   }
+  // };
 
   const theme = useTheme();
 
@@ -163,7 +161,7 @@ export default function Navbars({ lengthcart }) {
                   <MenuItem onClick={handleClose}>{users.username}</MenuItem>
                 </Link>
 
-                <MenuItem onClick={handleClick}>logout &nbsp;   <LogoutIcon /></MenuItem>
+                <MenuItem onClick={handleLogout}>logout &nbsp;   <LogoutIcon /></MenuItem>
 
              
               </Menu>

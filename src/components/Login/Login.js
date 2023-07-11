@@ -28,7 +28,12 @@ const Login = () => {
     await axios.post(`http://localhost:4000/api/v2/login`, user).then(
       (res) => {
         toast.success("Successfully login");
-        sessionStorage.setItem("user", JSON.stringify(res.data));
+
+const UserData = {
+  id:res.data.id
+}
+
+        sessionStorage.setItem("user", JSON.stringify(UserData));
         console.log(res.data ,"res");
         navigate("/home");
       },
