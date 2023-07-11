@@ -99,33 +99,58 @@ router.get("/detail",checkToken,(req,res)=>{
 
 
 
+
+
 router.put("/profile/update/:id", (req, res) => {
   // ID via params
   var { id } = req.params;
 
   // req body
-  var { email } = req.body;
-  var { username } = req.body;
-  var { firstName } = req.body;
-  var { lastName } = req.body;
-  var { address } = req.body;
-  var { country } = req.body;
-  var { mobile } = req.body;
-// var createdOn = moment(Date.now()).format("YYYY-MM-DD HH:mm:ss")(req.body)
+  var { email, username, firstName, lastName, address, country, mobile, password } = req.body;
 
-  // Query
-  var query = `UPDATE users SET email='${email}', username='${username}' ,firstName='${firstName}' ,lastName='${lastName}' ,address='${address}',country='${country}',mobile='${mobile}' WHERE id=${id}`;
+  // Hash the new password
+  const salt = bcrypt.genSaltSync(10);
+  const hashedPassword = bcrypt.hashSync(password, salt);
 
-  // Run the query
-  con.query(query, function (error, data) {
+  // Query to fetch the existing password
+  var getPasswordQuery = `SELECT password FROM users WHERE id=${id}`;
+
+  // Run the query to fetch the existing passwordpMY
+  con.query(getPasswordQuery, function (error, result) {
     if (error) {
       console.log(error);
       return res.status(500).json(error);
     } else {
-      res.status(200).json({message:'update done'})
+      if (result.length === 0) {
+        return res.status(404).json("User not found");
+      }
+
+      // Retrieve the existing password from the query result
+      const existingPassword = result[0].password;
+
+      // Compare the existing password with the new password
+      const passwordMatch = bcrypt.compareSync(password, existingPassword);
+
+      if (!passwordMatch) {
+        return res.status(401).json("Invalid password");
+      }
+
+      // Update query with hashed password
+      var query = `UPDATE users SET email='${email}', username='${username}', password='${hashedPassword}', firstName='${firstName}', lastName='${lastName}', address='${address}', country='${country}', mobile='${mobile}' WHERE id=${id}`;
+
+      // Run the update query
+      con.query(query, function (error, data) {
+        if (error) {
+          console.log(error);
+          return res.status(500).json(error);
+        } else {
+          res.status(200).json({ message: 'Update done' });
+        }
+      });
     }
   });
 });
+
 
 //  const logout = (req, res) => {
 //   res.clearCookie("accessToken",{

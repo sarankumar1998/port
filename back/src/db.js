@@ -4,7 +4,10 @@ var con = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "jarvo",
-  database:'wallmart'
+  database:'wallmart',
+  port:3306
+
+
 });
 
 con.connect(function(err) {

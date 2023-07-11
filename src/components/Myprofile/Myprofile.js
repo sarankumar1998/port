@@ -15,6 +15,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { injectStyle } from "react-toastify/dist/inject-style";
 import { useContext } from "react";
 import { AppContext } from "../../App";  
+import Password from "antd/lib/input/Password";
 
 
 export default function Myprofile() {
@@ -44,9 +45,8 @@ export default function Myprofile() {
   const [country, setcountry] = useState("");
   const personAsObjectAgain = JSON.parse(stringifiedPerson);
   const [users, setUsers] = React.useState(personAsObjectAgain);
-  const [newPass, setNewPass] = useState("");
+  const [password, setPassoword] = useState("");
   const [details, setdetails] = useState({});
-  console.log(details, "okl");
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
@@ -75,8 +75,7 @@ export default function Myprofile() {
   const onSaved = async (e, id) => {
     console.log(e, id, "ss");
     e.preventDefault();
-    if (users.password === newPass) {
-      // toast.error("Check Your ");
+
 
       const updateStatus = {
         firstName: firstName || details.firstName,
@@ -86,6 +85,7 @@ export default function Myprofile() {
         country: country || details.country,
         address: address || details.address,
         username: username || details.username,
+        password:password || details.password
         // createdOn: new Date()
         // password: newPass,
       };
@@ -103,9 +103,7 @@ export default function Myprofile() {
           console.log("err");
         }
       }
-    } else {
-      toast.error("Check Your password");
-    }
+
   };
 
   const handleClick = (event) => {
@@ -375,8 +373,8 @@ export default function Myprofile() {
                   <div className="mt-4">
                     <input
                       type=""
-                      name={newPass}
-                      onChange={(e) => setNewPass(e.target.value)}
+                      name={password}
+                      onChange={(e) => setPassoword(e.target.value)}
                     />
                     &nbsp;
                     <button
