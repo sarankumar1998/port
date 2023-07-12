@@ -43,11 +43,12 @@ function ClientMail() {
     axios
       .post('http://localhost:4000/api/v6/verify-otp', { email, otp })
       .then(response => {
+        console.log(response.status)
         setMessage(response.data.message);
       })
       .catch(error => {
-        console.error(error);
-        setMessage('Failed to verify OTP.');
+        console.error(error.response.data.message);
+        setMessage(error.response.data.message);
       });
   };
 
