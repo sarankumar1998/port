@@ -13,12 +13,12 @@ const Login = () => {
   if (typeof window !== "undefined") {
     injectStyle();
   }
-  
+
   const navigate = useNavigate();
   const avatarStyle = { backgroundColor: "#1bbd7e" };
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  
+
   const onFinish = async () => {
     let user = {
       username: username,
@@ -29,17 +29,17 @@ const Login = () => {
       (res) => {
         toast.success("Successfully login");
 
-const UserData = {
-  id:res.data.id
-}
+        const UserData = {
+          id: res.data.id
+        }
 
         sessionStorage.setItem("user", JSON.stringify(UserData));
-        console.log(res.data ,"res");
+        console.log(res.data, "res");
         navigate("/home");
       },
       (err) => {
         if (err) {
-    
+
           toast.error("please check your details and try again");
         }
       }
@@ -95,7 +95,7 @@ const UserData = {
                 className="mt-3"
                 name="password"
                 label="Password"
-          
+
                 rules={[
                   {
                     required: true,
@@ -110,8 +110,8 @@ const UserData = {
                 <input
                   type="password"
                   id="form3Example4"
-                  iconrender={<EyeTwoTone /> }
-          
+                  iconrender={<EyeTwoTone />}
+
                   class="form-control form-control-sm"
                   value={password}
                   onChange={(event) => setPassword(event.target.value)}
