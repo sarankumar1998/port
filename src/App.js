@@ -16,6 +16,7 @@ import ClientMail from "./containers/ClientMail/ClientMail";
 import { createContext } from "react";
 import { useEffect } from "react";
 import { useState } from "react";
+import One from "./containers/ClientMail/One";
 
 export const AppContext = createContext(null)
 
@@ -61,6 +62,7 @@ console.log(routeState, "routeState");
           <Route path="/sports" element={<Sports />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/clientmail" element={<ClientMail />} />
+          <Route path="/One" element={<One/>} />
    
         </Routes>
       </Router>

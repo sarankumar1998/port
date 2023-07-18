@@ -12,6 +12,7 @@ const transporter = nodemailer.createTransport({
   }
 });
 
+
 // Generate and store OTP for a user
 router.post('/generate-otp', (req, res) => {
   const { email } = req.body;
@@ -26,12 +27,22 @@ router.post('/generate-otp', (req, res) => {
       return res.status(500).json({ message: 'Failed to generate OTP.' });
     }
 
-    // Send the OTP to the user's email
+
+
     const mailOptions = {
       from: 'saran07rose@gmail.com',
       to: email,
       subject: 'OTP for Login',
-      text: `Your OTP for login is: ${otp} (Expires in 5 minutes)` 
+      html: `
+      <div style="background-color: #f5f5f5; padding: 20px;">
+        <h2>Welcome to YourApp!</h2>
+        <p>Thank you for registering with us. Please use the OTP below to login:</p>
+        <h3 style="background-color: #ffffff; padding: 10px;">${otp}</h3>
+        <p style="margin-top: 20px;">This OTP is valid for 5 minutes.</p>
+        <p>If you didn't request this OTP, please ignore this email.</p>
+        <p>Regards,</p>
+        <p>Saran</p>
+      `
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
@@ -40,10 +51,11 @@ router.post('/generate-otp', (req, res) => {
         return res.status(500).json({ message: 'Failed to send OTP.' });
       }
 
-      res.json({ message: 'OTP generated and sent successfully.' });
+      res.status(200).json({ message: 'OTP generated and sent successfully.' });
     });
   });
 });
+
 
 // Verify OTP for user login
 router.post('/verify-otp', (req, res) => {

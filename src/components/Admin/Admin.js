@@ -68,17 +68,9 @@ function Admin({ usersId }) {
       .catch((err) => console.log(err));
   };
 
-  const bySearch = (all, search) => {
-    if (search) {
-
-      // return all.name && all.message.toLowerCase().includes(search.toLowerCase());
-      return all.id.toString().includes(search.toString());
-    } else return all;
-  };
-
-  const filteredList = (all, search) => {
-    return all.filter((all) => bySearch(all, search));
-  };
+  const filteredData = all.filter(item =>
+    item.name.toLowerCase().includes(search.toLowerCase())
+  );
 
   const handleDel = async (id) => {
     let confirm = window.confirm("Are you sure you want to delete");
@@ -162,7 +154,7 @@ function Admin({ usersId }) {
 
         : (<>
           {/* {usersId === undefined ? "" :  <Navbars />} */}
-          <ToastContainer />
+          
           <label>Search:</label>
           <input className="mb-2" onChange={(e) => setSearch(e.target.value)} />
 
@@ -189,7 +181,7 @@ function Admin({ usersId }) {
                   </TableHead>
 
                   {all.length === 0 ? <LoadingSpinner /> : <TableBody>
-                    {filteredList(all, search).map((el, index) => {
+                    {filteredData.map((el, index) => {
                       return (
                         <TableRow
                           hover
