@@ -24,21 +24,28 @@ Router.delete('/persons/:id', (req, res) => {
     });
   });
 
-Router.post("/pass", function (req, res) {
-    var name = req.body.name
-    var age = req.body.age
 
-    var query = `INSERT INTO passengers (name, age) VALUES ("${name}", "${age}")`
-
-    // Run the query
-    con.query(query, function (error, data) {
-        console.log(data);
-        if (error) {
-            console.log(error);
-            return res.status(500).json(error);
-        } else {
-            res.status(200).json("Sent successfully");
-        }
+// POST API to save data
+Router.post('/pass', (req, res) => {
+    const { persons } = req.body;
+  
+    if (!persons || !Array.isArray(persons)) {
+      return res.status(400).json({ error: 'Invalid data' });
+    }
+  
+    const query = 'INSERT INTO passengers (name, age, userId) VALUES ?';
+  
+    const values = persons.map((person) => [person.name, person.age, person.userId]);
+  
+    con.query(query, [values], (error, results) => {
+      if (error) {
+        console.error('Error saving data:', error);
+        return res.status(500).json({ error: 'Error saving data' });
+      }
+  
+      console.log('Data saved successfully');
+      return res.status(200).json({ success: true });
     });
-});
+  });
+  
 module.exports = Router;

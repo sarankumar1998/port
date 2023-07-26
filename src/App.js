@@ -22,7 +22,7 @@ export const AppContext = createContext(null)
 
 function App() {
 
-const [routeState, setRouteState] = useState(JSON.parse(sessionStorage.getItem("user")))
+const [routeState, setRouteState] = useState(JSON.parse(sessionStorage.getItem("user"))  || {})
 console.log(routeState, "routeState");
 // const stringifiedPerson = sessionStorage.getItem("user");
 // const personAsObjectAgain = JSON.parse(stringifiedPerson);
@@ -43,11 +43,9 @@ console.log(routeState, "routeState");
 // }, []);
   return (
     <div className="App">
-              <AppContext.Provider value={{routeState}} >
+              <AppContext.Provider value={{ routeState: routeState }}>
       <Router>
-        {/* <Navbars /> */}
         <Routes>
-  
           <Route path="/" element={<Login />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
@@ -63,7 +61,6 @@ console.log(routeState, "routeState");
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/clientmail" element={<ClientMail />} />
           <Route path="/One" element={<One/>} />
-   
         </Routes>
       </Router>
       </AppContext.Provider>
