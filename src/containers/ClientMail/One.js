@@ -1,12 +1,20 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import Navbars from '../../components/Navbars';
 import axios from 'axios';
+import StarRating from './StarRating';
+
 
 export default function One() {
   const [route, setRoute] = useState(JSON.parse(sessionStorage.getItem('user')) || {});
   const [name, setName] = useState('');
   const [age, setAge] = useState('');
   const [persons, setPersons] = useState([]);
+  const [rating, setRating] = useState(0);
+
+  const handleRatingChange = (newRating) => {
+    setRating(newRating);
+  };
+
 
   const AddPersons = () => {
     const Obj = { name, age: parseInt(age), userId: route.id };
@@ -34,7 +42,7 @@ export default function One() {
 
   const removePersons = (id) => {
     const updatedPersons = [...persons];
-    updatedPersons.splice(id, 1);
+    updatedPersons.shift(id, 1);
     setPersons(updatedPersons);
   };
 
@@ -43,6 +51,14 @@ export default function One() {
       <Navbars />
       <div style={{ margin: '5rem' }}>
         <h4 className='text-info'>Welcome</h4>
+
+
+        <div>
+      <h1>Customer Rating</h1>
+      <p>Current Rating: {rating} stars</p>
+      <StarRating rating={rating} onRatingChange={handleRatingChange} />
+    </div>
+
         <div>
           <label>Name:</label>
           <input name='name' value={name} placeholder='name' onChange={(e) => setName(e.target.value)} /> <br />
@@ -72,6 +88,26 @@ export default function One() {
           </div>
         </div>
       </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
     </div>
   );
 }
+
+
