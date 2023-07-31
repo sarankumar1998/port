@@ -377,6 +377,20 @@ export default function Navbars({ handleLogout }) {
                   <ListItemText primary={"One"} />
                 </ListItem>
               </Link>
+                                      
+              <Link to="/two">
+                <ListItem
+                  button
+                  style={{ marginTop: 20 }}
+                  onClick={handleDrawerClose}
+                >
+                  <ListItemIcon>
+                    <MessageIcon />
+                  </ListItemIcon>
+                  <ListItemText primary={"Two"} />
+                </ListItem>
+              </Link>
+
 
 
             </List>
