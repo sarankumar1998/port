@@ -14,8 +14,9 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { injectStyle } from "react-toastify/dist/inject-style";
 import { useContext } from "react";
-import { AppContext } from "../../App";  
-import Password from "antd/lib/input/Password";
+import { AppContext } from "../../App";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 
 export default function Myprofile() {
@@ -24,16 +25,16 @@ export default function Myprofile() {
     injectStyle();
   }
 
-  const{usersVal} = useContext(AppContext)
-  console.log(usersVal,'myy');
-  
-    // const navigate = useNavigate();
-  
-  
-  
-    // const [users, setUsers] = useState(usersVal);
+  const { usersVal } = useContext(AppContext)
+  console.log(usersVal, 'myy');
 
-  const { id } = JSON.parse(sessionStorage.getItem("user")) ;
+  // const navigate = useNavigate();
+
+
+
+  // const [users, setUsers] = useState(usersVal);
+
+  const { id } = JSON.parse(sessionStorage.getItem("user"));
   const stringifiedPerson = sessionStorage.getItem("user");
   const [edit, setEdit] = useState(true);
   const [username, setUsername] = useState("");
@@ -43,20 +44,21 @@ export default function Myprofile() {
   const [address, setaddress] = useState("");
   const [mobile, setmobile] = useState("");
   const [country, setcountry] = useState("");
+  const [bday, setbday] = useState("");
   const personAsObjectAgain = JSON.parse(stringifiedPerson);
   const [users, setUsers] = React.useState(personAsObjectAgain);
   const [password, setPassoword] = useState("");
   const [details, setdetails] = useState({});
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-
-  const navigate  = useNavigate()
+  console.log(details, "details");
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (id === null) {
       navigate("/login");
     }
-    
+
   }, [navigate]);
 
   useEffect(() => {
@@ -65,7 +67,7 @@ export default function Myprofile() {
 
   const getProductById = async () => {
     await axios
-      .get(`http://localhost:4000/api/v1/special/users/${id}`)
+      .get(`http://localhost:4000/api/v1/profile/users/${id}`)
       .then((res) => {
         setdetails(res.data);
       })
@@ -73,10 +75,8 @@ export default function Myprofile() {
   };
 
   const onSaved = async (e, id) => {
-    console.log(e, id, "ss");
-    e.preventDefault();
 
-
+      e.preventDefault();
       const updateStatus = {
         firstName: firstName || details.firstName,
         lastName: lastName || details.lastName,
@@ -85,7 +85,8 @@ export default function Myprofile() {
         country: country || details.country,
         address: address || details.address,
         username: username || details.username,
-        password:password || details.password
+        password: password || details.password,
+        bday: bday || details.bday
         // createdOn: new Date()
         // password: newPass,
       };
@@ -103,8 +104,8 @@ export default function Myprofile() {
           console.log("err");
         }
       }
+    }
 
-  };
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -160,10 +161,10 @@ export default function Myprofile() {
                 </IconButton>
               }
               title="Profile"
-              
+
             />
-            <div style={{marginTop:'-1rem',marginLeft:'2.5%'}}>
-              <p>Created on: {moment(details.createdOn).format("DD/MM/YYYY")}</p>
+            <div style={{ marginTop: '-1rem', marginLeft: '2.5%' }}>
+              <p>Last Update on: {moment(details.createdOn).format("DD/MM/YYYY")}</p>
             </div>
 
             <Form name="sign-up" className="sign-up mt-4">
@@ -268,30 +269,62 @@ export default function Myprofile() {
                   </Form.Item>
                 </div>
 
-                <div className="col-xl">
-                  <Form.Item
-                    label="Email"
-                    className="mt-2"
-                    rules={[
-                      {
-                        required: true,
-                        message: (
-                          <span style={{ fontSize: "9px", color: "red" }}>
-                            Please input your Email!
-                          </span>
-                        ),
-                      },
-                    ]}
-                  >
-                    <input
-                      onChange={(e) => setemail(e.target.value)}
-                      disabled={edit}
-                      style={{ fontSize: "1rem" }}
-                      className="form-control form-control-sm"
-                      defaultValue={details.email}
-                    />
-                  </Form.Item>
+
+                <div className="row">
+                  <div className="col-xl-6">
+                    <Form.Item
+                      label="Email"
+                      className="mt-2"
+                      rules={[
+                        {
+                          required: true,
+                          message: (
+                            <span style={{ fontSize: "9px", color: "red" }}>
+                              Please input your Email!
+                            </span>
+                          ),
+                        },
+                      ]}
+                    >
+                      <input
+                        onChange={(e) => setemail(e.target.value)}
+                        disabled={edit}
+                        style={{ fontSize: "1rem" }}
+                        className="form-control form-control-sm"
+                        defaultValue={details.email}
+                      />
+                    </Form.Item>
+                  </div>
+                  <div className="col-xl">
+                    <Form.Item
+                      className="mt-2"
+                      name="bday"
+                      label="DOB"
+                      rules={[
+                        {
+                          required: true,
+                          message: (
+                            <span style={{ fontSize: "9px", color: "red" }}>
+                              Required!
+                            </span>
+                          ),
+                        },
+                      ]}
+                    >
+                      <DatePicker
+                        selected={bday ? moment(bday, "YYYY-MM-DD").toDate() : null}
+                        onChange={(date) => setbday(moment(date).format("YYYY-MM-DD"))}
+                        dateFormat="yyyy-MM-dd"
+                        placeholderText={details.bday ? moment(details.bday).format("YYYY-MM-DD") : "Select Date"}
+                        showMonthDropdown
+                        showYearDropdown
+                        disabled={edit}
+                        dropdownMode="select"
+                      />
+                    </Form.Item>
+                  </div>
                 </div>
+
               </div>
 
               <div className="mt-4">
@@ -369,20 +402,39 @@ export default function Myprofile() {
                     />
                   </Form.Item>
                 </div>
+
                 {edit === false ? (
                   <div className="mt-4">
-                    <input
-                      type=""
-                      name={password}
-                      onChange={(e) => setPassoword(e.target.value)}
-                    />
-                    &nbsp;
-                    <button
+
+
+                    <Form.Item
+                      className="mt-2"
+                      label="Password"
+                      rules={[
+                        {
+                          required: true,
+                          message: (
+                            <span style={{ fontSize: "9px", color: "red" }}>
+                              Required!
+                            </span>
+                          ),
+                        },
+                      ]}
+                    >
+                      <input
+                        type=""
+                        name={password}
+                        onChange={(e) => setPassoword(e.target.value)}
+                      />             <button
                       onClick={(e) => onSaved(e, users.id)}
-                      className="btn  btn-primary btn-sm"
+                      className="btn btn-primary btn-sm"
                     >
                       save
                     </button>
+                    </Form.Item>
+
+            
+        
                   </div>
                 ) : (
                   ""

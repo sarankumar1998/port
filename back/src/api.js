@@ -26,6 +26,26 @@ Router.get("/special/users/:id", function (req, res) {
         console.log(error);
         return res.status(500).json(error);
       } else {
+        res.status(200).send(results);
+        // below data for object
+        // res.status(200).send(...results);
+      }
+    }
+  );
+});
+
+// for profile
+Router.get("/profile/users/:id", function (req, res) {
+  let user_id = req.params.id;
+  con.query(
+    "SELECT * FROM users where id=?",
+    user_id,
+    function (error, results) {
+      if (error) {
+        console.log(error);
+        return res.status(500).json(error);
+      } else {
+        // below data for object
         res.status(200).send(...results);
       }
     }
