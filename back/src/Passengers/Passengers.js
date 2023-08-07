@@ -28,8 +28,9 @@ Router.delete('/persons/:id', (req, res) => {
 // POST API to save data
 Router.post('/pass', (req, res) => {
     const { persons } = req.body;
-  
+    console.log(persons,"persons");
     if (!persons || !Array.isArray(persons)) {
+     
       return res.status(400).json({ error: 'Invalid data' });
     }
   

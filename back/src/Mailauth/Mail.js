@@ -21,7 +21,7 @@ router.post("/register", (req, res) => {
         port:465,
         secureConnection:false,
         user: "saran07rose@gmail.com",
-        pass: "pdwrwlegstqqtvws",
+        pass: "yzlopbfkbgjlbexk",
       },
     });
 

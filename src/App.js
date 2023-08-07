@@ -18,6 +18,8 @@ import { useEffect } from "react";
 import { useState } from "react";
 import One from "./containers/ClientMail/One";
 import Two from "./containers/ClientMail/Two";
+import Forgot from "./components/Login/Forgot";
+import ResetPassword from "./components/Login/ResetPassword";
 
 
 export const AppContext = createContext(null)
@@ -64,6 +66,9 @@ console.log(routeState, "routeState");
           <Route path="/clientmail" element={<ClientMail />} />
           <Route path="/One" element={<One/>} />
           <Route path="/Two" element={<Two/>} />
+          <Route path="/forgot" element={<Forgot/>} />
+          <Route path="/reset/auth/:resetToken" element={<ResetPassword/>} />
+
         </Routes>
       </Router>
       </AppContext.Provider>

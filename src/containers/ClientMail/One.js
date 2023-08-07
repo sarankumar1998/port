@@ -10,7 +10,7 @@ export default function One() {
   const [age, setAge] = useState('');
   const [persons, setPersons] = useState([]);
   const [rating, setRating] = useState(0);
-
+console.log(rating,"rating");
   const handleRatingChange = (newRating) => {
     setRating(newRating);
   };
@@ -54,10 +54,10 @@ export default function One() {
 
 
         <div>
-      <h1>Customer Rating</h1>
-      <p>Current Rating: {rating} stars</p>
-      <StarRating rating={rating} onRatingChange={handleRatingChange} />
-    </div>
+          <h1>Customer Rating</h1>
+          <p>Current Rating: {rating} stars</p>
+          <StarRating rating={rating} onRatingChange={handleRatingChange} />
+        </div>
 
         <div>
           <label>Name:</label>
@@ -105,7 +105,7 @@ export default function One() {
 
 
 
-      
+
     </div>
   );
 }
