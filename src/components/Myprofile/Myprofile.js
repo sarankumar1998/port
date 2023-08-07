@@ -26,13 +26,6 @@ export default function Myprofile() {
   }
 
   const { usersVal } = useContext(AppContext)
-  console.log(usersVal, 'myy');
-
-  // const navigate = useNavigate();
-
-
-
-  // const [users, setUsers] = useState(usersVal);
 
   const { id } = JSON.parse(sessionStorage.getItem("user"));
   const stringifiedPerson = sessionStorage.getItem("user");
@@ -51,7 +44,6 @@ export default function Myprofile() {
   const [details, setdetails] = useState({});
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-  console.log(details, "details");
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -76,35 +68,43 @@ export default function Myprofile() {
 
   const onSaved = async (e, id) => {
 
-      e.preventDefault();
-      const updateStatus = {
-        firstName: firstName || details.firstName,
-        lastName: lastName || details.lastName,
-        email: email || details.email,
-        mobile: mobile || details.mobile,
-        country: country || details.country,
-        address: address || details.address,
-        username: username || details.username,
-        password: password || details.password,
-        bday: bday || details.bday
-        // createdOn: new Date()
-        // password: newPass,
-      };
-      let confirm = window.confirm("Are you sure you want to Edit");
+    e.preventDefault();
+    const updateStatus = {
+      firstName: firstName || details.firstName,
+      lastName: lastName || details.lastName,
+      email: email || details.email,
+      mobile: mobile || details.mobile,
+      country: country || details.country,
+      address: address || details.address,
+      username: username || details.username,
+      password: password || details.password,
+      bday: bday || details.bday
+      // createdOn: new Date()
+      // password: newPass,
+    };
+    let confirm = window.confirm("Are you sure you want to Edit");
 
-      if (confirm) {
-        try {
-          await axios.put(
-            "http://localhost:4000/api/v2/profile/update/" + id,
-            updateStatus
-          );
+    if (confirm) {
+      try {
+        const res = await axios.put(
+          "http://localhost:4000/api/v2/profile/update/" + id,
+          updateStatus
+        );
+        if (res.status === 200) {
           toast.warning("Updated Successfully");
           setEdit(true);
-        } catch (err) {
-          console.log("err");
+        }
+
+      } catch (error) {
+        if (error.response) {
+          console.log(error.response, "error.response)");
+          toast.error(`Error: ${error.response.data}`);
+        } else {
+          toast.error("An error occurred while processing your request.");
         }
       }
     }
+  }
 
 
   const handleClick = (event) => {
@@ -426,15 +426,15 @@ export default function Myprofile() {
                         name={password}
                         onChange={(e) => setPassoword(e.target.value)}
                       />             <button
-                      onClick={(e) => onSaved(e, users.id)}
-                      className="btn btn-primary btn-sm"
-                    >
-                      save
-                    </button>
+                        onClick={(e) => onSaved(e, users.id)}
+                        className="btn btn-primary btn-sm"
+                      >
+                        save
+                      </button>
                     </Form.Item>
 
-            
-        
+
+
                   </div>
                 ) : (
                   ""

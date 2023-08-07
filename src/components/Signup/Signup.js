@@ -253,33 +253,33 @@ const Signup = () => {
                 </Form.Item> */}
                 </div>
 
-                <div className="row">           
-                     <div className="col-xl-6">
-                  <Form.Item
-                    className="mt-2"
-                    name="country"
-                    label="Country"
-                    rules={[
-                      {
-                        required: true,
-                        message: (
-                          <span style={{ fontSize: "9px", color: "red" }}>
-                            Required!
-                          </span>
-                        ),
-                      },
-                    ]}
-                  >
-                    <input
-                      type="country"
-                      className="form-control form-control-sm"
-                      value={country}
-                      onChange={(event) => setcountry(event.target.value)}
-                    />
-                  </Form.Item>
-                </div>
-
+                <div className="row">
                   <div className="col-xl-6">
+                    <Form.Item
+                      className="mt-2"
+                      name="country"
+                      label="Country"
+                      rules={[
+                        {
+                          required: true,
+                          message: (
+                            <span style={{ fontSize: "9px", color: "red" }}>
+                              Required!
+                            </span>
+                          ),
+                        },
+                      ]}
+                    >
+                      <input
+                        type="country"
+                        className="form-control form-control-sm"
+                        value={country}
+                        onChange={(event) => setcountry(event.target.value)}
+                      />
+                    </Form.Item>
+                  </div>
+
+                  <div className="col-xl-1 col-md" >
                     <Form.Item
                       className="mt-2"
                       name="bday"
@@ -296,6 +296,7 @@ const Signup = () => {
                       ]}
                     >
                       <DatePicker
+                        style={{ width: "2rem" }}
                         selected={bday ? moment(bday, "YYYY-MM-DD").toDate() : null}
                         onChange={(date) => setBday(moment(date).format("YYYY-MM-DD"))}
                         dateFormat="yyyy-MM-dd"

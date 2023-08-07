@@ -60,7 +60,7 @@ const AppBar = styled(MuiAppBar, {
 }));
 
 export default function Navbars({ handleLogout }) {
-  // console.log(getData,'ca');
+  const { id } = JSON.parse(sessionStorage.getItem("user"));
   const [show, setShow] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [open, setOpen] = React.useState(false);
@@ -70,9 +70,12 @@ export default function Navbars({ handleLogout }) {
   const stringifiedPerson = sessionStorage.getItem("user");
   const personAsObjectAgain = JSON.parse(stringifiedPerson);
   const [users, setUsers] = React.useState(personAsObjectAgain);
+  const [usersDetails, setUsersDetails] = React.useState(personAsObjectAgain);
+
 
   useEffect(() => { 
     getProduct();
+    getUserById();
   }, []);
 
   const getProduct = async () => {
@@ -81,6 +84,17 @@ export default function Navbars({ handleLogout }) {
       .then((res) => {
         setAll(res.data.filter((e) => e.status === "Pending"))})
   
+      .catch((err) => console.log(err));
+  };
+
+
+
+  const getUserById = async () => {
+    await axios
+      .get(`http://localhost:4000/api/v1/profile/users/${id}`)
+      .then((res) => {
+        setUsersDetails(res.data);
+      })
       .catch((err) => console.log(err));
   };
 
@@ -158,7 +172,7 @@ export default function Navbars({ handleLogout }) {
               >
                 <Link style={{ textDecoration: "none" }} to="/Myprofile">
                   {" "}
-                  <MenuItem onClick={handleClose}>{users.username}</MenuItem>
+                  <MenuItem onClick={handleClose}>{usersDetails.username}</MenuItem>
                 </Link>
 
                 <MenuItem onClick={handleLogout}>logout &nbsp;   <LogoutIcon /></MenuItem>

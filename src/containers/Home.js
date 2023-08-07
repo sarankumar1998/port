@@ -48,11 +48,6 @@ export default function Home() {
   }, []);
 
 
-
-
-
-
-
   useEffect(() => {
     axios
       .get("http://localhost:4000/api/v1/special/users/" + userInfo.id)
