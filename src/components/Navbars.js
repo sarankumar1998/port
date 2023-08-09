@@ -32,6 +32,9 @@ import LogoutIcon from "@mui/icons-material/Logout";
 
 const drawerWidth = 240;
 
+const apiBaseUrl1 = 'http://192.168.10.117:4000/api/v1/special/Obj'        
+const apiBaseUrl2 = 'http://192.168.10.117:4000/api/v1/profile/users'  
+
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
@@ -80,7 +83,7 @@ export default function Navbars({ handleLogout }) {
 
   const getProduct = async () => {
     await axios
-      .get(`http://localhost:4000/api/v1/special/Obj/`)
+      .get(apiBaseUrl1)
       .then((res) => {
         setAll(res.data.filter((e) => e.status === "Pending"))})
   
@@ -91,7 +94,7 @@ export default function Navbars({ handleLogout }) {
 
   const getUserById = async () => {
     await axios
-      .get(`http://localhost:4000/api/v1/profile/users/${id}`)
+      .get(`${apiBaseUrl2}/${id}`)
       .then((res) => {
         setUsersDetails(res.data);
       })
@@ -181,12 +184,13 @@ export default function Navbars({ handleLogout }) {
               </Menu>
               </IconButton>
               <IconButton
-                size="large"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleMenu}
-                color="inherit"
+        size="large"
+        aria-label="account of current user"
+        aria-controls="menu-appbar"
+        aria-haspopup="true"
+        onClick={handleMenu}
+        color="inherit"
+        sx={{ ml: "auto" }}
               >
                 <AccountCircle />
               </IconButton>
@@ -340,18 +344,7 @@ export default function Navbars({ handleLogout }) {
                   <ListItemText primary={"View"} />
                 </ListItem>
               </Link>
-              <Link to="/product">
-                <ListItem
-                  button
-                  style={{ marginTop: 20 }}
-                  onClick={handleDrawerClose}
-                >
-                  <ListItemIcon>
-                    <ViewAgenda />
-                  </ListItemIcon>
-                  <ListItemText primary={"Product"} />
-                </ListItem>
-              </Link>
+       
               <Link to="/sports">
                 <ListItem
                   button
@@ -379,7 +372,7 @@ export default function Navbars({ handleLogout }) {
               </Link>
 
                          
-              <Link to="/one">
+              <Link to="/travelticket">
                 <ListItem
                   button
                   style={{ marginTop: 20 }}
@@ -388,24 +381,24 @@ export default function Navbars({ handleLogout }) {
                   <ListItemIcon>
                     <MessageIcon />
                   </ListItemIcon>
-                  <ListItemText primary={"One"} />
+                  <ListItemText primary={"Add Ticket"} />
                 </ListItem>
               </Link>
+
+              <Link to="/RatemyApp">
+                <ListItem
+                  button
+                  style={{ marginTop: 20 }}
+                  onClick={handleDrawerClose}
+                >
+                  <ListItemIcon>
+                    <MessageIcon />
+                  </ListItemIcon>
+                  <ListItemText primary={"Rate My App"} />
+                </ListItem>
+              </Link>
+                          
                                       
-              <Link to="/two">
-                <ListItem
-                  button
-                  style={{ marginTop: 20 }}
-                  onClick={handleDrawerClose}
-                >
-                  <ListItemIcon>
-                    <MessageIcon />
-                  </ListItemIcon>
-                  <ListItemText primary={"Two"} />
-                </ListItem>
-              </Link>
-
-
 
             </List>
             <Divider />

@@ -27,15 +27,20 @@ function Checkout() {
   console.log(alltime);
 
   var currentTime = new Date();
-  console.log(currentTime,'rime');
+
+  const apiBaseUrl = 'http://192.168.10.117:4000/api/v3/getalltime'; // Replace with your IP address
+
+  const apiBaseUrl2 = 'http://192.168.10.117:4000/api/v3/up/'; // Replace with your IP address
+
+
 
 
   var time = currentTime.getHours();
-  
+
 
   // };
   const getTime = () => {
-    axios.get("http://localhost:4000/api/v3/getalltime").then((res) => {
+    axios.get(apiBaseUrl).then((res) => {
       setAllTime(res.data);
     });
   };
@@ -56,9 +61,7 @@ function Checkout() {
 
     if (confirm) {
       try {
-        await axios.put(
-          "http://localhost:4000/api/v3/up/" + eChip,
-          updateStatusSp
+        await axios.put(apiBaseUrl2 + eChip, updateStatusSp
         );
         console.log("done");
       } catch (err) {
@@ -70,7 +73,7 @@ function Checkout() {
 
   const handleChip = async (e, id) => {
     console.log(e, id, "event");
-    seteChip(e,id);
+    seteChip(e, id);
     setIsActive(!isActive);
   };
 
@@ -79,7 +82,7 @@ function Checkout() {
       <Navbars />
 
       <div
-        style={{ display: "flex", justifyContent: "center", margin: "7rem" }}
+        style={{ display: "flex", justifyContent: "center", margin: "2%" }}
       >
         <Card sx={{ maxWidth: "200%" }} style={{ background: "#f2f4f7" }}>
           <div className="row" style={{ marginTop: "3rem" }}>
@@ -145,8 +148,8 @@ function Checkout() {
                       <div className="col-xl">
                         {" "}
                         <Chip
-                 
-                         label={e.name}
+
+                          label={e.name}
                           name={e.id}
                           disabled={
                             time >= e.timeId || e.status === "Closed"
@@ -159,11 +162,11 @@ function Checkout() {
                               e.status === "opened"
                                 ? ""
                                 : e.status === "Closed"
-                                ? "red"
-                                : "orange",
+                                  ? "red"
+                                  : "orange",
                           }}
                           onClick={() => handleChip(e.id, i)}
-                       
+
                         />
                       </div>
                     </div>

@@ -45,7 +45,7 @@ Router.post('/pass', (req, res) => {
       }
   
       console.log('Data saved successfully');
-      return res.status(200).json({ success: true });
+      return res.status(200).json({ success: "Save successfully" });
     });
   });
   

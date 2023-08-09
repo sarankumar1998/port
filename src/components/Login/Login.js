@@ -20,31 +20,47 @@ const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const onFinish = async () => {
-    let user = {
+  const apiBaseUrl = 'http://192.168.10.117:4000/api/v2/login'; // Replace with your IP address
+
+  const onFinish = () => {
+    const user = {
       username: username,
       password: password,
     };
+  
+    axios
+      .post(apiBaseUrl, user)
+      .then((response) => {
+        console.log("Server response:", response.data);
+  
+        if (response.status === 200) {
+          toast.success("Successfully logged in");
+  
+          const UserData = {
+            id: response.data.id, // Use response.data.id from the API response
+          };
 
-    await axios.post(`http://localhost:4000/api/v2/login`, user).then(
-      (res) => {
-        toast.success("Successfully login");
-
-        const UserData = {
-          id: res.data.id
+          console.log(UserData);
+  
+          sessionStorage.setItem("user", JSON.stringify(UserData));
+          console.log(response.data, "res");
+          navigate("/home");
+        } else {
+          console.error("Unexpected response:", response.status, response.data);
+          toast.error("An unexpected error occurred. Please try again.");
         }
-
-        sessionStorage.setItem("user", JSON.stringify(UserData));
-        console.log(res.data, "res");
-        navigate("/home");
-      },
-      (err) => {
-        if (err) {
-          toast.error("Please check your details and try again");
+      })
+      .catch((error) => {
+        if (error.response) {
+          console.error("Error response:", error.response.status, error.response.data);
+          toast.error("An error occurred. Please check your details and try again.");
+        } else {
+          console.error("Error:", error);
+          toast.error("An error occurred. Please try again later.");
         }
-      }
-    );
+      });
   };
+  
 
   return (
     <div className="login-container">

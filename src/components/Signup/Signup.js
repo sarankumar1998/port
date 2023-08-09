@@ -10,6 +10,9 @@ import "react-datepicker/dist/react-datepicker.css";
 import moment from "moment"; // Import the moment library
 import axios from "axios";
 
+const apiBaseUrl = 'http://192.168.10.117:4000/api/v2/register'; // Replace with your IP address
+
+
 const Signup = () => {
   // CALL IT ONCE IN YOUR APP
   if (typeof window !== "undefined") {
@@ -52,7 +55,7 @@ const Signup = () => {
       createdOn: new Date()
     };
     try {
-      const response = await axios.post(`http://localhost:4000/api/v2/register`, user);
+      const response = await axios.post(apiBaseUrl, user);
       if (response.status === 200) {
         toast.success("User created successfully");
         setTimeout(() => {

@@ -11,7 +11,7 @@ import { useState } from "react";
 import Dialog from "../components/Dialog/Dialog";
 import "./Cricket.css";
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
-import { Link,useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Skeleton from '@mui/material/Skeleton';
 import LoadingSpinner from "../components/Loader/LoadingSpinner";
 
@@ -24,6 +24,9 @@ const theme = createTheme({
   },
 });
 
+const apiBaseUrl = 'http://192.168.10.117:4000/api/v3/getsports'; // Replace with your IP address
+
+
 export default function SportsCard() {
   const location = useLocation();
   const [sports, getSports] = useState([]);
@@ -35,9 +38,9 @@ export default function SportsCard() {
   }, []);
 
   const getSport = () => {
-    axios.get("http://localhost:4000/api/v3/getsports").then((res) => {
+    axios.get(apiBaseUrl).then((res) => {
       getSports(res.data);
-      console.log(res.data,"rrr")
+      console.log(res.data, "rrr")
       setLoad(false);
     });
   };
@@ -45,56 +48,56 @@ export default function SportsCard() {
   return (
 
     <>
-    
-    
-    {load ? 
-            // <Box sx={{ display:'end' }}>
-            <LoadingSpinner/> 
-          // </Box>
-               : (  <>
-    <div className="row">
-      <h6 style={{ fontWeight: "600" }}>{sports.length} Result Found</h6>
-      <ThemeProvider theme={theme}>
-        {sports.map((e) => (
-          <>
-               
-            <div className="col-xl-4 col-md-6 mr-2 mt-4">
-    
-              <Card sx={{ width: "300px", height:'100%' }} className="Card">
-              {load ? (
-           <Skeleton variant="rectangular" sx={{ width: "300px", height:'100%' }} />
-            ) : 
-            <>
-                <CardMedia sx={{ height: 200 }} image={e.images} />
-                <CardContent>
-                  <div className="row">
-                  <div className="col-xl-9" style={{color:'#03fc77'}}>
-                  <AccessTimeFilledIcon />
+
+
+      {load ?
+        // <Box sx={{ display:'end' }}>
+        <LoadingSpinner />
+        // </Box>
+        : (<>
+          <div className="row">
+            <h6 style={{ fontWeight: "600", marginLeft:"1rem" }}>{sports.length} Result Found</h6>
+            <ThemeProvider theme={theme}>
+              {sports.map((e) => (
+                <>
+
+                  <div className="col-xl-4 col-md-6 mr-2 mt-4">
+
+                    <Card sx={{ width: "300px", height: '100%' }} className="Card">
+                      {load ? (
+                        <Skeleton variant="rectangular" sx={{ width: "300px", height: '100%' }} />
+                      ) :
+                        <>
+                          <CardMedia sx={{ height: 200 }} image={e.images} />
+                          <CardContent>
+                            <div className="row">
+                              <div className="col-xl-9" style={{ color: '#03fc77' }}>
+                                <AccessTimeFilledIcon />
+                              </div>
+                              <div className="col-xl">
+                                <p> ₹{e.price} </p>
+                              </div>
+                            </div>
+
+                            <Typography gutterBottom variant="h6" component="div">
+                              {e.areazone.split(" - ")}
+                            </Typography>
+                          </CardContent>
+                          <CardActions>
+                            <Dialog sports={sports} setID={e.id} /> &nbsp;
+                            <Link to={"/checkout"} state={{ data: { e } }} >
+                              <button className="btn  btn-success btn-sm"> Play Now</button>
+                            </Link>
+                          </CardActions></>
+                      }
+                    </Card>
                   </div>
-                  <div className="col-xl">
-                    <p> ₹{e.price} </p>
-                  </div>
-                  </div>
-           
-                  <Typography gutterBottom variant="h6" component="div">
-                    {e.areazone.split(" - ")}
-                  </Typography>
-                </CardContent>
-                <CardActions>
-                  <Dialog sports={sports} setID={e.id}/> &nbsp;
-                  <Link to={"/checkout"} state = {{data:{e}}} >
-                  <button className="btn  btn-success btn-sm"> Play Now</button>
-                </Link>
-                </CardActions></>
-                   }
-              </Card>
-            </div>
-                
-          </>
-        ))}
-      </ThemeProvider>
-    </div>
-    </> )}
+
+                </>
+              ))}
+            </ThemeProvider>
+          </div>
+        </>)}
     </>
   );
 }

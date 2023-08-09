@@ -8,7 +8,6 @@ import Msc from "./containers/Msc";
 import Login from "./components/Login/Login";
 import Signup from "./components/Signup/Signup";
 import Myprofile from "./components/Myprofile/Myprofile";
-import Product from "./containers/Product/Product";
 import Cart from "./containers/Cart/Cart";
 import Sports from "./components/Sports/Sports";
 import Checkout from "./containers/Checkout/Checkout";
@@ -16,10 +15,10 @@ import ClientMail from "./containers/ClientMail/ClientMail";
 import { createContext } from "react";
 import { useEffect } from "react";
 import { useState } from "react";
-import One from "./containers/ClientMail/One";
-import Two from "./containers/ClientMail/Two";
+import Travelticket from "./containers/ClientMail/Travelticket";
 import Forgot from "./components/Login/Forgot";
 import ResetPassword from "./components/Login/ResetPassword";
+import RatemyApp from "./containers/ClientMail/RatemyApp";
 
 
 export const AppContext = createContext(null)
@@ -59,14 +58,13 @@ console.log(routeState, "routeState");
           <Route path="/contact" element={<Contact />} />
           <Route path="/msc" element={<Msc />} />
           <Route path="/myprofile" element={<Myprofile />} />
-          <Route path="/product" element={<Product />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/sports" element={<Sports />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/clientmail" element={<ClientMail />} />
-          <Route path="/One" element={<One/>} />
-          <Route path="/Two" element={<Two/>} />
+          <Route path="/travelticket" element={<Travelticket/>} />
           <Route path="/forgot" element={<Forgot/>} />
+          <Route path="/ratemyapp" element={<RatemyApp/>} />
           <Route path="/reset/auth/:resetToken" element={<ResetPassword/>} />
 
         </Routes>
