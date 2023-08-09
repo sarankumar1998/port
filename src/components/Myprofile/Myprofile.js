@@ -19,6 +19,11 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 
+const apiBaseUrl = 'http://192.168.10.117:4000/api/v1/profile/users'
+const apiBaseUrl2 = 'http://192.168.10.117:4000/api/v2/profile/update'
+
+
+
 export default function Myprofile() {
   // CALL IT ONCE IN YOUR APP
   if (typeof window !== "undefined") {
@@ -59,7 +64,7 @@ export default function Myprofile() {
 
   const getProductById = async () => {
     await axios
-      .get(`http://localhost:4000/api/v1/profile/users/${id}`)
+      .get(`${apiBaseUrl}/${id}`)
       .then((res) => {
         setdetails(res.data);
       })
@@ -67,7 +72,6 @@ export default function Myprofile() {
   };
 
   const onSaved = async (e, id) => {
-
     e.preventDefault();
     const updateStatus = {
       firstName: firstName || details.firstName,
@@ -78,7 +82,7 @@ export default function Myprofile() {
       address: address || details.address,
       username: username || details.username,
       password: password || details.password,
-      bday: bday || details.bday
+      bday: bday || details.bday,
       // createdOn: new Date()
       // password: newPass,
     };
@@ -86,15 +90,11 @@ export default function Myprofile() {
 
     if (confirm) {
       try {
-        const res = await axios.put(
-          "http://localhost:4000/api/v2/profile/update/" + id,
-          updateStatus
-        );
+        const res = await axios.put(`${apiBaseUrl2}/${id}`, updateStatus);
         if (res.status === 200) {
           toast.warning("Updated Successfully");
           setEdit(true);
         }
-
       } catch (error) {
         if (error.response) {
           console.log(error.response, "error.response)");
@@ -104,8 +104,7 @@ export default function Myprofile() {
         }
       }
     }
-  }
-
+  };
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);

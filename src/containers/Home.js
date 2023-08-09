@@ -15,18 +15,15 @@ export default function Home() {
   );
   const navigate = useNavigate();
 
-
-
-
-
   const [user, setUser] = useState(null);
   const [birthdayWish, setBirthdayWish] = useState("");
 
-  useEffect(() => {
-    // Replace 'loggedInUserId' with the actual logged-in user's ID
-    const loggedInUserId = 123; // Change this to the correct user ID
+  const apiBaseUrl = 'http://192.168.10.117:4000/api/v1/special/users'; // Replace with your IP address
 
-    axios.get(`http://localhost:4000/api/v1/special/users/${userInfo.id}`)
+  useEffect(() => {
+   
+
+    axios.get(`${apiBaseUrl}/${userInfo.id}`)
       .then((res) => {
         const user = res.data[0];
         setUser(user);
@@ -49,15 +46,21 @@ export default function Home() {
 
 
   useEffect(() => {
-    axios
-      .get("http://localhost:4000/api/v1/special/users/" + userInfo.id)
+    axios.get(`${apiBaseUrl}/${userInfo.id}`)
       .then((res) => {
         setGetData(res.data);
         console.log(getData);
       })
-
-
+      .catch((error) => {
+        console.error(error);
+      });
   }, []);
+  
+  
+  
+  
+  
+  
 
   // useEffect(() => {
   //   const fetchData = async () => {

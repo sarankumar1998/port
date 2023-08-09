@@ -81,19 +81,18 @@ Router.get("/special/Obj/", function (req, res) {
 // results[0]
 
 Router.post("/members", function (req, res) {
-  // reqn  body
+  // req  body
   var name = req.body.name;
   var email = req.body.email;
   var message = req.body.message;
   var mobile = req.body.mobile;
   var status = req.body.status;
-  var tm = req.body.tm
   var userId = req.body.userId;
 
   // query
   var query = `INSERT INTO vendorview 
-	(name, email, message, mobile,status,tm,userId) 
-	VALUES ("${name}", "${email}", "${message}", "${mobile}","${status}","${tm}","${userId}")`;
+	(name, email, message, mobile,status,userId) 
+	VALUES ("${name}", "${email}", "${message}", "${mobile}","${status}","${userId}")`;
 
   // Run the query
   con.query(query, function (error, data) {

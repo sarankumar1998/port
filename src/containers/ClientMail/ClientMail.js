@@ -81,8 +81,6 @@ function ClientMail() {
       });
   };
 
-
-  
   return (
     <>
       <Navbars />

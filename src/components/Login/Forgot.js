@@ -3,20 +3,27 @@ import axios from 'axios';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import { Link, useNavigate } from "react-router-dom";
 
+const apiBaseUrl = 'http://192.168.10.117:4000/api/v2/forgot'; // Replace with your IP address
+
+
 const Forgot = () => {
 
     const [email, setEmail] = useState('');
     const [message, setMessage] = useState('');
+    const [mailSuccessful, setmailSuccessful] = useState(false);
+
     const history = useNavigate();
 
     const handleForgotPassword = async () => {
         try {
-            const response = await axios.post('http://localhost:4000/api/v2/forgot', { email });
-            setMessage(response.data.message);
+            const response = await axios.post(apiBaseUrl, { email });
+            setMessage(<span style={{ color: 'green' }}>{response.data.message}</span>);
+            setmailSuccessful(true); 
         } catch (error) {
             if (error.response) {
-                setMessage(` ${error.response.data.error}`);
+                setMessage(<span style={{ color: 'red' }}>{error.response.data.error}</span>);
             }
+            setmailSuccessful(false)
         }
     };
 
@@ -42,13 +49,14 @@ const Forgot = () => {
                         </div>
                         <div className="text-center">
                             <button
+                            disabled={mailSuccessful} 
                                 type="button"
                                 className="btn btn-primary btn-block w-100"
                                 onClick={handleForgotPassword}
                             >
                                 Send
                             </button>
-                            {message && <p className='text-center mt-3 text-danger'>{message}</p>}
+                            {message && <p className='text-center mt-3'>{message}</p>}
 
                             <div className='mt-5' onClick={handleBackToLogin} style={{ cursor: 'pointer' }}>
                                 <p style={{ textDecoration: 'underline', display: 'inline-block' }}>

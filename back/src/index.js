@@ -9,10 +9,24 @@ const order = require("./Payment/Payment");
 const mailLogin = require("./MailLogin/MailLogin");
 const pass = require("./Passengers/Passengers");
 const cors = require("cors");
+const helmet = require('helmet');
+
 
 var app = express();
 
-app.use(cors());
+const corsOptions = {
+  origin: ['http://localhost:3001', 'http://192.168.10.117:3001'], // Add your frontend's origins
+};
+
+
+
+console.log(corsOptions);
+
+app.use(cors(corsOptions));
+app.use(helmet({ referrerPolicy: { policy: 'same-origin' } }));
+
+
+
 app.use(express.json());
 app.use(bodyParser.json());
 app.use("/api/v1", PeopleRouter);

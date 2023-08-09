@@ -2,23 +2,34 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 
+const apiBaseUrl = 'http://192.168.10.117:4000/api/v2/reset'; // Replace with your IP address
+
+
 const ResetPassword = () => {
   const { resetToken } = useParams();
   const [newPassword, setNewPassword] = useState('');
   const [message, setMessage] = useState('');
+  const [resetSuccessful, setResetSuccessful] = useState(false);
+
 
   const handleResetPassword = async () => {
     try {
       // Use the verified token to reset the password
-      const response = await axios.post('http://localhost:4000/api/v2/reset', { resetToken, newPassword });
+      const response = await axios.post(apiBaseUrl, { resetToken, newPassword });
       setMessage(response.data.message);
+      setResetSuccessful(true);
+
     } catch (error) {
-      if(error.response === 400){
-        setMessage(<p style={{color:"red"}}>{error.response.data.error}</p>)
+      if (error.response && error.response.status === 400) {
+        setMessage(<p style={{ color: 'red' }}>{error.response.data.error}</p>);
+      } else {
+        setMessage(`${error.response.data.error}`);
       }
-      setMessage(`${error.response.data.error}`);
+      setResetSuccessful(false); 
+
     }
   };
+
 
   return (
     <div className="d-flex justify-content-center align-items-center vh-100">
@@ -35,7 +46,7 @@ const ResetPassword = () => {
             />
           </div>
           <div className="text-center">
-            <button className="btn btn-warning text-dark" onClick={handleResetPassword}>
+            <button className="btn btn-warning text-dark"  disabled={resetSuccessful}  onClick={handleResetPassword}>
               Reset Password
             </button>
           </div>
