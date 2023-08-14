@@ -8,9 +8,9 @@ const mail = require("./Mailauth/Mail");
 const order = require("./Payment/Payment");
 const mailLogin = require("./MailLogin/MailLogin");
 const pass = require("./Passengers/Passengers");
+const doctors = require("./Doctors/DoctorsApi")
 const cors = require("cors");
 const helmet = require('helmet');
-
 
 var app = express();
 
@@ -18,14 +18,8 @@ const corsOptions = {
   origin: ['http://localhost:3001', 'http://192.168.10.117:3001'], // Add your frontend's origins
 };
 
-
-
-console.log(corsOptions);
-
 app.use(cors(corsOptions));
 app.use(helmet({ referrerPolicy: { policy: 'same-origin' } }));
-
-
 
 app.use(express.json());
 app.use(bodyParser.json());
@@ -36,6 +30,7 @@ app.use("/api/v4", mail);
 app.use("/api/v5", order);
 app.use("/api/v6", mailLogin);
 app.use("/api/v7", pass);
+app.use("/api/v8", doctors);
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Credentials", true);

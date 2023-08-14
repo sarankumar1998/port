@@ -1,7 +1,7 @@
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
 import Home from "./containers/Home";
-import Skills from "./containers/Skills";
+import DoctorSchedule from "./containers/DoctorSchedule";
 import About from "./containers/About";
 import Contact from "./containers/Contact";
 import Msc from "./containers/Msc";
@@ -19,6 +19,7 @@ import Travelticket from "./containers/ClientMail/Travelticket";
 import Forgot from "./components/Login/Forgot";
 import ResetPassword from "./components/Login/ResetPassword";
 import RatemyApp from "./containers/ClientMail/RatemyApp";
+import Appointments from "./containers/Products/Appointments";
 
 
 export const AppContext = createContext(null)
@@ -27,23 +28,7 @@ function App() {
 
 const [routeState, setRouteState] = useState(JSON.parse(sessionStorage.getItem("user"))  || {})
 console.log(routeState, "routeState");
-// const stringifiedPerson = sessionStorage.getItem("user");
-// const personAsObjectAgain = JSON.parse(stringifiedPerson);
-// const [usersVal, setUsersVal] = useState(personAsObjectAgain);
 
-// const navigate  = useNavigate()
-// useEffect(() => {
-//   setUsersVal(sessionStorage.getItem("user"));
-//     // navigate("/login");
-
-// }, []);
-
-
-
-// useEffect(() => {
-//   const usersVal = sessionStorage.getItem("user");
-//   // console.log(usersVal);
-// }, []);
   return (
     <div className="App">
               <AppContext.Provider value={{ routeState: routeState }}>
@@ -53,7 +38,8 @@ console.log(routeState, "routeState");
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/home" element={<Home/>} />
-          <Route path="/skills" element={<Skills />} />
+          <Route path="/doctorSchedule" element={<DoctorSchedule />} />
+          <Route path="/appointments" element={<Appointments/>} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/msc" element={<Msc />} />

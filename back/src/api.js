@@ -59,26 +59,7 @@ Router.get("/special/Obj/", function (req, res) {
     return res.json(results);
   });
 });
-// PLAIN OBJ
-// Router.get('/special/Obj',(req,res) => {
-//     con.query('SELECT * FROM vendorview', (err, result) => {
-//         if(!err) {
-//             Object.keys(result).forEach(function(key){
-//                 var row = result[key];
-//                 console.log(result.name)
-//             })
-//             res.send(result)
-//         }
-//         else{
-//             throw err
-//         }
-//     })
-// })
 
-
-
-
-// results[0]
 
 Router.post("/members", function (req, res) {
   // req  body

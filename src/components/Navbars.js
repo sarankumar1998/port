@@ -289,7 +289,7 @@ export default function Navbars({ handleLogout }) {
                 </ListItem>
               </Link>
 
-              <Link to="/skills">
+              <Link to="/doctorSchedule">
                 <ListItem
                   button
                   style={{ marginTop: 20 }}
@@ -298,7 +298,20 @@ export default function Navbars({ handleLogout }) {
                   <ListItemIcon>
                     <LibraryBooksIcon />
                   </ListItemIcon>
-                  <ListItemText primary={"Skill"} />
+                  <ListItemText primary={"Doctor Schedule"} />
+                </ListItem>
+              </Link>
+
+              <Link to="/appointments">
+                <ListItem
+                  button
+                  style={{ marginTop: 20 }}
+                  onClick={handleDrawerClose}
+                >
+                  <ListItemIcon>
+                    <LibraryBooksIcon />
+                  </ListItemIcon>
+                  <ListItemText primary={"Appointments"} />
                 </ListItem>
               </Link>
 
@@ -397,9 +410,6 @@ export default function Navbars({ handleLogout }) {
                   <ListItemText primary={"Rate My App"} />
                 </ListItem>
               </Link>
-                          
-                                      
-
             </List>
             <Divider />
           </SwipeableDrawer>

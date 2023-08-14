@@ -20,7 +20,7 @@ const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const apiBaseUrl = 'http://192.168.10.117:4000/api/v2/login'; // Replace with your IP address
+  const apiBaseUrl = 'http://localhost:4000/api/v2/login'; // Replace with your IP address
 
   const onFinish = () => {
     const user = {
@@ -65,7 +65,7 @@ const Login = () => {
   return (
     <div className="login-container">
       <div className="row">
-        <div className="col-md-6 col-lg-6 col-xl-7">
+        <div className="col-md-6 col-lg-6 col-xl-7 rightBg">
           <img
             src={bgg}
             alt=""
@@ -73,7 +73,7 @@ const Login = () => {
             className="login-image"
           />
         </div>
-        <div className="col-md-6 col-lg-6 col-xl-5">
+        <div className="col-md-6 col-lg-6 col-xl-5 ">
           <div className="login-card">
             <ToastContainer />
             <Grid align="center">

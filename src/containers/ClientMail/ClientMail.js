@@ -3,7 +3,10 @@ import axios from 'axios';
 import Skeleton from '@material-ui/lab/Skeleton';
 import Navbars from "../../components/Navbars"
 import { Link, useNavigate } from "react-router-dom";
+import moment from "moment";
+import { Chip } from '@mui/material';
 
+const apiBaseUrl2 = 'http://localhost:4000/api/v8/available-slots'
 
 function ClientMail() {
 
@@ -20,8 +23,38 @@ function ClientMail() {
 
   useEffect(() => {
     fetchData();
+    fetchSlots();
   }, []);
 
+
+  const [slots, setSlots] = useState([]);
+
+  console.log(slots, "slots");
+
+  const fetchSlots = () => {
+    axios.get(apiBaseUrl2)
+      .then(response => {
+        setSlots(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching available slots:', error);
+      });
+  };
+
+
+
+  const generateTimeSlots = (start, end) => {
+    const startTime = moment(start, 'HH:mm');
+    const endTime = moment(end, 'HH:mm');
+    const timeSlots = [];
+
+    while (startTime.isBefore(endTime)) {
+      timeSlots.push(startTime.format('HH:mm A'));
+      startTime.add(1, 'hour');
+    }
+
+    return timeSlots;
+  };
   const fetchData = async () => {
     try {
       const response = await axios.get('https://api.example.com/data');
@@ -123,7 +156,32 @@ function ClientMail() {
           <p style={messageStyle}>{message}</p>
         )}
 
-        <div></div>
+        <div>
+          <div className="slots mt-5 px-5">
+            <h2>Available Slots</h2>
+            <div className="row">
+              {slots.map((slot) => (
+                <div key={slot.id} className="col-md-4 col-xl-4 col-sm-12 mb-4">
+                  <div className="card">
+                    <div className="card-body">
+                      <h5 className="card-title">{moment(slot.date).format('MMM D')}</h5>
+                      <div className="row">
+                        <div className="col-12">
+                          <p>{slot.start_time} - {slot.end_time}</p>
+                        </div>
+                        {generateTimeSlots(slot.start_time, slot.end_time).map((time) => (
+                          <div key={time} className={`col-xl-3 col-md-3 col-sm-3 ${slot.freezed_hours?.includes(time) ? 'd-none' : ''}`} style={{ color: slot.freezed_hours?.includes(time) ? 'red' : 'black' }}>
+                            {time}{' '}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     </>
   );

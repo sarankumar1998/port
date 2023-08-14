@@ -15,7 +15,7 @@ con.connect(function(err) {
     console.log('check your connections');
   }
   else{
-    console.log("Connected!");
+    console.log("Db Connected!");
   }
 
 });
