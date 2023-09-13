@@ -5,9 +5,6 @@ const jwt = require("jsonwebtoken");
 var moment = require("moment");
 const file = require("./dumm.json")
 const nodemailer = require("nodemailer");
-
-// console.log(pwd);
-
 const router = express.Router();
 
 router.post("/register", async (req, res) => {
@@ -24,7 +21,7 @@ router.post("/register", async (req, res) => {
     const hashedPassword = bcrypt.hashSync(req.body.password, salt);
 
     const newUser =
-      "INSERT INTO users (`email`,`username`,`password`,`firstName`,`lastName`,`address`,`country`,`bday`,`mobile`, createdOn) VALUE (?)";
+      "INSERT INTO users (`email`,`user name`,`password`,`firstName`,`lastName`,`country`,`bday`,`mobile`, createdOn) VALUE (?)";
 
     const values = [
       req.body.email,
@@ -33,7 +30,6 @@ router.post("/register", async (req, res) => {
       // req.body.password,
       req.body.firstName,
       req.body.lastName,
-      req.body.address,
       req.body.country,
       req.body.bday,
       req.body.mobile,
@@ -61,7 +57,7 @@ router.post("/login", async (req, res) => {
     if (err) return res.status(500).json(err);
     if (data.length === 0) return res.status(404).json("User not found!");
     let user = data[0]
-    // below command is hashing the password
+    // below command is hashing the p assword
     const checkPassword = bcrypt.compareSync(req.body.password, user.password);
 
     // const checkPassword = (req.body.password, user.password);
@@ -113,7 +109,7 @@ router.put("/profile/update/:id", (req, res) => {
   var { id } = req.params;
 
   // req body
-  var { email, username, firstName, lastName, address, country, bday, mobile, password, createdOn } = req.body;
+  var { email, username, firstName, lastName, country, bday, mobile, password, createdOn } = req.body;
 
   // Hash the new password
   const salt = bcrypt.genSaltSync(10);
@@ -143,7 +139,7 @@ router.put("/profile/update/:id", (req, res) => {
       }
 
       // Update query with hashed password
-      var query = `UPDATE users SET email='${email}', username='${username}', password='${hashedPassword}', firstName='${firstName}', lastName='${lastName}', address='${address}', country='${country}', bday='${bday}', mobile='${mobile}', createdOn='${moment(Date.now()).format("YYYY-MM-DD HH:mm:ss")}' WHERE id=${id}`;
+      var query = `UPDATE users SET email='${email}', username='${username}', password='${hashedPassword}', firstName='${firstName}', lastName='${lastName}', country='${country}', bday='${bday}', mobile='${mobile}', createdOn='${moment(Date.now()).format("YYYY-MM-DD HH:mm:ss")}' WHERE id=${id}`;
 
       // Run the update query
       con.query(query, function (error, data) {

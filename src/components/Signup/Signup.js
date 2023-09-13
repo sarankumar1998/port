@@ -23,7 +23,7 @@ const Signup = () => {
   const [firstName, setfirstName] = useState("");
   const [lastName, setlastName] = useState("");
   const [country, setcountry] = useState("");
-  const [address, setaddress] = useState("");
+  // const [address, setaddress] = useState("");
   const [bday, setBday] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -45,7 +45,7 @@ const Signup = () => {
       firstName: firstName,
       lastName: lastName,
       country: country,
-      address: address,
+      // address: address,
       bday: bday,
       mobile: mobile,
       email: email,
@@ -72,10 +72,7 @@ const Signup = () => {
     }
   };
   return (
-    <div className="row d-flex justify-content-center align-items-center">
-      <div className="col-md-3 col-lg-6 col-xl-7 mt-5">
-        {/* <img src={companyLogo} width="110%" id="logo" alt="" /> */}
-      </div>
+    <div className="d-flex justify-content-center align-items-center vh-100" style={{ margin: "1rem" }}>
       <div className="col-md-8 col-lg-6 col-xl-4">
         <div className="card mt-5">
           <ToastContainer />
@@ -282,7 +279,7 @@ const Signup = () => {
                     </Form.Item>
                   </div>
 
-                  <div className="col-xl-1 col-md" >
+                  <div className="col-xl-1 col-md">
                     <Form.Item
                       className="mt-2"
                       name="bday"
@@ -299,7 +296,7 @@ const Signup = () => {
                       ]}
                     >
                       <DatePicker
-                        style={{ width: "2rem" }}
+                        style={{ width: "100px" }} // Adjust the width value as needed
                         selected={bday ? moment(bday, "YYYY-MM-DD").toDate() : null}
                         onChange={(date) => setBday(moment(date).format("YYYY-MM-DD"))}
                         dateFormat="yyyy-MM-dd"
@@ -310,9 +307,10 @@ const Signup = () => {
                       />
                     </Form.Item>
                   </div>
+
                 </div>
 
-                <div className="col-xl-6">
+                {/* <div className="col-xl-6">
                   <Form.Item
                     className="mt-2"
                     name="address"
@@ -337,7 +335,7 @@ const Signup = () => {
                       onChange={(event) => setaddress(event.target.value)}
                     />
                   </Form.Item>
-                </div>
+                </div> */}
                 <div className="col-xl-6">
                   <Form.Item
                     className="mt-2"

@@ -39,7 +39,6 @@ export default function Myprofile() {
   const [firstName, setfirstName] = useState("");
   const [lastName, setlastName] = useState("");
   const [email, setemail] = useState("");
-  const [address, setaddress] = useState("");
   const [mobile, setmobile] = useState("");
   const [country, setcountry] = useState("");
   const [bday, setbday] = useState("");
@@ -79,7 +78,6 @@ export default function Myprofile() {
       email: email || details.email,
       mobile: mobile || details.mobile,
       country: country || details.country,
-      address: address || details.address,
       username: username || details.username,
       password: password || details.password,
       bday: bday || details.bday,
@@ -377,30 +375,7 @@ export default function Myprofile() {
                   </Form.Item>
                 </div>
 
-                <div className="col-xl">
-                  <Form.Item
-                    className="mt-2"
-                    label="Address"
-                    rules={[
-                      {
-                        required: true,
-                        message: (
-                          <span style={{ fontSize: "9px", color: "red" }}>
-                            Required!
-                          </span>
-                        ),
-                      },
-                    ]}
-                  >
-                    <input
-                      style={{ fontSize: "1rem" }}
-                      disabled={edit}
-                      onChange={(e) => setaddress(e.target.value)}
-                      className="form-control form-control-sm"
-                      defaultValue={details.address}
-                    />
-                  </Form.Item>
-                </div>
+  
 
                 {edit === false ? (
                   <div className="mt-4">
