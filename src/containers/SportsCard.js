@@ -24,7 +24,7 @@ const theme = createTheme({
   },
 });
 
-const apiBaseUrl = 'http://192.168.10.117:4000/api/v3/getsports'; // Replace with your IP address
+const apiBaseUrl = 'http://localhost:4000/api/v3/getsports'; // Replace with your IP address
 
 
 export default function SportsCard() {

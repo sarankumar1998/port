@@ -5,7 +5,7 @@ import axios from 'axios';
 import { injectStyle } from "react-toastify/dist/inject-style";
 import { ToastContainer, toast } from "react-toastify";
 
-const apiBaseUrl = 'http://192.168.10.117:4000/api/v7/pass'
+const apiBaseUrl = 'http://localhost:4000/api/v7/pass'
 
 export default function Travelticket() {
 

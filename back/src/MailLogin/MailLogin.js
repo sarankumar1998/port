@@ -12,7 +12,6 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-
 // Generate and store OTP for a user
 router.post('/generate-otp', (req, res) => {
   const { email } = req.body;
@@ -20,29 +19,19 @@ router.post('/generate-otp', (req, res) => {
   const otpExpiryTime = new Date().getTime() + 5 * 60 * 1000; // Set the OTP expiration time to 5 minutes from the current time
 
   // Store the OTP and expiry time in the database
-  const query = `INSERT INTO maillogin (email, otp, exptime) VALUES (?, ?, ?)`;
+  const query = `INSERT INTO maillogin (email, otp,   ) VALUES (?, ?, ?)`;
   con.query(query, [email, otp, otpExpiryTime], (error, results) => {
     if (error) {
       console.error(error);
       return res.status(500).json({ message: 'Failed to generate OTP.' });
     }
 
-
-
+    // Send the OTP to the user's email
     const mailOptions = {
       from: 'saran07rose@gmail.com',
       to: email,
       subject: 'OTP for Login',
-      html: `
-      <div style="background-color: #f5f5f5; padding: 20px;">
-        <h2>Welcome to YourApp!</h2>
-        <p>Thank you for registering with us. Please use the OTP below to login:</p>
-        <h3 style="background-color: #ffffff; padding: 10px;">${otp}</h3>
-        <p style="margin-top: 20px;">This OTP is valid for 5 minutes.</p>
-        <p>If you didn't request this OTP, please ignore this email.</p>
-        <p>Regards,</p>
-        <p>Saran</p>
-      `
+      text: `Your OTP for login is: ${otp} (Expires in 5 minutes)`
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
@@ -51,11 +40,10 @@ router.post('/generate-otp', (req, res) => {
         return res.status(500).json({ message: 'Failed to send OTP.' });
       }
 
-      res.status(200).json({ message: 'OTP generated and sent successfully.' });
+      res.json({ message: 'OTP generated and sent successfully.' });
     });
   });
 });
-
 
 // Verify OTP for user login
 router.post('/verify-otp', (req, res) => {
@@ -75,9 +63,9 @@ router.post('/verify-otp', (req, res) => {
     }
 
     const otpExpiryTime = results[0].exptime;
-    console.log(otpExpiryTime,"otpExpiryTime");
+    console.log(otpExpiryTime, "otpExpiryTime");
 
-    
+
     if (currentTimestamp > otpExpiryTime) {
       // OTP has expired
       return res.status(400).json({ message: 'OTP has expired.' });
@@ -95,5 +83,30 @@ router.post('/verify-otp', (req, res) => {
     });
   });
 });
+
+
+const generateOTP = () => {
+  // Logic to generate a random 6-digit OTP
+  return Math.floor(100000 + Math.random() * 900000).toString();
+};
+
+router.post('/send-otp', (req, res) => {
+  const { phoneNumber } = req.body;
+  const otp = generateOTP();
+
+  // Save the generated OTP in the database along with the user's phone number
+  const insertQuery = 'INSERT INTO otp_table ( phonenumber, otp) VALUES (?, ?)';
+  con.query(insertQuery, [phoneNumber, otp], (error, results) => {
+    if (error) {
+      console.error('Error saving OTP to the database:', error);
+      res.status(500).send('Internal Server Error');
+    } else {
+      // Logic to send the OTP to the user (e.g., via SMS or other means)
+      console.log(`OTP sent to ${phoneNumber}: ${otp}`);
+      res.status(200).send('OTP sent successfully');
+    }
+  });
+});
+
 
 module.exports = router;

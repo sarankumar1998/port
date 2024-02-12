@@ -3,7 +3,7 @@ import axios from 'axios';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import { Link, useNavigate } from "react-router-dom";
 
-const apiBaseUrl = 'http://192.168.10.117:4000/api/v2/forgot'; // Replace with your IP address
+const apiBaseUrl = 'http://localhost:4000/api/v2/forgot'; // Replace with your IP address
 
 
 const Forgot = () => {

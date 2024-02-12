@@ -15,7 +15,7 @@ const helmet = require('helmet');
 var app = express();
 
 const corsOptions = {
-  origin: ['http://localhost:3001', 'http://192.168.10.117:3001'], // Add your frontend's origins
+  origin: ['http://localhost:3000', 'http://localhost:3000'], // Add your frontend's origins
 };
 
 app.use(cors(corsOptions));

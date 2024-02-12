@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 
-const apiBaseUrl = 'http://192.168.10.117:4000/api/v2/reset'; // Replace with your IP address
+const apiBaseUrl = 'http://localhost:4000/api/v2/reset'; // Replace with your IP address
 
 
 const ResetPassword = () => {
