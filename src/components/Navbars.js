@@ -32,6 +32,9 @@ import LogoutIcon from "@mui/icons-material/Logout";
 
 const drawerWidth = 240;
 
+const apiBaseUrl1 = 'http://192.168.10.117:4000/api/v1/special/Obj'        
+const apiBaseUrl2 = 'http://192.168.10.117:4000/api/v1/profile/users'  
+
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
@@ -59,8 +62,8 @@ const AppBar = styled(MuiAppBar, {
   }),
 }));
 
-export default function Navbars({ lengthcart }) {
-  // console.log(lengthcart.length,'ca');
+export default function Navbars({ handleLogout }) {
+  const { id } = JSON.parse(sessionStorage.getItem("user"));
   const [show, setShow] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [open, setOpen] = React.useState(false);
@@ -69,34 +72,46 @@ export default function Navbars({ lengthcart }) {
   const [all, setAll] = React.useState([]);
   const stringifiedPerson = sessionStorage.getItem("user");
   const personAsObjectAgain = JSON.parse(stringifiedPerson);
-  // console.log(personAsObjectAgain);
   const [users, setUsers] = React.useState(personAsObjectAgain);
+  const [usersDetails, setUsersDetails] = React.useState(personAsObjectAgain);
+
 
   useEffect(() => { 
     getProduct();
+    getUserById();
   }, []);
 
   const getProduct = async () => {
     await axios
-      .get(`http://localhost:4000/api/v1/special/Obj/`)
+      .get(apiBaseUrl1)
       .then((res) => {
-        // const data = res.data.filter((e) => e.status === "Pending");
-        setAll(res.data.filter((e) => e.status === "Pending"));
-        // console.log(all.length, "datss");
+        setAll(res.data.filter((e) => e.status === "Pending"))})
+  
+      .catch((err) => console.log(err));
+  };
+
+
+
+  const getUserById = async () => {
+    await axios
+      .get(`${apiBaseUrl2}/${id}`)
+      .then((res) => {
+        setUsersDetails(res.data);
       })
       .catch((err) => console.log(err));
   };
 
+
   const handleCloseCanva = () => setShow(false);
   const handleShowCanva = () => setShow(true);
 
-  const handleClick = () => {
-    let confirm = window.confirm("Are you sure you want to logout");
-    if (confirm) {
-      sessionStorage.clear();
-      window.location.reload();
-    }
-  };
+  // const handleClick = () => {
+  //   let confirm = window.confirm("Are you sure you want to logout");
+  //   if (confirm) {
+  //     sessionStorage.clear();
+  //     window.location.reload();
+  //   }
+  // };
 
   const theme = useTheme();
 
@@ -160,21 +175,22 @@ export default function Navbars({ lengthcart }) {
               >
                 <Link style={{ textDecoration: "none" }} to="/Myprofile">
                   {" "}
-                  <MenuItem onClick={handleClose}>{users.username}</MenuItem>
+                  <MenuItem onClick={handleClose}>{usersDetails.username}</MenuItem>
                 </Link>
 
-                <MenuItem onClick={handleClick}>logout &nbsp;   <LogoutIcon /></MenuItem>
+                <MenuItem onClick={handleLogout}>logout &nbsp;   <LogoutIcon /></MenuItem>
 
              
               </Menu>
               </IconButton>
               <IconButton
-                size="large"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleMenu}
-                color="inherit"
+        size="large"
+        aria-label="account of current user"
+        aria-controls="menu-appbar"
+        aria-haspopup="true"
+        onClick={handleMenu}
+        color="inherit"
+        sx={{ ml: "auto" }}
               >
                 <AccountCircle />
               </IconButton>
@@ -328,18 +344,7 @@ export default function Navbars({ lengthcart }) {
                   <ListItemText primary={"View"} />
                 </ListItem>
               </Link>
-              <Link to="/product">
-                <ListItem
-                  button
-                  style={{ marginTop: 20 }}
-                  onClick={handleDrawerClose}
-                >
-                  <ListItemIcon>
-                    <ViewAgenda />
-                  </ListItemIcon>
-                  <ListItemText primary={"Product"} />
-                </ListItem>
-              </Link>
+       
               <Link to="/sports">
                 <ListItem
                   button
@@ -365,6 +370,36 @@ export default function Navbars({ lengthcart }) {
                   <ListItemText primary={"Mail"} />
                 </ListItem>
               </Link>
+
+                         
+              <Link to="/travelticket">
+                <ListItem
+                  button
+                  style={{ marginTop: 20 }}
+                  onClick={handleDrawerClose}
+                >
+                  <ListItemIcon>
+                    <MessageIcon />
+                  </ListItemIcon>
+                  <ListItemText primary={"Add Ticket"} />
+                </ListItem>
+              </Link>
+
+              <Link to="/RatemyApp">
+                <ListItem
+                  button
+                  style={{ marginTop: 20 }}
+                  onClick={handleDrawerClose}
+                >
+                  <ListItemIcon>
+                    <MessageIcon />
+                  </ListItemIcon>
+                  <ListItemText primary={"Rate My App"} />
+                </ListItem>
+              </Link>
+                          
+                                      
+
             </List>
             <Divider />
           </SwipeableDrawer>

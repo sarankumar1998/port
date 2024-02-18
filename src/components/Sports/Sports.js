@@ -80,11 +80,11 @@ export default function Sports() {
     <div style={{ marginTop: "6rem" }}>
       <Navbars />
 
-      <div style={{ margin: "4rem" }} className="row">
+      <div style={{ margin: "2rem" }} className="row">
         <div className="col-xl-3">
           <Card
-            sx={{ maxWidth: 260 }}
-            style={{ background: "", height: "200%" }}
+            sx={{ maxWidth: 300 }}
+            style={{ background: "", height: "150%" }}
           >
             <CardContent>
               <Typography
@@ -134,9 +134,6 @@ export default function Sports() {
                 </RadioGroup>
               </FormControl>
             </CardContent>
-            <CardActions>
-              <Button size="small">Learn More</Button>
-            </CardActions>
           </Card>
         </div>
 
@@ -144,12 +141,15 @@ export default function Sports() {
           {first || second === true ? (
             ""
           ) : (
-            <h6 className="text-center" style={{ marginRight: "15rem" }}>
-              Kindly search based on 'Sport'!
+            <h6 className="text-center">
+              <CardActions>
+                <Button size="small">  Kindly search based on 'Sport' !</Button>
+              </CardActions>
+
             </h6>
           )}
-          {first && <SportsCard />}
-          {second && <Badminton />}
+          <div>          {first && <SportsCard />}
+            {second && <Badminton />}</div>
         </div>
       </div>
     </div>

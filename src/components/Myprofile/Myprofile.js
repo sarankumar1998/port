@@ -14,7 +14,14 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { injectStyle } from "react-toastify/dist/inject-style";
 import { useContext } from "react";
-import { AppContext } from "../../App";  
+import { AppContext } from "../../App";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
+
+const apiBaseUrl = 'http://192.168.10.117:4000/api/v1/profile/users'
+const apiBaseUrl2 = 'http://192.168.10.117:4000/api/v2/profile/update'
+
 
 
 export default function Myprofile() {
@@ -23,16 +30,9 @@ export default function Myprofile() {
     injectStyle();
   }
 
-  const{usersVal} = useContext(AppContext)
-  console.log(usersVal,'myy');
-  
-    // const navigate = useNavigate();
-  
-  
-  
-    // const [users, setUsers] = useState(usersVal);
+  const { usersVal } = useContext(AppContext)
 
-  const { id } = JSON.parse(sessionStorage.getItem("user")) ;
+  const { id } = JSON.parse(sessionStorage.getItem("user"));
   const stringifiedPerson = sessionStorage.getItem("user");
   const [edit, setEdit] = useState(true);
   const [username, setUsername] = useState("");
@@ -42,21 +42,20 @@ export default function Myprofile() {
   const [address, setaddress] = useState("");
   const [mobile, setmobile] = useState("");
   const [country, setcountry] = useState("");
+  const [bday, setbday] = useState("");
   const personAsObjectAgain = JSON.parse(stringifiedPerson);
   const [users, setUsers] = React.useState(personAsObjectAgain);
-  const [newPass, setNewPass] = useState("");
+  const [password, setPassoword] = useState("");
   const [details, setdetails] = useState({});
-  console.log(details, "okl");
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-
-  const navigate  = useNavigate()
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (id === null) {
       navigate("/login");
     }
-    
+
   }, [navigate]);
 
   useEffect(() => {
@@ -65,7 +64,7 @@ export default function Myprofile() {
 
   const getProductById = async () => {
     await axios
-      .get(`http://localhost:4000/api/v1/special/users/${id}`)
+      .get(`${apiBaseUrl}/${id}`)
       .then((res) => {
         setdetails(res.data);
       })
@@ -73,38 +72,37 @@ export default function Myprofile() {
   };
 
   const onSaved = async (e, id) => {
-    console.log(e, id, "ss");
     e.preventDefault();
-    if (users.password === newPass) {
-      // toast.error("Check Your ");
+    const updateStatus = {
+      firstName: firstName || details.firstName,
+      lastName: lastName || details.lastName,
+      email: email || details.email,
+      mobile: mobile || details.mobile,
+      country: country || details.country,
+      address: address || details.address,
+      username: username || details.username,
+      password: password || details.password,
+      bday: bday || details.bday,
+      // createdOn: new Date()
+      // password: newPass,
+    };
+    let confirm = window.confirm("Are you sure you want to Edit");
 
-      const updateStatus = {
-        firstName: firstName || details.firstName,
-        lastName: lastName || details.lastName,
-        email: email || details.email,
-        mobile: mobile || details.mobile,
-        country: country || details.country,
-        address: address || details.address,
-        username: username || details.username,
-        // createdOn: new Date()
-        // password: newPass,
-      };
-      let confirm = window.confirm("Are you sure you want to Edit");
-
-      if (confirm) {
-        try {
-          await axios.put(
-            "http://localhost:4000/api/v2/profile/update/" + id,
-            updateStatus
-          );
+    if (confirm) {
+      try {
+        const res = await axios.put(`${apiBaseUrl2}/${id}`, updateStatus);
+        if (res.status === 200) {
           toast.warning("Updated Successfully");
           setEdit(true);
-        } catch (err) {
-          console.log("err");
+        }
+      } catch (error) {
+        if (error.response) {
+          console.log(error.response, "error.response)");
+          toast.error(`Error: ${error.response.data}`);
+        } else {
+          toast.error("An error occurred while processing your request.");
         }
       }
-    } else {
-      toast.error("Check Your password");
     }
   };
 
@@ -162,10 +160,10 @@ export default function Myprofile() {
                 </IconButton>
               }
               title="Profile"
-              
+
             />
-            <div style={{marginTop:'-1rem',marginLeft:'2.5%'}}>
-              <p>Created on: {moment(details.createdOn).format("DD/MM/YYYY")}</p>
+            <div style={{ marginTop: '-1rem', marginLeft: '2.5%' }}>
+              <p>Last Update on: {moment(details.createdOn).format("DD/MM/YYYY")}</p>
             </div>
 
             <Form name="sign-up" className="sign-up mt-4">
@@ -270,30 +268,62 @@ export default function Myprofile() {
                   </Form.Item>
                 </div>
 
-                <div className="col-xl">
-                  <Form.Item
-                    label="Email"
-                    className="mt-2"
-                    rules={[
-                      {
-                        required: true,
-                        message: (
-                          <span style={{ fontSize: "9px", color: "red" }}>
-                            Please input your Email!
-                          </span>
-                        ),
-                      },
-                    ]}
-                  >
-                    <input
-                      onChange={(e) => setemail(e.target.value)}
-                      disabled={edit}
-                      style={{ fontSize: "1rem" }}
-                      className="form-control form-control-sm"
-                      defaultValue={details.email}
-                    />
-                  </Form.Item>
+
+                <div className="row">
+                  <div className="col-xl-6">
+                    <Form.Item
+                      label="Email"
+                      className="mt-2"
+                      rules={[
+                        {
+                          required: true,
+                          message: (
+                            <span style={{ fontSize: "9px", color: "red" }}>
+                              Please input your Email!
+                            </span>
+                          ),
+                        },
+                      ]}
+                    >
+                      <input
+                        onChange={(e) => setemail(e.target.value)}
+                        disabled={edit}
+                        style={{ fontSize: "1rem" }}
+                        className="form-control form-control-sm"
+                        defaultValue={details.email}
+                      />
+                    </Form.Item>
+                  </div>
+                  <div className="col-xl">
+                    <Form.Item
+                      className="mt-2"
+                      name="bday"
+                      label="DOB"
+                      rules={[
+                        {
+                          required: true,
+                          message: (
+                            <span style={{ fontSize: "9px", color: "red" }}>
+                              Required!
+                            </span>
+                          ),
+                        },
+                      ]}
+                    >
+                      <DatePicker
+                        selected={bday ? moment(bday, "YYYY-MM-DD").toDate() : null}
+                        onChange={(date) => setbday(moment(date).format("YYYY-MM-DD"))}
+                        dateFormat="yyyy-MM-dd"
+                        placeholderText={details.bday ? moment(details.bday).format("YYYY-MM-DD") : "Select Date"}
+                        showMonthDropdown
+                        showYearDropdown
+                        disabled={edit}
+                        dropdownMode="select"
+                      />
+                    </Form.Item>
+                  </div>
                 </div>
+
               </div>
 
               <div className="mt-4">
@@ -371,20 +401,39 @@ export default function Myprofile() {
                     />
                   </Form.Item>
                 </div>
+
                 {edit === false ? (
                   <div className="mt-4">
-                    <input
-                      type=""
-                      name={newPass}
-                      onChange={(e) => setNewPass(e.target.value)}
-                    />
-                    &nbsp;
-                    <button
-                      onClick={(e) => onSaved(e, users.id)}
-                      className="btn  btn-primary btn-sm"
+
+
+                    <Form.Item
+                      className="mt-2"
+                      label="Password"
+                      rules={[
+                        {
+                          required: true,
+                          message: (
+                            <span style={{ fontSize: "9px", color: "red" }}>
+                              Required!
+                            </span>
+                          ),
+                        },
+                      ]}
                     >
-                      save
-                    </button>
+                      <input
+                        type=""
+                        name={password}
+                        onChange={(e) => setPassoword(e.target.value)}
+                      />             <button
+                        onClick={(e) => onSaved(e, users.id)}
+                        className="btn btn-primary btn-sm"
+                      >
+                        save
+                      </button>
+                    </Form.Item>
+
+
+
                   </div>
                 ) : (
                   ""

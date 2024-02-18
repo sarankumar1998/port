@@ -25,6 +25,10 @@ const FormsData = () => {
   console.log(date,'datee');
 
 
+
+  const apiBaseUrl = 'http://192.168.10.117:4000/api/v1//members'; // Replace with your IP address
+
+
   const onFinish = async () => {
     let  sessionValue =  JSON.parse(sessionStorage.getItem("user"))
     let user = {
@@ -38,10 +42,10 @@ const FormsData = () => {
     }
   
 
-    await axios.post(`http://localhost:4000/api/v1//members`, user)
+    await axios.post(apiBaseUrl, user)
     .then((res) => {
         form.resetFields()
-        sessionStorage.setItem('usersss', JSON.stringify(res.data));
+        // sessionStorage.setItem('usersss', JSON.stringify(res.data));
         toast.success("Sent Successfully");
       },
  
@@ -169,12 +173,12 @@ const FormsData = () => {
                   onChange={(event) => setMessage(event.target.value)}
                 />
               </Form.Item>
-              <div>
+              {/* <div>
                 <input                
                 type="date"
                 onChange={e => setDate(e.target.value)}
                 />
-              </div>
+              </div> */}
 
               <div className="mt-4">
                 <button

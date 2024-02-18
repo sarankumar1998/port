@@ -19,7 +19,13 @@ import Table from "@mui/material/Table";
 import LoadingSpinner from "../Loader/LoadingSpinner";
 
 
-function Admin({ usersId }) {
+
+const apiBaseUrl1 = 'http://192.168.10.117:4000/api/v4/register'; // Replace with your IP address
+const apiBaseUrl2 = 'http://192.168.10.117:4000/api/v1/special/Obj'; // Replace with your IP address
+const apiBaseUrl3 = 'http://192.168.10.117:4000/api/v1/member/remove'; // Replace with your IP address
+
+
+function Admin({ }) {
   // CALL IT ONCE IN YOUR APP
   if (typeof window !== "undefined") {
     injectStyle();
@@ -30,7 +36,7 @@ function Admin({ usersId }) {
   const [all, setAll] = useState([]);
   const [Reject, setReject] = useState(false);
   const [load, setLoad] = useState(false);
-  const [open, setOpen] = React.useState(false);
+
 
   const [remarks, setremarks] = useState("");
 
@@ -45,7 +51,7 @@ function Admin({ usersId }) {
     };
 
     try {
-      await axios.post("http://localhost:4000/api/v4/register", user)
+      await axios.post(apiBaseUrl1, user)
       setLoad(false);
       toast.success("Mail sent Successfully");
     } catch (err) {
@@ -60,7 +66,7 @@ function Admin({ usersId }) {
 
   const getProduct = async () => {
     await axios
-      .get(`http://localhost:4000/api/v1/special/Obj/`)
+      .get(apiBaseUrl2)
       .then((res) => {
         setAll(res.data);
         setLoad(false);
@@ -68,23 +74,15 @@ function Admin({ usersId }) {
       .catch((err) => console.log(err));
   };
 
-  const bySearch = (all, search) => {
-    if (search) {
-
-      // return all.name && all.message.toLowerCase().includes(search.toLowerCase());
-      return all.id.toString().includes(search.toString());
-    } else return all;
-  };
-
-  const filteredList = (all, search) => {
-    return all.filter((all) => bySearch(all, search));
-  };
+  const filteredData = all.filter(item =>
+    item.name.toLowerCase().includes(search.toLowerCase())
+  );
 
   const handleDel = async (id) => {
     let confirm = window.confirm("Are you sure you want to delete");
     if (confirm) {
       try {
-        await axios.delete("http://localhost:4000/api/v1/member/remove/" + id);
+        await axios.delete(apiBaseUrl3 + id);
         toast.error("Deleted Successfully");
         window.location.reload();
       } catch (err) {
@@ -92,8 +90,6 @@ function Admin({ usersId }) {
       }
     }
   };
-
-
 
   const handleApprove = async (id) => {
     setApproval(true);
@@ -118,7 +114,7 @@ function Admin({ usersId }) {
   };
 
   const handleReject = async (id) => {
-    setReject(true); 
+    setReject(true);
     setApproval(false);
 
     const updateStatus = {
@@ -155,14 +151,16 @@ function Admin({ usersId }) {
   };
 
   return (
-    <div className="container mt-3">
+
+
+    <div className="container mt-5">
       {load ?
 
         <LoadingSpinner message="Please wait while the mail is being sent" />
 
         : (<>
           {/* {usersId === undefined ? "" :  <Navbars />} */}
-          <ToastContainer />
+
           <label>Search:</label>
           <input className="mb-2" onChange={(e) => setSearch(e.target.value)} />
 
@@ -189,7 +187,7 @@ function Admin({ usersId }) {
                   </TableHead>
 
                   {all.length === 0 ? <LoadingSpinner /> : <TableBody>
-                    {filteredList(all, search).map((el, index) => {
+                    {filteredData.map((el, index) => {
                       return (
                         <TableRow
                           hover
@@ -254,13 +252,13 @@ function Admin({ usersId }) {
                             </button>
 
                           </TableCell>
-                          <TableCell>              
-                             <button
-                            className="btn btn-danger btn-sm"
-                            onClick={() => sendEmail(el.id, el.email, el.Remarks)}
-                          >
-                            Email
-                          </button></TableCell>
+                          <TableCell>
+                            <button
+                              className="btn btn-danger btn-sm"
+                              onClick={() => sendEmail(el.id, el.email, el.Remarks)}
+                            >
+                              Email
+                            </button></TableCell>
                         </TableRow>
                       );
                     })}

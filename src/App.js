@@ -8,7 +8,6 @@ import Msc from "./containers/Msc";
 import Login from "./components/Login/Login";
 import Signup from "./components/Signup/Signup";
 import Myprofile from "./components/Myprofile/Myprofile";
-import Product from "./containers/Product/Product";
 import Cart from "./containers/Cart/Cart";
 import Sports from "./components/Sports/Sports";
 import Checkout from "./containers/Checkout/Checkout";
@@ -16,12 +15,17 @@ import ClientMail from "./containers/ClientMail/ClientMail";
 import { createContext } from "react";
 import { useEffect } from "react";
 import { useState } from "react";
+import Travelticket from "./containers/ClientMail/Travelticket";
+import Forgot from "./components/Login/Forgot";
+import ResetPassword from "./components/Login/ResetPassword";
+import RatemyApp from "./containers/ClientMail/RatemyApp";
+
 
 export const AppContext = createContext(null)
 
 function App() {
 
-const [routeState, setRouteState] = useState(JSON.parse(sessionStorage.getItem("user")))
+const [routeState, setRouteState] = useState(JSON.parse(sessionStorage.getItem("user"))  || {})
 console.log(routeState, "routeState");
 // const stringifiedPerson = sessionStorage.getItem("user");
 // const personAsObjectAgain = JSON.parse(stringifiedPerson);
@@ -42,11 +46,9 @@ console.log(routeState, "routeState");
 // }, []);
   return (
     <div className="App">
-              <AppContext.Provider value={{routeState}} >
+              <AppContext.Provider value={{ routeState: routeState }}>
       <Router>
-        {/* <Navbars /> */}
         <Routes>
-  
           <Route path="/" element={<Login />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
@@ -56,12 +58,15 @@ console.log(routeState, "routeState");
           <Route path="/contact" element={<Contact />} />
           <Route path="/msc" element={<Msc />} />
           <Route path="/myprofile" element={<Myprofile />} />
-          <Route path="/product" element={<Product />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/sports" element={<Sports />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/clientmail" element={<ClientMail />} />
-   
+          <Route path="/travelticket" element={<Travelticket/>} />
+          <Route path="/forgot" element={<Forgot/>} />
+          <Route path="/ratemyapp" element={<RatemyApp/>} />
+          <Route path="/reset/auth/:resetToken" element={<ResetPassword/>} />
+
         </Routes>
       </Router>
       </AppContext.Provider>

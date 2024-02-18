@@ -26,6 +26,26 @@ Router.get("/special/users/:id", function (req, res) {
         console.log(error);
         return res.status(500).json(error);
       } else {
+        res.status(200).send(results);
+        // below data for object
+        // res.status(200).send(...results);
+      }
+    }
+  );
+});
+
+// for profile
+Router.get("/profile/users/:id", function (req, res) {
+  let user_id = req.params.id;
+  con.query(
+    "SELECT * FROM users where id=?",
+    user_id,
+    function (error, results) {
+      if (error) {
+        console.log(error);
+        return res.status(500).json(error);
+      } else {
+        // below data for object
         res.status(200).send(...results);
       }
     }
@@ -61,19 +81,18 @@ Router.get("/special/Obj/", function (req, res) {
 // results[0]
 
 Router.post("/members", function (req, res) {
-  // reqn  body
+  // req  body
   var name = req.body.name;
   var email = req.body.email;
   var message = req.body.message;
   var mobile = req.body.mobile;
   var status = req.body.status;
-  var tm = req.body.tm
   var userId = req.body.userId;
 
   // query
   var query = `INSERT INTO vendorview 
-	(name, email, message, mobile,status,tm,userId) 
-	VALUES ("${name}", "${email}", "${message}", "${mobile}","${status}","${tm}","${userId}")`;
+	(name, email, message, mobile,status,userId) 
+	VALUES ("${name}", "${email}", "${message}", "${mobile}","${status}","${userId}")`;
 
   // Run the query
   con.query(query, function (error, data) {
