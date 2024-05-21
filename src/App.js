@@ -70,7 +70,6 @@ console.log(routeState, "routeState");
         </Routes>
       </Router>
       </AppContext.Provider>
-      {/* <Footer /> */}
     </div>
   );
 }

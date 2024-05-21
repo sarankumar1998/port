@@ -32,8 +32,8 @@ import LogoutIcon from "@mui/icons-material/Logout";
 
 const drawerWidth = 240;
 
-const apiBaseUrl1 = 'http://192.168.10.117:4000/api/v1/special/Obj'        
-const apiBaseUrl2 = 'http://192.168.10.117:4000/api/v1/profile/users'  
+const apiBaseUrl1 = 'http://localhost:4000/api/v1/special/Obj'        
+const apiBaseUrl2 = 'http://localhost:4000/api/v1/profile/users'  
 
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",

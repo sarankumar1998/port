@@ -20,9 +20,9 @@ import LoadingSpinner from "../Loader/LoadingSpinner";
 
 
 
-const apiBaseUrl1 = 'http://192.168.10.117:4000/api/v4/register'; // Replace with your IP address
-const apiBaseUrl2 = 'http://192.168.10.117:4000/api/v1/special/Obj'; // Replace with your IP address
-const apiBaseUrl3 = 'http://192.168.10.117:4000/api/v1/member/remove'; // Replace with your IP address
+const apiBaseUrl1 = 'http://localhost:4000/api/v4/register'; // Replace with your IP address
+const apiBaseUrl2 = 'http://localhost:4000/api/v1/special/Obj'; // Replace with your IP address
+const apiBaseUrl3 = 'http://localhost:4000/api/v1/member/remove'; // Replace with your IP address
 
 
 function Admin({ }) {

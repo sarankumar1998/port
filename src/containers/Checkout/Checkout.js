@@ -28,9 +28,9 @@ function Checkout() {
 
   var currentTime = new Date();
 
-  const apiBaseUrl = 'http://192.168.10.117:4000/api/v3/getalltime'; // Replace with your IP address
+  const apiBaseUrl = 'http://localhost:4000/api/v3/getalltime'; // Replace with your IP address
 
-  const apiBaseUrl2 = 'http://192.168.10.117:4000/api/v3/up/'; // Replace with your IP address
+  const apiBaseUrl2 = 'http://localhost:4000/api/v3/up/'; // Replace with your IP address
 
 
 

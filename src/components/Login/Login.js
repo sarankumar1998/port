@@ -20,7 +20,7 @@ const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const apiBaseUrl = 'http://192.168.10.117:4000/api/v2/login'; // Replace with your IP address
+  const apiBaseUrl = process.env.REACT_APP_USERS_SERVER+'/login';
 
   const onFinish = () => {
     const user = {
@@ -37,13 +37,10 @@ const Login = () => {
           toast.success("Successfully logged in");
   
           const UserData = {
-            id: response.data.id, // Use response.data.id from the API response
+            id: response.data.id,
           };
-
-          console.log(UserData);
   
           sessionStorage.setItem("user", JSON.stringify(UserData));
-          console.log(response.data, "res");
           navigate("/home");
         } else {
           console.error("Unexpected response:", response.status, response.data);
