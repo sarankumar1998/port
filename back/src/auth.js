@@ -24,7 +24,7 @@ router.post("/register", async (req, res) => {
     const hashedPassword = bcrypt.hashSync(req.body.password, salt);
 
     const newUser =
-      "INSERT INTO users (`email`,`username`,`password`,`firstName`,`lastName`,`address`,`country`,`bday`,`mobile`, createdOn) VALUE (?)";
+      "INSERT INTO users (`email`,`username`,`password`,`firstName`,`lastName`,`address`,`country`,`dob`,`mobile`, createdOn) VALUE (?)";
 
     const values = [
       req.body.email,
@@ -35,7 +35,7 @@ router.post("/register", async (req, res) => {
       req.body.lastName,
       req.body.address,
       req.body.country,
-      req.body.bday,
+      req.body.dob,
       req.body.mobile,
       (req.body.createdOn = moment(Date.now()).format("YYYY-MM-DD HH:mm:ss")),
     ];
@@ -109,20 +109,15 @@ router.get("/detail", checkToken, (req, res) => {
 
 
 router.put("/profile/update/:id", (req, res) => {
-  // ID via params
   var { id } = req.params;
 
-  // req body
-  var { email, username, firstName, lastName, address, country, bday, mobile, password, createdOn } = req.body;
+  var { email, username, firstName, lastName, address, country, dob, mobile, password } = req.body;
 
-  // Hash the new password
   const salt = bcrypt.genSaltSync(10);
   const hashedPassword = bcrypt.hashSync(password, salt);
 
-  // Query to fetch the existing password
   var getPasswordQuery = `SELECT password FROM users WHERE id=${id}`;
 
-  // Run the query to fetch the existing passwordpMY
   con.query(getPasswordQuery, function (error, result) {
     if (error) {
       console.log(error);
@@ -132,20 +127,16 @@ router.put("/profile/update/:id", (req, res) => {
         return res.status(404).json("User not found");
       }
 
-      // Retrieve the existing password from the query result
       const existingPassword = result[0].password;
 
-      // Compare the existing password with the new password
       const passwordMatch = bcrypt.compareSync(password, existingPassword);
 
       if (!passwordMatch) {
         return res.status(401).json("Invalid password");
       }
 
-      // Update query with hashed password
-      var query = `UPDATE users SET email='${email}', username='${username}', password='${hashedPassword}', firstName='${firstName}', lastName='${lastName}', address='${address}', country='${country}', bday='${bday}', mobile='${mobile}', createdOn='${moment(Date.now()).format("YYYY-MM-DD HH:mm:ss")}' WHERE id=${id}`;
+      var query = `UPDATE users SET email='${email}', username='${username}', password='${hashedPassword}', firstName='${firstName}', lastName='${lastName}', address='${address}', country='${country}', dob='${dob}', mobile='${mobile}', createdOn='${moment(Date.now()).format("YYYY-MM-DD HH:mm:ss")}' WHERE id=${id}`;
 
-      // Run the update query
       con.query(query, function (error, data) {
         if (error) {
           console.log(error, "ok");
@@ -196,7 +187,7 @@ router.post('/forgot', async (req, res) => {
           from: "saran07rose@gmail.com",
           to: email,
           subject: 'Password Reset',
-          html: `<p>Click <a href="http://192.168.10.117:3001/reset/auth/${encodedToken}">here</a> to reset your password.</p>`
+          html: `<p>Click <a href="http://localhost:3001/reset/auth/${encodedToken}">here</a> to reset your password.</p>`
         };
 
         // Send email

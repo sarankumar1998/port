@@ -14,15 +14,14 @@ const helmet = require('helmet');
 
 var app = express();
 
-const corsOptions = {
-  origin: ['http://localhost:3001', 'http://192.168.10.117:3001'], // Add your frontend's origins
-};
+// const corsOptions = {
+//   origin: ['http://localhost:3001'] 
+// };
 
 
 
-console.log(corsOptions);
 
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(helmet({ referrerPolicy: { policy: 'same-origin' } }));
 
 

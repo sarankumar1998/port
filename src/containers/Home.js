@@ -18,7 +18,7 @@ export default function Home() {
   const [user, setUser] = useState(null);
   const [birthdayWish, setBirthdayWish] = useState("");
 
-  const apiBaseUrl = 'http://192.168.10.117:4000/api/v1/special/users'; // Replace with your IP address
+  const apiBaseUrl = 'http://localhost:4000/api/v1/special/users'; // Replace with your IP address
 
   useEffect(() => {
    
@@ -29,7 +29,7 @@ export default function Home() {
         setUser(user);
 
         const today = new Date();
-        const birthday = new Date(user.bday);
+        const birthday = new Date(user.dob);
 
         if (
           user && // Ensure that user object is not null

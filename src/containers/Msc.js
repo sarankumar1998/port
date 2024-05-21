@@ -8,7 +8,7 @@ import Admin from "../components/Admin/Admin";
 
 
 
-const apiBaseUrl = 'http://192.168.10.117:4000/api/v1/special/Obj'; // Replace with your IP address
+const apiBaseUrl = 'http://localhost:4000/api/v1/special/Obj'; // Replace with your IP address
 
 function Msc({ }) {
   const [allData, setallData] = useState([]);

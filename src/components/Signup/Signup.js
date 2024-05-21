@@ -10,7 +10,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import moment from "moment"; // Import the moment library
 import axios from "axios";
 
-const apiBaseUrl = 'http://192.168.10.117:4000/api/v2/register'; // Replace with your IP address
+const apiBaseUrl = process.env.REACT_APP_USERS_SERVER +  '/register'; // Replace with your IP address
 
 
 const Signup = () => {
@@ -24,7 +24,7 @@ const Signup = () => {
   const [lastName, setlastName] = useState("");
   const [country, setcountry] = useState("");
   const [address, setaddress] = useState("");
-  const [bday, setBday] = useState("");
+  const [dob, setdob] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [mobile, setMobile] = useState("")
@@ -46,7 +46,7 @@ const Signup = () => {
       lastName: lastName,
       country: country,
       address: address,
-      bday: bday,
+      dob: dob,
       mobile: mobile,
       email: email,
       username: username,
@@ -285,7 +285,7 @@ const Signup = () => {
                   <div className="col-xl-1 col-md" >
                     <Form.Item
                       className="mt-2"
-                      name="bday"
+                      name="dob"
                       label="DOB"
                       rules={[
                         {
@@ -300,8 +300,8 @@ const Signup = () => {
                     >
                       <DatePicker
                         style={{ width: "2rem" }}
-                        selected={bday ? moment(bday, "YYYY-MM-DD").toDate() : null}
-                        onChange={(date) => setBday(moment(date).format("YYYY-MM-DD"))}
+                        selected={dob ? moment(dob, "YYYY-MM-DD").toDate() : null}
+                        onChange={(date) => setdob(moment(date).format("YYYY-MM-DD"))}
                         dateFormat="yyyy-MM-dd"
                         placeholderText="Select Date"
                         showMonthDropdown
