@@ -62,7 +62,7 @@ const AppBar = styled(MuiAppBar, {
   }),
 }));
 
-export default function Navbars({ handleLogout }) {
+export default function Navbars() {
   const { id } = JSON.parse(sessionStorage.getItem("user"));
   const [show, setShow] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -105,13 +105,13 @@ export default function Navbars({ handleLogout }) {
   const handleCloseCanva = () => setShow(false);
   const handleShowCanva = () => setShow(true);
 
-  // const handleClick = () => {
-  //   let confirm = window.confirm("Are you sure you want to logout");
-  //   if (confirm) {
-  //     sessionStorage.clear();
-  //     window.location.reload();
-  //   }
-  // };
+  const handleLogout = () => {
+    let confirm = window.confirm("Are you sure you want to logout");
+    if (confirm) {
+      sessionStorage.clear();
+      navigate('/login');
+    }
+  };
 
   const theme = useTheme();
 

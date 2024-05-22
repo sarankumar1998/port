@@ -78,8 +78,6 @@ export default function Sports() {
 
   return (
     <div style={{ marginTop: "6rem" }}>
-      <Navbars />
-
       <div style={{ margin: "2rem" }} className="row">
         <div className="col-xl-3">
           <Card

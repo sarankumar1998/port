@@ -4,8 +4,6 @@ import Navbars from "../../components/Navbars";
 export default function Cart({ addCart, items }) {
   return (
     <div>
-      <Navbars />
-
       <div className="container">
    
           <>

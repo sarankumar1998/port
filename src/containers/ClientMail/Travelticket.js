@@ -60,7 +60,6 @@ export default function Travelticket() {
 
   return (
     <div>
-      <Navbars />
       <ToastContainer />
       <div className="container" style={{ marginTop: '7rem' }}>
         <div className="top-0 end-0 p-2">
