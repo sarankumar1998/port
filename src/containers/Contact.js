@@ -20,7 +20,6 @@ function Contact({usersId}) {
 
   return (
     <div>
-      <Navbars />
       <img src={blue} alt="" style={{ height: '50vh' }} />
       <h3 className='centered'> Contact us
       </h3>

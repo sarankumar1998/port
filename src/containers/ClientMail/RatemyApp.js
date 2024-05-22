@@ -19,7 +19,6 @@ export default function RatemyApp() {
 
   return (
     <div>
-      <Navbars />
       <div className='container' style={{ marginTop: '8rem' }}>
         <div className='row justify-content-center'>
           <div className='col-md-6'>

@@ -48,8 +48,6 @@ function Msc({ }) {
 
   return (
     <div className="container mt-5">
-      <Navbars />
-
       <div className="mt-3">
         {id !== 2 ? (
           <Box component="main" sx={{ flexGrow: 1, p: 3 }}>

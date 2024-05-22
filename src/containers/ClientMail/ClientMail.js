@@ -13,25 +13,10 @@ function ClientMail() {
   const [otp, setOTP] = useState('');
   const [message, setMessage] = useState(true);
   const [messageStyle, setMessageStyle] = useState({});
-  const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [count, setCount] = useState(0); // Start count from 0
+  const [count, setCount] = useState(0); 
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = async () => {
-    try {
-      const response = await axios.get('https://api.example.com/data');
-      setData(response.data);
-      setLoading(false);
-    } catch (error) {
-      // setError(error.message);
-      setLoading(false);
-    }
-  };
 
   const handleGenerateOTP = () => {
     axios
@@ -46,13 +31,12 @@ function ClientMail() {
         console.error(error);
         setMessage('Failed to generate OTP.');
         setMessageStyle({ color: 'red' });
-        setCount(0); // Reset count to 0
+        setCount(0); 
       });
   };
 
   useEffect(() => {
     if (count > 0) {
-      console.log(count, "count")
       const timer = setTimeout(() => {
         setCount(prevCount => prevCount - 1);
       }, 1000);
@@ -83,11 +67,8 @@ function ClientMail() {
 
   return (
     <>
-      <Navbars />
-
       <div style={{ margin: '5rem' }}>
         <h1>Login via OTP</h1>
-        {/* <button onClick={handleLogout}>Logout</button> */}
 
         <input
           type="email"

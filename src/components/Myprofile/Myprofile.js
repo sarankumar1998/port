@@ -110,8 +110,6 @@ export default function Myprofile() {
 
   return (
     <div>
-      <Navbars />
-
       <div
         style={{
           display: "flex",

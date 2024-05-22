@@ -79,8 +79,6 @@ function Checkout() {
 
   return (
     <div>
-      <Navbars />
-
       <div
         style={{ display: "flex", justifyContent: "center", margin: "2%" }}
       >
