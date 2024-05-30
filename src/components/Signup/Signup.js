@@ -10,7 +10,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import moment from "moment"; // Import the moment library
 import axios from "axios";
 
-const apiBaseUrl = process.env.REACT_APP_USERS_SERVER +  '/register'; // Replace with your IP address
+const apiBaseUrl = process.env.REACT_APP_USERS_SERVER +  '/register'; 
 
 
 const Signup = () => {
@@ -24,21 +24,13 @@ const Signup = () => {
   const [lastName, setlastName] = useState("");
   const [country, setcountry] = useState("");
   const [address, setaddress] = useState("");
-  const [dob, setdob] = useState("");
+  const [dob, setDob] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [mobile, setMobile] = useState("")
   const [password, setPassword] = useState("");
 
 
-  let nombres = ["Ivan", "Dragmon", "Guilmon", "Voz Rasposa", "Omar"];
-
-  // const [role, setrole] = useState(nombres);
-  // console.log(role);
-
-  // const handleChange = (e) => {
-  //        setrole(e.target.value)
-  // }
 
   const onFinish = async () => {
     let user = {
@@ -301,7 +293,7 @@ const Signup = () => {
                       <DatePicker
                         style={{ width: "2rem" }}
                         selected={dob ? moment(dob, "YYYY-MM-DD").toDate() : null}
-                        onChange={(date) => setdob(moment(date).format("YYYY-MM-DD"))}
+                        onChange={(date) => setDob(moment(date).format("YYYY-MM-DD"))}
                         dateFormat="yyyy-MM-dd"
                         placeholderText="Select Date"
                         showMonthDropdown

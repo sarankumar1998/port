@@ -2,31 +2,20 @@
 import { Box } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import Navbars from "../components/Navbars";
 import Admin from "../components/Admin/Admin";
 
 
 
-const apiBaseUrl = 'http://localhost:4000/api/v1/special/Obj'; // Replace with your IP address
+const apiBaseUrl = 'http://localhost:4000/api/v1/special/Obj'; 
 
-function Msc({ }) {
-  const [allData, setallData] = useState([]);
+function ClientForm({ }) {
   const [load, setLoad] = useState(true);
-  const { id } = JSON.parse(sessionStorage.getItem("user"));
-  const [changeVendorId, setChangeVendorId] = useState(null)
   const [secData, setSecData] = useState([]);
 
+  const token = sessionStorage.getItem("token");
 
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (id === null) {
-      navigate("/login");
-    }
-  }, [navigate]);
-
-
+  const decodedToken = JSON.parse(atob(token.split('.')[1]));
+  const userId = decodedToken.id;
 
   useEffect(() => {
     getProductById();
@@ -34,7 +23,7 @@ function Msc({ }) {
 
   const getProductById = (e) => {
 
-    axios.get(`${apiBaseUrl}/${id}`)
+    axios.get(`${apiBaseUrl}/${userId}`)
       .then((res) => {
         setSecData(res.data);
         setLoad(false);
@@ -49,7 +38,7 @@ function Msc({ }) {
   return (
     <div className="container mt-5">
       <div className="mt-3">
-        {id !== 2 ? (
+        {userId !== 2 ? (
           <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
             <table class="table table-bordered">
               <thead>
@@ -84,4 +73,4 @@ function Msc({ }) {
   );
 }
 
-export default Msc;
+export default ClientForm;

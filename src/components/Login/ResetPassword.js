@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 
-const apiBaseUrl = process.env.REACT_APP_USERS_SERVER + '/reset'; // Replace with your IP address
+const apiBaseUrl = process.env.REACT_APP_USERS_SERVER + '/reset'; 
 
 
 const ResetPassword = () => {

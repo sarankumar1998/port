@@ -27,20 +27,18 @@ const Login = () => {
       username: username,
       password: password,
     };
-  
+
     axios
       .post(apiBaseUrl, user)
       .then((response) => {
         console.log("Server response:", response.data);
-  
+
         if (response.status === 200) {
           toast.success("Successfully logged in");
-  
-          const UserData = {
-            id: response.data.id,
-          };
-  
-          sessionStorage.setItem("user", JSON.stringify(UserData));
+
+          const token = response.data.token;
+          sessionStorage.setItem("token", token);
+          console.log(`token`, token);
           navigate("/home");
         } else {
           console.error("Unexpected response:", response.status, response.data);
@@ -57,7 +55,6 @@ const Login = () => {
         }
       });
   };
-  
 
   return (
     <div className="login-container">
@@ -134,8 +131,8 @@ const Login = () => {
                   />
                 </Form.Item>
 
-                <Link
-                  to="/forgot"
+                <a
+                                        href="forgot"
                   style={{
                     color: "grey",
                     fontSize: "12px",
@@ -143,7 +140,7 @@ const Login = () => {
                   }}
                 >
                   Forgot Password?
-                </Link>
+                </a>
 
                 <div className="d-grid mt-4">
                   <Button

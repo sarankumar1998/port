@@ -30,39 +30,32 @@ export default function Myprofile() {
     injectStyle();
   }
 
-  const { usersVal } = useContext(AppContext)
 
-  const { id } = JSON.parse(sessionStorage.getItem("user"));
-  const stringifiedPerson = sessionStorage.getItem("user");
   const [edit, setEdit] = useState(true);
-  const personAsObjectAgain = JSON.parse(stringifiedPerson);
-  const [users, setUsers] = React.useState(personAsObjectAgain);
-  const [details, setdetails] = useState({});
+
+  const [dob, setdob] = useState("");
+  const [details, setdetails] = useState([]);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-  const navigate = useNavigate()
 
   useEffect(() => {
-    if (id === null) {
-      navigate("/login");
-    }
-
-  }, [navigate]);
-
-  useEffect(() => {
-    getProductById();
+    getUserById();
   }, []);
+  const token = sessionStorage.getItem("token");
 
-  const getProductById = async () => {
+  const decodedToken = JSON.parse(atob(token.split('.')[1]));
+  const userId = decodedToken.id;
+
+  const getUserById = async () => {
     await axios
-      .get(`${apiBaseUrl}/${id}`)
+      .get(`${apiBaseUrl}/${userId}`)
       .then((res) => {
         setdetails(res.data);
       })
       .catch((err) => console.log(err));
   };
 
-  const onSaved = async (e, id) => {
+  const onUpdated = async (e, id) => {
     e.preventDefault();
     const updateStatus = {
       firstName: details.firstName,
@@ -73,7 +66,7 @@ export default function Myprofile() {
       address: details.address,
       username: details.username,
       password: details.password,
-      dob: moment(details.bday).format("YYYY-MM-DD"),
+      dob: details.dob,
     };
     let confirm = window.confirm("Are you sure you want to Edit");
 
@@ -119,8 +112,8 @@ export default function Myprofile() {
         }}
       >
         <ToastContainer />
-        {/* {details.map((details) => ( */}
         <>
+
           <Card sx={{ maxWidth: 745 }} style={{ padding: "2rem" }}>
             <CardHeader
               action={
@@ -149,8 +142,9 @@ export default function Myprofile() {
               title="Profile"
 
             />
+
             <div style={{ marginTop: '-1rem', marginLeft: '2.5%' }}>
-              <p>Last Update on: {moment(details.createdOn).format("DD/MM/YYYY")}</p>
+              <p>Last Update on: {moment(details?.createdOn).format("DD/MM/YYYY")}</p>
             </div>
 
             <Form name="sign-up" className="sign-up mt-4">
@@ -173,9 +167,9 @@ export default function Myprofile() {
                       style={{ fontSize: "1rem" }}
                       type="firstName"
                       disabled={edit}
-                      onChange={(e) => { setdetails({ ...details, firstName: e.target.value }) }}
+                      onChange={(e) => setdetails({ ...details, firstName: e.target.value })}
                       className="form-control form-control-sm"
-                      value={details.firstName || details.firstName}
+                      value={details?.firstName || ""}
                     />
                   </Form.Item>
                 </div>
@@ -197,10 +191,10 @@ export default function Myprofile() {
                     <input
                       style={{ fontSize: "1rem" }}
                       type="lastName"
-                      onChange={(e) => { setdetails({ ...details, lastName: e.target.value }) }}
+                      onChange={(e) => setdetails({ ...details, lastName: e.target.value })}
                       disabled={edit}
                       className="form-control form-control-sm"
-                      value={details.lastName || details.lastName}
+                      defaultValue={details?.lastName}
                     />
                   </Form.Item>
                 </div>
@@ -224,8 +218,8 @@ export default function Myprofile() {
                       type="username"
                       style={{ fontSize: "1rem" }}
                       disabled={edit}
-                      onChange={(e) => { setdetails({ ...details, username: e.target.value }) }}
-                      value={details.username || details.username}
+                      onChange={(e) => setdetails({ ...details, username: e.target.value })}
+                      defaultValue={details?.username}
                       className="form-control form-control-sm"
                     />
                   </Form.Item>
@@ -248,9 +242,9 @@ export default function Myprofile() {
                     <input
                       disabled={edit}
                       style={{ fontSize: "1rem" }}
-                      onChange={(e) => { setdetails({ ...details, mobile: e.target.value }) }}
+                      onChange={(e) => setdetails({ ...details, mobile: e.target.value })}
                       className="form-control form-control-sm"
-                      value={details.mobile || details.mobile}
+                      defaultValue={details?.mobile}
                     />
                   </Form.Item>
                 </div>
@@ -273,11 +267,11 @@ export default function Myprofile() {
                       ]}
                     >
                       <input
-                        onChange={(e) => { setdetails({ ...details, email: e.target.value }) }}
+                        onChange={(e) => setdetails({ ...details, email: e.target.value })}
                         disabled={edit}
                         style={{ fontSize: "1rem" }}
                         className="form-control form-control-sm"
-                        value={details.email || details.email}
+                        defaultValue={details?.email}
                       />
                     </Form.Item>
                   </div>
@@ -297,11 +291,12 @@ export default function Myprofile() {
                         },
                       ]}
                     >
-                       <DatePicker
-                        selected={details.dob ? moment(details.dob, "YYYY-MM-DD").toDate() : null}
-                        onChange={(date) => { setdetails({ ...details, dob: moment(date).format("YYYY-MM-DD") }) }}
+                      <DatePicker
+                        selected={dob ? moment(dob, "YYYY-MM-DD").toDate() : null}
+                        onChange={(date) => setdetails({ ...details, dob: (moment(date).format("YYYY-MM-DD")) })}
+
                         dateFormat="yyyy-MM-dd"
-                        placeholderText={details.dob ? moment(details.dob).format("YYYY-MM-DD") : "Select Date"}
+                        placeholderText={details?.dob ? moment(details?.dob).format("YYYY-MM-DD") : "Select Date"}
                         showMonthDropdown
                         showYearDropdown
                         disabled={edit}
@@ -316,29 +311,7 @@ export default function Myprofile() {
 
               <div className="mt-4">
                 <h5>Personal Info</h5>
-                {/* <div className="col-xl-6">
-                  <Form.Item
-                    className="mt-2"
-                    label="Role"
-                    rules={[
-                      {
-                        required: true,
-                        message: (
-                          <span style={{ fontSize: "9px", color: "red" }}>
-                            Required!
-                          </span>
-                        ),
-                      },
-                    ]}
-                  >
-                    <input
-                      disabled={edit}
-                      style={{ fontSize: "1rem" }}
-                      className="form-control form-control-sm"
-                      defaultValue={details.role}
-                    />
-                  </Form.Item>
-                </div> */}
+
 
                 <div className="col-xl-6">
                   <Form.Item
@@ -358,7 +331,7 @@ export default function Myprofile() {
                     <input
                       style={{ fontSize: "1rem" }}
                       disabled={edit}
-                      onChange={(e) => { setdetails({ ...details, country: e.target.value }) }}
+                      onChange={(e) => setdetails({ ...details, country: e.target.value })}
                       className="form-control form-control-sm"
                       value={details.country || details.country}
                     />
@@ -383,7 +356,7 @@ export default function Myprofile() {
                     <input
                       style={{ fontSize: "1rem" }}
                       disabled={edit}
-                      onChange={(e) => { setdetails({ ...details, address: e.target.value }) }}
+                      onChange={(e) => setdetails({ ...details, address: e.target.value })}
                       className="form-control form-control-sm"
                       value={details.address || details.address}
                     />
@@ -409,12 +382,10 @@ export default function Myprofile() {
                       ]}
                     >
                       <input
-                        type=""
-                        // name={password}
-                        onChange={(e) => { setdetails({ ...details, password: e.target.value }) }}
-                      />
-                      <button
-                        onClick={(e) => onSaved(e, users.id)}
+                        
+                        onChange={(e) => setdetails({ ...details, password: e.target.value })}
+                      />             <button
+                        onClick={(e) => onUpdated(e, userId)}
                         className="btn btn-primary btn-sm"
                       >
                         save
@@ -429,7 +400,9 @@ export default function Myprofile() {
                 )}
               </div>
             </Form>
+
           </Card>
+
         </>
         {/* ))} */}
       </div>
