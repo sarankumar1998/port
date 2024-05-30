@@ -1,4 +1,4 @@
-var express = require("express");
+const express = require("express");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const PeopleRouter = require("./api");
@@ -9,10 +9,8 @@ const order = require("./Payment/Payment");
 const mailLogin = require("./MailLogin/MailLogin");
 const pass = require("./Passengers/Passengers");
 const cors = require("cors");
-const helmet = require('helmet');
 
-
-var app = express();
+const app = express();
 
 // const corsOptions = {
 //   origin: ['http://localhost:3001'] 
@@ -22,12 +20,12 @@ var app = express();
 
 
 app.use(cors());
-app.use(helmet({ referrerPolicy: { policy: 'same-origin' } }));
 
 
 
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(bodyParser.json());
+
 app.use("/api/v1", PeopleRouter);
 app.use("/api/v2", autho);
 app.use("/api/v3", sports);
@@ -40,6 +38,7 @@ app.use((req, res, next) => {
   res.header("Access-Control-Allow-Credentials", true);
   next();
 });
+
 app.use(cookieParser());
 
 const port = process.env.PORT || 4000;

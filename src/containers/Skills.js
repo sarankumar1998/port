@@ -9,14 +9,7 @@ import Navbars from "../components/Navbars";
 import { useNavigate } from "react-router-dom";
 
 function Skills({usersId}) {
-  console.log(usersId,'lll');
-  const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!!!sessionStorage.getItem("user")) {
-      navigate("/login");
-    }
-  }, [navigate]);
   return (
     <div>
  <Navbars />

@@ -8,7 +8,7 @@ const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
     user: "saran07rose@gmail.com",
-    pass: "oekcnozzrolkuyax",
+    pass: "dydnwqiyqkqovfpd",
   }
 });
 
@@ -16,8 +16,8 @@ const transporter = nodemailer.createTransport({
 // Generate and store OTP for a user
 router.post('/generate-otp', (req, res) => {
   const { email } = req.body;
-  const otp = Math.floor(100000 + Math.random() * 900000); // Generate a random 6-digit OTP
-  const otpExpiryTime = new Date().getTime() + 5 * 60 * 1000; // Set the OTP expiration time to 5 minutes from the current time
+  const otp = Math.floor(100000 + Math.random() * 900000); 
+  const otpExpiryTime = new Date().getTime() + 5 * 60 * 1000; 
 
   // Store the OTP and expiry time in the database
   const query = `INSERT INTO maillogin (email, otp, exptime) VALUES (?, ?, ?)`;

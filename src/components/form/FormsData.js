@@ -8,7 +8,7 @@ import DatePicker from "react-date-picker";
 
 
 
-const FormsData = () => {
+const FormsData = ({userId}) => {
 
 
  // CALL IT ONCE IN YOUR APP
@@ -26,11 +26,10 @@ const FormsData = () => {
 
 
 
-  const apiBaseUrl = 'http://localhost:4000/api/v1//members'; // Replace with your IP address
+  const apiBaseUrl = 'http://localhost:4000/api/v1//members';
 
 
   const onFinish = async () => {
-    let  sessionValue =  JSON.parse(sessionStorage.getItem("user"))
     let user = {
       name: name,
       email: email,
@@ -38,7 +37,7 @@ const FormsData = () => {
       message: message,
       status:'Pending',
       tm: date,
-      userId: sessionValue.id
+      userId: userId
     }
   
 

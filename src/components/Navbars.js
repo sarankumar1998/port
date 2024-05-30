@@ -63,43 +63,40 @@ const AppBar = styled(MuiAppBar, {
 }));
 
 export default function Navbars() {
-  const { id } = JSON.parse(sessionStorage.getItem("user"));
   const [show, setShow] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [open, setOpen] = React.useState(false);
   const navigate = useNavigate();
 
-  const [all, setAll] = React.useState([]);
-  const stringifiedPerson = sessionStorage.getItem("user");
-  const personAsObjectAgain = JSON.parse(stringifiedPerson);
-  const [users, setUsers] = React.useState(personAsObjectAgain);
-  const [usersDetails, setUsersDetails] = React.useState(personAsObjectAgain);
+  const [approval, setApproval] = useState([]);
+
+  const token = sessionStorage.getItem("token");
+  const decodedToken = JSON.parse(atob(token.split('.')[1]));
+  const { id, username } = decodedToken;
+  const userId = id;
+
+console.log(approval);
+  useEffect(() => {
+    getApprvlData()
+    if (!token) {
+      navigate("/login");
+      return;
+    }
 
 
-  useEffect(() => { 
-    getProduct();
-    getUserById();
-  }, []);
+  }, [navigate]);
 
-  const getProduct = async () => {
-    await axios
-      .get(apiBaseUrl1)
-      .then((res) => {
-        setAll(res.data.filter((e) => e.status === "Pending"))})
-  
-      .catch((err) => console.log(err));
-  };
-
-
-
-  const getUserById = async () => {
-    await axios
-      .get(`${apiBaseUrl2}/${id}`)
-      .then((res) => {
-        setUsersDetails(res.data);
+  const getApprvlData = () => {
+    axios.get(`${apiBaseUrl1}`)
+      .then(res => {
+        setApproval(res.data)
       })
-      .catch((err) => console.log(err));
-  };
+      .catch(err => {
+        console.log(`err`, err);
+      })
+  }
+
+
 
 
   const handleCloseCanva = () => setShow(false);
@@ -119,9 +116,9 @@ export default function Navbars() {
     setOpen(true);
   };
 
-    const handleDrawerClose = () => {
-      setOpen(false);
-    };
+  const handleDrawerClose = () => {
+    setOpen(false);
+  };
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -133,31 +130,31 @@ export default function Navbars() {
 
   return (
     <>
-      {users === null ? (
+      {/* {user === null ? (
         ""
-      ) : (
-        <Box sx={{ display: "flex" }}>
-          <CssBaseline />
-          <AppBar position="fixed" open={open}>
-            <Toolbar>
-              <IconButton
-                color="inherit"
-                aria-label="open drawer"
-                onClick={handleDrawerOpen}
-                edge="start"
-                sx={{ mr: 2 }}
-              >
-                <MenuIcon />
-              </IconButton>
-              <Typography
-                variant="h6"
-                noWrap
-                component="div"
-                sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
-              >
-                Mars
-              </Typography>
-              <IconButton aria-label="settings">
+      ) : ( */}
+      <Box sx={{ display: "flex" }}>
+        <CssBaseline />
+        <AppBar position="fixed" open={open}>
+          <Toolbar>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              onClick={handleDrawerOpen}
+              edge="start"
+              sx={{ mr: 2 }}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography
+              variant="h6"
+              noWrap
+              component="div"
+              sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
+            >
+              Mars
+            </Typography>
+            <IconButton aria-label="settings">
               <Menu
                 id="menu-appbar"
                 anchorEl={anchorEl}
@@ -175,236 +172,236 @@ export default function Navbars() {
               >
                 <Link style={{ textDecoration: "none" }} to="/Myprofile">
                   {" "}
-                  <MenuItem onClick={handleClose}>{usersDetails.username}</MenuItem>
+                  <MenuItem onClick={handleClose}>{username}</MenuItem>
                 </Link>
 
                 <MenuItem onClick={handleLogout}>logout &nbsp;   <LogoutIcon /></MenuItem>
 
-             
+
               </Menu>
-              </IconButton>
-              <IconButton
-        size="large"
-        aria-label="account of current user"
-        aria-controls="menu-appbar"
-        aria-haspopup="true"
-        onClick={handleMenu}
-        color="inherit"
-        sx={{ ml: "auto" }}
-              >
-                <AccountCircle />
-              </IconButton>
+            </IconButton>
+            <IconButton
+              size="large"
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              onClick={handleMenu}
+              color="inherit"
+              sx={{ ml: "auto" }}
+            >
+              <AccountCircle />
+            </IconButton>
 
-              {users.id === 2 ? (
-                <Badge color="secondary" badgeContent={all.length} showZero>
-                  <CircleNotificationsIcon onClick={handleShowCanva} />
-                </Badge>
-              ) : null}
+            {userId === 2 ? (
+              <Badge color="secondary" badgeContent={approval.length} showZero>
+                <CircleNotificationsIcon onClick={handleShowCanva} />
+              </Badge>
+            ) : null}
 
-              <Offcanvas
-                style={{ marginTop: "4rem" }}
-                show={show}
-                placement={"end"}
-                onHide={handleCloseCanva}
-              >
-                <Offcanvas.Header closeButton>
-                  <Offcanvas.Title>Notification</Offcanvas.Title>
-                </Offcanvas.Header>
-                <hr />
-                <Offcanvas.Body>
-                  <Link
-                    style={{ textDecoration: "none", color: "grey" }}
-                    to="/msc"
-                  >
-                    <div>
-                      {all.map((e) => (
-                        <div
+            <Offcanvas
+              style={{ marginTop: "4rem" }}
+              show={show}
+              placement={"end"}
+              onHide={handleCloseCanva}
+            >
+              <Offcanvas.Header closeButton>
+                <Offcanvas.Title>Notification</Offcanvas.Title>
+              </Offcanvas.Header>
+              <hr />
+              <Offcanvas.Body>
+                <Link
+                  style={{ textDecoration: "none", color: "grey" }}
+                  to="/msc"
+                >
+                  <div >
+                    {approval.map((e) => (
+                      <>{e.status === "Pending" ? <div
+                        style={{
+                          textAlign: "start",
+                          fontSize: "15px",
+                          fontFamily: "sans-serif",
+                        }}
+                      >
+                        <h6
+                          className="text-end"
                           style={{
-                            textAlign: "start",
-                            fontSize: "15px",
-                            fontFamily: "sans-serif",
+                            fontSize: "12px",
+                            marginTop: "1rem",
+                            fontStyle: "italic",
                           }}
                         >
-                          <h6
-                            className="text-end"
-                            style={{
-                              fontSize: "12px",
-                              marginTop: "1rem",
-                              fontStyle: "italic",
-                            }}
-                          >
-                            ({moment(e.tm).format("DD/MM/YYYY")})
-                          </h6>
-                          <span>
-                            <MessageIcon style={{ color: "grey" }} />
-                          </span>{" "}
-                          You have req from {e.name} status is{" "}
-                          <span style={{ color: "red" }}>{e.status}</span>.
-                          <hr />
-                        </div>
-                      ))}
-                    </div>
-                  </Link>
-                </Offcanvas.Body>
-              </Offcanvas>
-            </Toolbar>
-          </AppBar>
-          <SwipeableDrawer
-            sx={{
-              width: drawerWidth,
-              flexShrink: 0,
-              "& .MuiDrawer-paper": {
-                width: drawerWidth,
-                boxSizing: "border-box",
-              },
-            }}
-            onClose={() => setOpen(false)}
-            onBackdropClick={handleDrawerClose}
-            anchor="left"
-            open={open}
-            onOpen={() => setOpen(true)}
-          >
-            <DrawerHeader>
-              <h5>Welcome User!</h5>
-              <IconButton onClick={handleDrawerClose}>
-                {theme.direction === "rtl" ? (
-                  <ChevronRightIcon />
-                ) : (
-                  <ChevronLeftIcon />
-                )}
-              </IconButton>
-            </DrawerHeader>
-            <Divider />
-            <List>
-              <Link to="/home">
-                <ListItem
-                  button
-                  style={{ marginTop: 20 }}
-                  onClick={handleDrawerClose}
-                >
-                  <ListItemIcon>
-                    <Home />
-                  </ListItemIcon>
-                  <ListItemText primary={"Home"} />
-                </ListItem>
-              </Link>
-
-              <Link to="/skills">
-                <ListItem
-                  button
-                  style={{ marginTop: 20 }}
-                  onClick={handleDrawerClose}
-                >
-                  <ListItemIcon>
-                    <LibraryBooksIcon />
-                  </ListItemIcon>
-                  <ListItemText primary={"Skill"} />
-                </ListItem>
-              </Link>
-
-              <Link to="/about">
-                <ListItem
-                  button
-                  style={{ marginTop: 20 }}
-                  onClick={handleDrawerClose}
-                >
-                  <ListItemIcon>
-                    <InfoIcon />
-                  </ListItemIcon>
-                  <ListItemText primary={"About"} />
-                </ListItem>
-              </Link>
-
-              {users.id === 2 ? (
-                ""
-              ) : (
-                <Link to="/contact">
-                  <ListItem
-                    button
-                    style={{ marginTop: 20 }}
-                    onClick={handleDrawerClose}
-                  >
-                    <ListItemIcon>
-                      <ContactsIcon />
-                    </ListItemIcon>
-                    <ListItemText primary={"Contact"} />
-                  </ListItem>
+                          ({moment(e.tm).format("DD/MM/YYYY")})
+                        </h6>
+                        <span>
+                          <MessageIcon style={{ color: "grey" }} />
+                        </span>{" "}
+                        You have req from <span style={{fontWeight:"700", color:"black"}}>{e.name}</span> status is{" "}
+                        <span style={{ color: "red" }}>{e.status}</span>.
+                        <hr />
+                      </div> : null} </>
+                    ))}
+                  </div>
                 </Link>
+              </Offcanvas.Body>
+            </Offcanvas>
+          </Toolbar>
+        </AppBar>
+        <SwipeableDrawer
+          sx={{
+            width: drawerWidth,
+            flexShrink: 0,
+            "& .MuiDrawer-paper": {
+              width: drawerWidth,
+              boxSizing: "border-box",
+            },
+          }}
+          onClose={() => setOpen(false)}
+          onBackdropClick={handleDrawerClose}
+          anchor="left"
+          open={open}
+          onOpen={() => setOpen(true)}
+        >
+          <DrawerHeader>
+            <h5>Welcome User!</h5>
+            <IconButton onClick={handleDrawerClose}>
+              {theme.direction === "rtl" ? (
+                <ChevronRightIcon />
+              ) : (
+                <ChevronLeftIcon />
               )}
+            </IconButton>
+          </DrawerHeader>
+          <Divider />
+          <List>
+            <Link to="/home">
+              <ListItem
+                button
+                style={{ marginTop: 20 }}
+                onClick={handleDrawerClose}
+              >
+                <ListItemIcon>
+                  <Home />
+                </ListItemIcon>
+                <ListItemText primary={"Home"} />
+              </ListItem>
+            </Link>
 
-              <Link to="/msc">
-                <ListItem
-                  button
-                  style={{ marginTop: 20 }}
-                  onClick={handleDrawerClose}
-                >
-                  <ListItemIcon>
-                    <ViewAgenda />
-                  </ListItemIcon>
-                  <ListItemText primary={"View"} />
-                </ListItem>
-              </Link>
-       
-              <Link to="/sports">
-                <ListItem
-                  button
-                  style={{ marginTop: 20 }}
-                  onClick={handleDrawerClose}
-                >
-                  <ListItemIcon>
-                    <ViewAgenda />
-                  </ListItemIcon>
-                  <ListItemText primary={"Sports"} />
-                </ListItem>
-              </Link>
-              
-              <Link to="/clientmail">
-                <ListItem
-                  button
-                  style={{ marginTop: 20 }}
-                  onClick={handleDrawerClose}
-                >
-                  <ListItemIcon>
-                    <MessageIcon />
-                  </ListItemIcon>
-                  <ListItemText primary={"Mail"} />
-                </ListItem>
-              </Link>
+            <Link to="/skills">
+              <ListItem
+                button
+                style={{ marginTop: 20 }}
+                onClick={handleDrawerClose}
+              >
+                <ListItemIcon>
+                  <LibraryBooksIcon />
+                </ListItemIcon>
+                <ListItemText primary={"Skill"} />
+              </ListItem>
+            </Link>
 
-                         
-              <Link to="/travelticket">
+            <Link to="/about">
+              <ListItem
+                button
+                style={{ marginTop: 20 }}
+                onClick={handleDrawerClose}
+              >
+                <ListItemIcon>
+                  <InfoIcon />
+                </ListItemIcon>
+                <ListItemText primary={"About"} />
+              </ListItem>
+            </Link>
+
+            {userId === 2 ? (
+              ""
+            ) : (
+              <Link to="/contact">
                 <ListItem
                   button
                   style={{ marginTop: 20 }}
                   onClick={handleDrawerClose}
                 >
                   <ListItemIcon>
-                    <MessageIcon />
+                    <ContactsIcon />
                   </ListItemIcon>
-                  <ListItemText primary={"Add Ticket"} />
+                  <ListItemText primary={"Contact"} />
                 </ListItem>
               </Link>
+            )}
 
-              <Link to="/RatemyApp">
-                <ListItem
-                  button
-                  style={{ marginTop: 20 }}
-                  onClick={handleDrawerClose}
-                >
-                  <ListItemIcon>
-                    <MessageIcon />
-                  </ListItemIcon>
-                  <ListItemText primary={"Rate My App"} />
-                </ListItem>
-              </Link>
-                          
-                                      
+            <Link to="/clientForm">
+              <ListItem
+                button
+                style={{ marginTop: 20 }}
+                onClick={handleDrawerClose}
+              >
+                <ListItemIcon>
+                  <ViewAgenda />
+                </ListItemIcon>
+                <ListItemText primary={"View"} />
+              </ListItem>
+            </Link>
 
-            </List>
-            <Divider />
-          </SwipeableDrawer>
-        </Box>
-      )}
+            <Link to="/sports">
+              <ListItem
+                button
+                style={{ marginTop: 20 }}
+                onClick={handleDrawerClose}
+              >
+                <ListItemIcon>
+                  <ViewAgenda />
+                </ListItemIcon>
+                <ListItemText primary={"Sports"} />
+              </ListItem>
+            </Link>
+
+            <Link to="/clientmail">
+              <ListItem
+                button
+                style={{ marginTop: 20 }}
+                onClick={handleDrawerClose}
+              >
+                <ListItemIcon>
+                  <MessageIcon />
+                </ListItemIcon>
+                <ListItemText primary={"Mail"} />
+              </ListItem>
+            </Link>
+
+
+            <Link to="/travelticket">
+              <ListItem
+                button
+                style={{ marginTop: 20 }}
+                onClick={handleDrawerClose}
+              >
+                <ListItemIcon>
+                  <MessageIcon />
+                </ListItemIcon>
+                <ListItemText primary={"Add Ticket"} />
+              </ListItem>
+            </Link>
+
+            <Link to="/RatemyApp">
+              <ListItem
+                button
+                style={{ marginTop: 20 }}
+                onClick={handleDrawerClose}
+              >
+                <ListItemIcon>
+                  <MessageIcon />
+                </ListItemIcon>
+                <ListItemText primary={"Rate My App"} />
+              </ListItem>
+            </Link>
+
+
+
+          </List>
+          <Divider />
+        </SwipeableDrawer>
+      </Box>
+      {/* )} */}
     </>
   );
 }

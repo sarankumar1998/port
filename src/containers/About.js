@@ -7,12 +7,7 @@ export default function About({usersId}) {
   console.log(usersId, 'checkkkkkkkkkk');
   const navigate  = useNavigate()
 
-  useEffect(() => {
-    if (!!!sessionStorage.getItem("user")) {
-      navigate("/login");
-    }
-    
-  }, [navigate]);
+;
 
   return (
     <div className="container">
@@ -48,7 +43,7 @@ export default function About({usersId}) {
 
       {/* <Carousel>
         <Carousel.Item interval={500}>
-          <a href="/msc">
+          <a href="/clientForm">
             <img
               className="d-block w-100"
               src={pic2}

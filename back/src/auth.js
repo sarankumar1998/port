@@ -10,18 +10,18 @@ const nodemailer = require("nodemailer");
 
 const router = express.Router();
 
-router.post("/register", async (req, res) => {
-  //CHECK USER IF EXISTS
-  const alreadyUser = "SELECT * FROM users WHERE username = ?";
 
+router.post("/register", async (req, res) => {
+  // CHECK IF USER ALREADY EXISTS
+  const alreadyUser = "SELECT * FROM users WHERE username = ?";
+  
   con.query(alreadyUser, [req.body.username], (err, data) => {
-    if (err) return res.status(500).json(err);
+    if (err) return res.status(500).json({ error: err.message });
     if (data.length) return res.status(409).json("User already exists!");
 
-    //CREATE A NEW USER
-    //Hash the password
-    const salt = bcrypt.genSaltSync(10);
-    const hashedPassword = bcrypt.hashSync(req.body.password, salt);
+    // CREATE A NEW USER
+    // Hash the password
+    const hashedPassword = bcrypt.hashSync(req.body.password, 10);
 
     const newUser =
       "INSERT INTO users (`email`,`username`,`password`,`firstName`,`lastName`,`address`,`country`,`dob`,`mobile`, createdOn) VALUE (?)";
@@ -30,25 +30,21 @@ router.post("/register", async (req, res) => {
       req.body.email,
       req.body.username,
       hashedPassword,
-      // req.body.password,
       req.body.firstName,
       req.body.lastName,
       req.body.address,
       req.body.country,
       req.body.dob,
       req.body.mobile,
-      (req.body.createdOn = moment(Date.now()).format("YYYY-MM-DD HH:mm:ss")),
+      moment().format("YYYY-MM-DD HH:mm:ss"),
     ];
 
-    con.query(newUser, [values], (err, data) => {
+    con.query(newUser, values, (err, data) => {
       if (err) {
-        return res.status(500).json("Internal Error");
+        return res.status(500).json({ error: err.message });
       }
-      else return res.status(200).json("User has been created.");
-
-    }
-    );
-
+      return res.status(200).json("User has been created.");
+    });
   });
 });
 
@@ -69,12 +65,12 @@ router.post("/login", async (req, res) => {
 
     delete user.password;
     const token = jwt.sign({ id: user.id, username: user.username }, "secretkey", { expiresIn: "1200s" });
-    user.token = token
-    res
-      // .cookie("accessToken", token, { httpOnly: true })
-      .status(200)
-      .json(...data, ...token);
+    res.status(200).json({ token: token });
   });
+});
+
+router.post("/logout", (req, res) => {
+  res.status(200).json({ message: "Logout successful" });
 });
 
 function checkToken(req, res, next) {
@@ -107,10 +103,8 @@ router.get("/detail", checkToken, (req, res) => {
 
 
 
-
 router.put("/profile/update/:id", (req, res) => {
   var { id } = req.params;
-
   var { email, username, firstName, lastName, address, country, dob, mobile, password } = req.body;
 
   const salt = bcrypt.genSaltSync(10);
@@ -118,37 +112,30 @@ router.put("/profile/update/:id", (req, res) => {
 
   var getPasswordQuery = `SELECT password FROM users WHERE id=${id}`;
 
-  con.query(getPasswordQuery, function (error, result) {
-    if (error) {
-      console.log(error);
-      return res.status(500).json(error);
-    } else {
-      if (result.length === 0) {
-        return res.status(404).json("User not found");
-      }
+  con.query(getPasswordQuery, (error, result) => {
+    if (error) return res.status(500).json(error);
+    if (result.length === 0) return res.status(404).json("User not found");
 
-      const existingPassword = result[0].password;
+    const existingPassword = result[0].password;
+    const passwordMatch = bcrypt.compareSync(password, existingPassword);
 
-      const passwordMatch = bcrypt.compareSync(password, existingPassword);
+    if (!passwordMatch) return res.status(401).json("Invalid password");
 
-      if (!passwordMatch) {
-        return res.status(401).json("Invalid password");
-      }
+    var dobFormatted = dob ? moment(dob).format("YYYY-MM-DD") : null;
 
-      var query = `UPDATE users SET email='${email}', username='${username}', password='${hashedPassword}', firstName='${firstName}', lastName='${lastName}', address='${address}', country='${country}', dob='${dob}', mobile='${mobile}', createdOn='${moment(Date.now()).format("YYYY-MM-DD HH:mm:ss")}' WHERE id=${id}`;
+    var query = `UPDATE users 
+                 SET email='${email}', username='${username}', password='${hashedPassword}', 
+                     firstName='${firstName}', lastName='${lastName}', address='${address}', 
+                     country='${country}', dob='${dobFormatted}', mobile='${mobile}', 
+                     createdOn='${moment().format("YYYY-MM-DD HH:mm:ss")}' 
+                 WHERE id=${id}`;
 
-      con.query(query, function (error, data) {
-        if (error) {
-          console.log(error, "ok");
-          return res.status(500).json(error);
-        } else {
-          res.status(200).json({ message: 'Update done' });
-        }
-      });
-    }
+    con.query(query, (error, data) => {
+      if (error) return res.status(500).json(error);
+      res.status(200).json({ message: 'Update done' });
+    });
   });
 });
-
 
 
 router.post('/forgot', async (req, res) => {
@@ -160,7 +147,7 @@ router.post('/forgot', async (req, res) => {
         res.status(404).json({ error: 'User not found' });
       } else {
         const user = results[0];
-        const resetToken = jwt.sign({ userId: user.id }, 'reset-secret-key', { expiresIn: "1200s" });
+        const resetToken = jwt.sign({ userId: user.id }, 'reset-secret-key', { expiresIn: "60s" });
         // const token = jwt.sign({ id: user.id, username: user.username }, "secretkey", { expiresIn: "1200s" });
         console.log(resetToken);
 
@@ -175,7 +162,7 @@ router.post('/forgot', async (req, res) => {
             port:465,
             secureConnection:false,
             user: "saran07rose@gmail.com",
-            pass: "yzlopbfkbgjlbexk",
+            pass: "dydnwqiyqkqovfpd",
           },
         });
 
@@ -226,7 +213,6 @@ router.post('/reset', async (req, res) => {
 
       const hashedPassword = await bcrypt.hash(newPassword, 10);
       const userId = decoded.userId;
-      console.log(userId);
 
       // Update user's password in the database
       con.query('UPDATE users SET password = ? WHERE id = ?', [hashedPassword, userId], (updateError, updateResults) => {
