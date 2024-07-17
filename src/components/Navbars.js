@@ -32,8 +32,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 
 const drawerWidth = 240;
 
-const apiBaseUrl1 = 'http://localhost:4000/api/v1/special/Obj'        
-const apiBaseUrl2 = 'http://localhost:4000/api/v1/profile/users'  
+const apiBaseUrl = process.env.REACT_APP_API_BASE_URL + '/special/Obj';
 
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
@@ -87,7 +86,7 @@ console.log(approval);
   }, [navigate]);
 
   const getApprvlData = () => {
-    axios.get(`${apiBaseUrl1}`)
+    axios.get(`${apiBaseUrl}`)
       .then(res => {
         setApproval(res.data)
       })

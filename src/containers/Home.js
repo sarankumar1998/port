@@ -5,6 +5,8 @@ import axios from "axios";
 import { Box, Card } from "@mui/material";
 
 export default function Home() {
+  const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
+
   const navigate = useNavigate();
   const [user, setUser] = useState({});
   useEffect(() => {
@@ -16,16 +18,15 @@ export default function Home() {
     const decodedToken = JSON.parse(atob(token.split('.')[1]));
     const userId = decodedToken.id;
 
-    axios.get(`http://localhost:4000/api/v1/special/users/${userId}`)
-      .then(response => {
+    axios.get(`${apiBaseUrl}/special/users/${userId}`)
+    .then(response => {
         setUser(response.data);
       })
       .catch(error => {
         console.error("Error fetching user data:", error);
         navigate("/login");
       });
-  }, [navigate]);
-
+  }, [navigate, apiBaseUrl]);
 
   return (
     <div style={{ marginTop: "5rem" }}>
@@ -42,7 +43,7 @@ export default function Home() {
                       fontWeight: "600",
                     }}
                   >
-         {user.username}
+                    {user.username}
                   </span>{" "}
                   <br />
                   Welcome Back!

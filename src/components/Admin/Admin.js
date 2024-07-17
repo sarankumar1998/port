@@ -17,11 +17,10 @@ import Table from "@mui/material/Table";
 import LoadingSpinner from "../Loader/LoadingSpinner";
 
 const apiBaseUrl1 = 'http://localhost:4000/api/v4/register'; 
-const apiBaseUrl2 = 'http://localhost:4000/api/v1/special/Obj'; 
+const apiBaseUrl2 =  process.env.REACT_APP_API_BASE_URL + 'special/Obj';
 const apiBaseUrl3 = 'http://localhost:4000/api/v1/member/remove/'; 
 
 function Admin() {
-  // CALL IT ONCE IN YOUR APP
   if (typeof window !== "undefined") {
     injectStyle();
   }
