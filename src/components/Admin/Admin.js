@@ -16,9 +16,9 @@ import TextArea from "antd/lib/input/TextArea";
 import Table from "@mui/material/Table";
 import LoadingSpinner from "../Loader/LoadingSpinner";
 
-const apiBaseUrl1 = 'http://localhost:4000/api/v4/register'; 
+const apiBaseUrl1 = process.env.REACT_APP_SERVER_V4 
 const apiBaseUrl2 =  process.env.REACT_APP_API_BASE_URL + 'special/Obj';
-const apiBaseUrl3 = 'http://localhost:4000/api/v1/member/remove/'; 
+const apiBaseUrl3 = process.env.REACT_APP_API_BASE_URL 
 
 function Admin() {
   if (typeof window !== "undefined") {
@@ -72,7 +72,7 @@ function Admin() {
     let confirm = window.confirm("Are you sure you want to Approve?");
     if (confirm) {
       try {
-        await axios.put(`http://localhost:4000/api/v1/members/update/${id}`, updateStatus);
+        await axios.put(`http://ec2-44-204-186-150.compute-1.amazonaws.com/api/v1/members/update/${id}`, updateStatus);
         toast.success("Approved Successfully");
         setAll(prevState => prevState.map(item => item.id === id ? { ...item, status: "Approved", Remarks: remarks } : item));
       } catch (err) {
@@ -91,7 +91,7 @@ function Admin() {
     let confirm = window.confirm("Are you sure you want to Reject?");
     if (confirm) {
       try {
-        await axios.put(`http://localhost:4000/api/v1/members/update/${id}`, updateStatus);
+        await axios.put(`http://ec2-44-204-186-150.compute-1.amazonaws.com/api/v1/members/update/${id}`, updateStatus);
         toast.error("Rejected Successfully");
         setAll(prevState => prevState.map(item => item.id === id ? { ...item, status: "Rejected", Remarks: remarks } : item));
       } catch (err) {

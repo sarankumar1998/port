@@ -13,14 +13,15 @@ function ClientMail() {
   const [otp, setOTP] = useState('');
   const [message, setMessage] = useState(true);
   const [messageStyle, setMessageStyle] = useState({});
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [count, setCount] = useState(0); 
 
+  const apiBaseUrl = process.env.REACT_APP_GENOTP_V6 
+  const apiBaseUrl2 = process.env.REACT_APP_VEROTP_V6 
 
   const handleGenerateOTP = () => {
     axios
-      .post('http://localhost:4000/api/v6/generate-otp', { email })
+      .post(apiBaseUrl, { email })
       .then(response => {
         setMessage('Generating OTP...');
         setCount(5 * 60); // Set count to 5 minutes (300 seconds)
@@ -49,7 +50,7 @@ function ClientMail() {
 
   const handleVerifyOTP = () => {
     axios
-      .post('http://localhost:4000/api/v6/verify-otp', { email, otp })
+      .post(apiBaseUrl2, { email, otp })
       .then(response => {
         setMessage(response.data.message);
         if (error.response.status === 200) {

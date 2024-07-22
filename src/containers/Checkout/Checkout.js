@@ -28,17 +28,11 @@ function Checkout() {
 
   var currentTime = new Date();
 
-  const apiBaseUrl = 'http://localhost:4000/api/v3/getalltime'; 
-
-  const apiBaseUrl2 = 'http://localhost:4000/api/v3/up/'; 
-
-
-
+  const apiBaseUrl = process.env.REACT_APP_SPORTS_V3
+  const apiBaseUrl2 = process.env.REACT_APP_SPORTS_UP_V3 
 
   var time = currentTime.getHours();
 
-
-  // };
   const getTime = () => {
     axios.get(apiBaseUrl).then((res) => {
       setAllTime(res.data);

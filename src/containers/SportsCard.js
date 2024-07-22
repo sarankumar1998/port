@@ -24,7 +24,7 @@ const theme = createTheme({
   },
 });
 
-const apiBaseUrl = 'http://localhost:4000/api/v3/getsports'; 
+const apiBaseUrl = process.env. REACT_APP_SPORTS_V3
 
 
 export default function SportsCard() {
