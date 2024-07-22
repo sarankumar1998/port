@@ -5,6 +5,8 @@
   height: 100vh;
   background-size: cover;
   background-position: center;
+  padding: 1rem;
+  box-sizing: border-box;
 }
 
 .login-paper {
@@ -13,6 +15,7 @@
   width: 100%;
   max-width: 400px;
   opacity: 0.9;
+  box-sizing: border-box;
 }
 
 .login-form {
@@ -22,4 +25,26 @@
 
 .submit-button {
   margin: 1rem 0;
+}
+
+@media (max-width: 768px) {
+  .login-paper {
+    padding: 1.5rem;
+    margin: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-container {
+    padding: 0;
+  }
+  
+  .login-paper {
+    padding: 1rem;
+    margin: 0;
+  }
+
+  .submit-button {
+    margin: 0.5rem 0;
+  }
 }

@@ -1,34 +1,58 @@
-
+/* Base styles */
 .signup-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+.signup-paper {
+  padding: 20px;
+  width: 100%;
+  max-width: 400px;
+  opacity: 0.9;
+  box-sizing: border-box;
+}
+
+.signup-form .date-picker {
+  width: 100%;
+}
+
+.submit-button {
+  margin-top: 20px;
+}
+
+.mt-2 {
+  margin-top: 16px;
+}
+
+.MuiLink-root {
+  text-align: center;
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .signup-paper {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .signup-container {
+    padding: 0;
   }
   
   .signup-paper {
-    padding: 20px;
-    width: 400px;
-    opacity: 0.9;
+    padding: 1rem;
+    margin: 2%;
   }
-  
-  .signup-form .date-picker {
-    width: 100%;
-  }
-  
+
   .submit-button {
-    margin-top: 20px;
+    margin-top: 0.5rem;
   }
-  
-  .mt-2 {
-    margin-top: 16px;
-  }
-  
-  .MuiLink-root {
-    text-align: center;
-    display: block;
-  }
-  
+}
