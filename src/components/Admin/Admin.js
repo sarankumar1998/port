@@ -1,9 +1,5 @@
-import { Box, TablePagination } from "@mui/material";
+import { Box, TablePagination, TextField, Button } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
-import { injectStyle } from "react-toastify/dist/inject-style";
 import CheckOutlinedIcon from "@mui/icons-material/CheckOutlined";
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 import TableBody from "@mui/material/TableBody";
@@ -12,15 +8,22 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import TextArea from "antd/lib/input/TextArea";
 import Table from "@mui/material/Table";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import { injectStyle } from "react-toastify/dist/inject-style";
+import TextArea from "antd/lib/input/TextArea";
 import LoadingSpinner from "../Loader/LoadingSpinner";
+import "react-toastify/dist/ReactToastify.css";
 
-const apiBaseUrl1 = process.env.REACT_APP_SERVER_V4 
-const apiBaseUrl2 =  process.env.REACT_APP_API_BASE_URL + 'special/Obj';
-const apiBaseUrl3 = process.env.REACT_APP_API_BASE_URL 
+const apiBaseUrl1 = process.env.REACT_APP_SERVER_V4
+const apiBaseUrl2 = process.env.REACT_APP_API_BASE_URL + "/special/Obj";
+const apiBaseUrl3 = process.env.REACT_APP_API_BASE_V1_URL;  
+const apiBaseUrlupdate = process.env.REACT_APP_API_BASE_V1_UPDATE
 
-function Admin() {
+
+const Admin = () => {
   if (typeof window !== "undefined") {
     injectStyle();
   }
@@ -50,12 +53,12 @@ function Admin() {
   };
 
   const handleDel = async (id) => {
-    let confirm = window.confirm("Are you sure you want to delete?");
+    const confirm = window.confirm("Are you sure you want to delete?");
     if (confirm) {
       try {
         await axios.delete(`${apiBaseUrl3}${id}`);
         toast.error("Deleted Successfully");
-        setAll(prevState => prevState.filter(item => item.id !== id));
+        setAll((prevState) => prevState.filter((item) => item.id !== id));
       } catch (err) {
         console.log(err);
       }
@@ -69,12 +72,16 @@ function Admin() {
       status: "Approved",
       Remarks: remarks,
     };
-    let confirm = window.confirm("Are you sure you want to Approve?");
+    const confirm = window.confirm("Are you sure you want to Approve?");
     if (confirm) {
       try {
-        await axios.put(`http://ec2-44-204-186-150.compute-1.amazonaws.com/api/v1/members/update/${id}`, updateStatus);
+        await axios.put(`${apiBaseUrlupdate}${id}`, updateStatus);
         toast.success("Approved Successfully");
-        setAll(prevState => prevState.map(item => item.id === id ? { ...item, status: "Approved", Remarks: remarks } : item));
+        setAll((prevState) =>
+          prevState.map((item) =>
+            item.id === id ? { ...item, status: "Approved", Remarks: remarks } : item
+          )
+        );
       } catch (err) {
         console.log(err);
       }
@@ -88,12 +95,16 @@ function Admin() {
       status: "Rejected",
       Remarks: remarks,
     };
-    let confirm = window.confirm("Are you sure you want to Reject?");
+    const confirm = window.confirm("Are you sure you want to Reject?");
     if (confirm) {
       try {
-        await axios.put(`http://ec2-44-204-186-150.compute-1.amazonaws.com/api/v1/members/update/${id}`, updateStatus);
+        await axios.put(`${apiBaseUrlupdate}${id}`, updateStatus);
         toast.error("Rejected Successfully");
-        setAll(prevState => prevState.map(item => item.id === id ? { ...item, status: "Rejected", Remarks: remarks } : item));
+        setAll((prevState) =>
+          prevState.map((item) =>
+            item.id === id ? { ...item, status: "Rejected", Remarks: remarks } : item
+          )
+        );
       } catch (err) {
         console.log(err);
       }
@@ -110,7 +121,6 @@ function Admin() {
   };
 
   const sendEmail = async (id, mail, Remarks) => {
-    console.log(id, mail, 'maill');
     setLoad(true);
     const user = { email: mail, text: Remarks };
     try {
@@ -122,17 +132,24 @@ function Admin() {
     setLoad(false);
   };
 
-  const filteredData = all.filter(item => item.name.toLowerCase().includes(search.toLowerCase()));
+  const filteredData = all.filter((item) => item.name.toLowerCase().includes(search.toLowerCase()));
   const paginatedData = filteredData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
   return (
-    <div className="container" style={{marginTop:'8rem'}}>
+    <div className="container" style={{ marginTop: '8rem' }}>
+      <ToastContainer />
       {load ? (
         <LoadingSpinner message="Please wait while the mail is being sent" />
       ) : (
         <>
-          <label>Search:</label>
-          <input className="mb-2" onChange={(e) => setSearch(e.target.value)} />
+          <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+            <TextField
+              label="Search"
+              variant="outlined"
+              size="small"
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </Box>
 
           {all.length > 0 && (
             <Paper sx={{ width: "100%", overflow: "hidden" }}>
@@ -152,7 +169,7 @@ function Admin() {
                   </TableHead>
                   <TableBody>
                     {paginatedData.map((el, index) => (
-                      <TableRow hover key={index} sx={{ "&:last-child TableCell , &:last-child th": { border: 0 } }}>
+                      <TableRow hover key={index} sx={{ "&:last-child TableCell, &:last-child th": { border: 0 } }}>
                         <TableCell component="th">{el.id}</TableCell>
                         <TableCell>{el.name}</TableCell>
                         <TableCell style={{ width: "25rem" }}>{el.message}</TableCell>
@@ -168,52 +185,42 @@ function Admin() {
                           />
                         </TableCell>
                         <TableCell>
-                            <button
-                              className="btn btn-outline-success btn-sm"
-                              onClick={(e) => handleApprove(el.id)}
-                              disabled={el.status === "Approved"}
-                              style={{
-                                display:
-                                  el.status === "Approved" ||
-                                    el.status === "Pending"
-                                    ? "inline"
-                                    : "none",
-                              }}
-                            >
-                              <CheckOutlinedIcon />{" "}
-                            </button>
-                            &nbsp;
-                            <button
-                              className="btn btn-outline-danger btn-sm"
-                              onClick={(e) => handleReject(el.id)}
-                              disabled={el.status === "Rejected"}
-                              style={{
-                                display:
-                                  el.status === "Rejected" ||
-                                    el.status === "Pending"
-                                    ? "inline"
-                                    : "none",
-                              }}
-                            >
-                              {" "}
-                              <ClearOutlinedIcon />{" "}
-                            </button>
-
-                          </TableCell>
+                          <Button
+                            variant="outlined"
+                            color="success"
+                            size="small"
+                            onClick={() => handleApprove(el.id)}
+                            disabled={el.status === "Approved"}
+                          >
+                            <CheckOutlinedIcon />
+                          </Button>
+                          &nbsp;
+                          <Button
+                            variant="outlined"
+                            color="error"
+                            size="small"
+                            onClick={() => handleReject(el.id)}
+                            disabled={el.status === "Rejected"}
+                          >
+                            <ClearOutlinedIcon />
+                          </Button>
+                        </TableCell>
                         <TableCell>
-                          <button
-                            className="btn btn-danger btn-sm"
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            size="small"
                             onClick={() => sendEmail(el.id, el.email, el.Remarks)}
                           >
                             Email
-                          </button>
+                          </Button>
                         </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
                 </Table>
               </TableContainer>
-              <div className="mt-3">
+              <Box mt={3}>
                 <TablePagination
                   rowsPerPageOptions={[10, 25, 100]}
                   component="div"
@@ -223,13 +230,13 @@ function Admin() {
                   onPageChange={handleChangePage}
                   onRowsPerPageChange={handleChangeRowsPerPage}
                 />
-              </div>
+              </Box>
             </Paper>
           )}
         </>
       )}
     </div>
   );
-}
+};
 
 export default Admin;

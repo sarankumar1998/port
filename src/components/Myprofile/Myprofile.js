@@ -147,55 +147,7 @@ export default function Myprofile() {
 
             <Form name="sign-up" className="sign-up mt-4">
               <div className="row">
-                <div className="col-xl-6">
-                  <Form.Item
-                    label="FirstName"
-                    rules={[
-                      {
-                        required: true,
-                        message: (
-                          <span style={{ fontSize: "9px", color: "red" }}>
-                            Required!
-                          </span>
-                        ),
-                      },
-                    ]}
-                  >
-                    <input
-                      style={{ fontSize: "1rem" }}
-                      type="firstName"
-                      disabled={edit}
-                      onChange={(e) => setdetails({ ...details, firstName: e.target.value })}
-                      className="form-control form-control-sm"
-                      value={details?.firstName || ""}
-                    />
-                  </Form.Item>
-                </div>
 
-                <div className="col-xl-6">
-                  <Form.Item
-                    label="LastName"
-                    rules={[
-                      {
-                        required: true,
-                        message: (
-                          <span style={{ fontSize: "9px", color: "red" }}>
-                            Required!
-                          </span>
-                        ),
-                      },
-                    ]}
-                  >
-                    <input
-                      style={{ fontSize: "1rem" }}
-                      type="lastName"
-                      onChange={(e) => setdetails({ ...details, lastName: e.target.value })}
-                      disabled={edit}
-                      className="form-control form-control-sm"
-                      defaultValue={details?.lastName}
-                    />
-                  </Form.Item>
-                </div>
 
                 <div className="col-xl-6">
                   <Form.Item
@@ -222,32 +174,6 @@ export default function Myprofile() {
                     />
                   </Form.Item>
                 </div>
-                <div className="col-xl-6">
-                  <Form.Item
-                    label="Mobile"
-                    className="mt-2"
-                    rules={[
-                      {
-                        required: true,
-                        message: (
-                          <span style={{ fontSize: "9px", color: "red" }}>
-                            Required!
-                          </span>
-                        ),
-                      },
-                    ]}
-                  >
-                    <input
-                      disabled={edit}
-                      style={{ fontSize: "1rem" }}
-                      onChange={(e) => setdetails({ ...details, mobile: e.target.value })}
-                      className="form-control form-control-sm"
-                      defaultValue={details?.mobile}
-                    />
-                  </Form.Item>
-                </div>
-
-
                 <div className="row">
                   <div className="col-xl-6">
                     <Form.Item
@@ -309,6 +235,30 @@ export default function Myprofile() {
 
               <div className="mt-4">
                 <h5>Personal Info</h5>
+                <div className="col-xl-6">
+                  <Form.Item
+                    label="Mobile"
+                    className="mt-2"
+                    rules={[
+                      {
+                        required: true,
+                        message: (
+                          <span style={{ fontSize: "9px", color: "red" }}>
+                            Required!
+                          </span>
+                        ),
+                      },
+                    ]}
+                  >
+                    <input
+                      disabled={edit}
+                      style={{ fontSize: "1rem" }}
+                      onChange={(e) => setdetails({ ...details, mobile: e.target.value })}
+                      className="form-control form-control-sm"
+                      defaultValue={details?.mobile}
+                    />
+                  </Form.Item>
+                </div>
 
 
                 <div className="col-xl-6">
@@ -336,30 +286,6 @@ export default function Myprofile() {
                   </Form.Item>
                 </div>
 
-                <div className="col-xl">
-                  <Form.Item
-                    className="mt-2"
-                    label="Address"
-                    rules={[
-                      {
-                        required: true,
-                        message: (
-                          <span style={{ fontSize: "9px", color: "red" }}>
-                            Required!
-                          </span>
-                        ),
-                      },
-                    ]}
-                  >
-                    <input
-                      style={{ fontSize: "1rem" }}
-                      disabled={edit}
-                      onChange={(e) => setdetails({ ...details, address: e.target.value })}
-                      className="form-control form-control-sm"
-                      value={details.address || details.address}
-                    />
-                  </Form.Item>
-                </div>
 
                 {edit === false ? (
                   <div className="mt-4">

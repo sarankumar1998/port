@@ -18,9 +18,9 @@ import { Link, useNavigate } from "react-router-dom";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import CircleNotificationsIcon from "@mui/icons-material/CircleNotifications";
-import InfoIcon from "@mui/icons-material/Info";
-import SwipeableDrawer from "@mui/material/SwipeableDrawer";
-import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
+import RateReviewIcon from '@mui/icons-material/RateReview'
+;import SwipeableDrawer from "@mui/material/SwipeableDrawer";
+import SportsCricketIcon from '@mui/icons-material/SportsCricket';
 import ContactsIcon from "@mui/icons-material/Contacts";
 import { AccountCircle, Home, ViewAgenda } from "@material-ui/icons";
 import { Badge, Menu, MenuItem } from "@mui/material";
@@ -39,7 +39,6 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   alignItems: "center",
   justifyContent: "flex-end",
   padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
   ...theme.mixins.toolbar,
 }));
 
@@ -74,9 +73,7 @@ export default function Navbars() {
   const { id, username } = decodedToken;
   const userId = id;
 
-console.log(approval);
   useEffect(() => {
-    getApprvlData()
     if (!token) {
       navigate("/login");
       return;
@@ -85,7 +82,14 @@ console.log(approval);
 
   }, [navigate]);
 
-  const getApprvlData = () => {
+
+
+
+
+  const handleCloseCanva = () => setShow(false);
+  const handleShowCanva = () => {
+    setShow(true);
+    
     axios.get(`${apiBaseUrl}`)
       .then(res => {
         setApproval(res.data)
@@ -93,13 +97,8 @@ console.log(approval);
       .catch(err => {
         console.log(`err`, err);
       })
+  
   }
-
-
-
-
-  const handleCloseCanva = () => setShow(false);
-  const handleShowCanva = () => setShow(true);
 
   const handleLogout = () => {
     let confirm = window.confirm("Are you sure you want to logout");
@@ -234,7 +233,7 @@ console.log(approval);
                         <span>
                           <MessageIcon style={{ color: "grey" }} />
                         </span>{" "}
-                        You have req from <span style={{fontWeight:"700", color:"black"}}>{e.name}</span> status is{" "}
+                        You have req from <span style={{ fontWeight: "700", color: "black" }}>{e.name}</span> status is{" "}
                         <span style={{ color: "red" }}>{e.status}</span>.
                         <hr />
                       </div> : null} </>
@@ -260,8 +259,8 @@ console.log(approval);
           open={open}
           onOpen={() => setOpen(true)}
         >
-          <DrawerHeader>
-            <h5>Welcome User!</h5>
+          <DrawerHeader style={{background:"#f0f4ff"}}>
+            <h5 className="mt-2" style={{marginRight:"1.5rem"}}>Welcome User!</h5>
             <IconButton onClick={handleDrawerClose}>
               {theme.direction === "rtl" ? (
                 <ChevronRightIcon />
@@ -285,31 +284,8 @@ console.log(approval);
               </ListItem>
             </Link>
 
-            <Link to="/skills">
-              <ListItem
-                button
-                style={{ marginTop: 20 }}
-                onClick={handleDrawerClose}
-              >
-                <ListItemIcon>
-                  <LibraryBooksIcon />
-                </ListItemIcon>
-                <ListItemText primary={"Skill"} />
-              </ListItem>
-            </Link>
 
-            <Link to="/about">
-              <ListItem
-                button
-                style={{ marginTop: 20 }}
-                onClick={handleDrawerClose}
-              >
-                <ListItemIcon>
-                  <InfoIcon />
-                </ListItemIcon>
-                <ListItemText primary={"About"} />
-              </ListItem>
-            </Link>
+
 
             {userId === 2 ? (
               ""
@@ -348,13 +324,13 @@ console.log(approval);
                 onClick={handleDrawerClose}
               >
                 <ListItemIcon>
-                  <ViewAgenda />
+                  <SportsCricketIcon />
                 </ListItemIcon>
                 <ListItemText primary={"Sports"} />
               </ListItem>
             </Link>
 
-            <Link to="/clientmail">
+            {userId === 2 && <Link to="/clientmail">
               <ListItem
                 button
                 style={{ marginTop: 20 }}
@@ -367,20 +343,7 @@ console.log(approval);
               </ListItem>
             </Link>
 
-
-            <Link to="/travelticket">
-              <ListItem
-                button
-                style={{ marginTop: 20 }}
-                onClick={handleDrawerClose}
-              >
-                <ListItemIcon>
-                  <MessageIcon />
-                </ListItemIcon>
-                <ListItemText primary={"Add Ticket"} />
-              </ListItem>
-            </Link>
-
+            }
             <Link to="/RatemyApp">
               <ListItem
                 button
@@ -388,9 +351,9 @@ console.log(approval);
                 onClick={handleDrawerClose}
               >
                 <ListItemIcon>
-                  <MessageIcon />
+                  <RateReviewIcon />
                 </ListItemIcon>
-                <ListItemText primary={"Rate My App"} />
+                <ListItemText primary={"Rating"} />
               </ListItem>
             </Link>
 
