@@ -22,11 +22,11 @@ const FormsData = ({userId}) => {
   const [message, setMessage] = useState("");
   // const [date, setDate] = useState(new Date());
   const [date, setDate] = useState();
-  console.log(date,'datee');
+  console.log(date,'datee');ll
 
 
 
-  const apiBaseUrl = 'http://ec2-44-204-186-150.compute-1.amazonaws.com/api/v1/members';
+  const apiBaseUrl = 'http://ec2-44-193-79-62.compute-1.amazonaws.com/api/v1/members';
 
 
   const onFinish = async () => {
@@ -44,7 +44,6 @@ const FormsData = ({userId}) => {
     await axios.post(apiBaseUrl, user)
     .then((res) => {
         form.resetFields()
-        // sessionStorage.setItem('usersss', JSON.stringify(res.data));
         toast.success("Sent Successfully");
       },
  

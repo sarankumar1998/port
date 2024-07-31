@@ -19,7 +19,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 
-const apiBaseUrl = 'http://ec2-44-204-186-150.compute-1.amazonaws.com:3000/api/v1/profile/users'
+const apiBaseUrl = 'http://ec2-44-193-79-62.compute-1.amazonaws.com:3000/api/v1/profile/users'
 const apiBaseUrl2 =  process.env.REACT_APP_USERS_SERVER + '/profile/update'
 
 
