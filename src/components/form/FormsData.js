@@ -22,7 +22,6 @@ const FormsData = ({userId}) => {
   const [message, setMessage] = useState("");
   // const [date, setDate] = useState(new Date());
   const [date, setDate] = useState();
-  console.log(date,'datee');ok
 
 
 
