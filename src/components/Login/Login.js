@@ -18,7 +18,7 @@ const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const apiBaseUrl = process.env.REACT_APP_USERS_SERVER + '/login';
+  const apiBaseUrl = 'http://localhost:3000/login';
 
   const onFinish = (event) => {
     event.preventDefault();

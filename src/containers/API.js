@@ -3,14 +3,14 @@ import axios from "axios";
 // export const getAPI = {
 //   GetSpecialApi: async ({id}) =>
 //     await axios
-//       .get(`http://ec2-44-193-79-62.compute-1.amazonaws.com/api/v1/special/Obj/${id}`)
+//       .get(`http://ec2-3-236-181-198.compute-1.amazonaws.com/api/v1/special/Obj/${id}`)
 //       .then((res) => res)
 //       .catch((err) => console.log(err)),
 // };
 export const getAPI = {
   GetSpecialApi: async () =>
     await axios
-      .get("http://ec2-44-193-79-62.compute-1.amazonaws.com/api/v1/special")
+      .get("http://ec2-3-236-181-198.compute-1.amazonaws.com/api/v1/special")
       .then((res) => res)
       .catch((err) => console.log(err)),
 };
@@ -21,14 +21,14 @@ export const getAPI = {
   // export const putMember = {
   //   updateMember: async () =>
   //     await axios
-  //       .put("  http://ec2-44-193-79-62.compute-1.amazonaws.com/api/v1/members/update")
+  //       .put("  http://ec2-3-236-181-198.compute-1.amazonaws.com/api/v1/members/update")
   //       .then((res) => res)
   //       .catch((err) => console.log(err)),
   // };
   export const putMember = {
     updateMember: async () =>
       await axios
-        .put("  http://ec2-44-193-79-62.compute-1.amazonaws.com/api/v1/members/update")
+        .put("  http://ec2-3-236-181-198.compute-1.amazonaws.com/api/v1/members/update")
         .then((res) => res)
         .catch((err) => console.log(err)),
   };

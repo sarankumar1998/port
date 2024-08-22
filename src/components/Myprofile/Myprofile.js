@@ -19,7 +19,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 
-const apiBaseUrl = 'http://ec2-44-193-79-62.compute-1.amazonaws.com:3000/api/v1/profile/users'
+const apiBaseUrl =  process.env.REACT_APP_API_BASE_URL + '/profile/users'
 const apiBaseUrl2 =  process.env.REACT_APP_USERS_SERVER + '/profile/update'
 
 
@@ -77,8 +77,7 @@ export default function Myprofile() {
         }
       } catch (error) {
         if (error.response) {
-          console.log(error.response, "error.response)");
-          toast.error(`Error: ${error.response.data}`);
+                    toast.error(`Error: ${error.response.data}`);
         } else {
           toast.error("An error occurred while processing your request.");
         }
@@ -308,9 +307,9 @@ export default function Myprofile() {
                       <input
                         
                         onChange={(e) => setdetails({ ...details, password: e.target.value })}
-                      />             <button
+                      />             <button 
                         onClick={(e) => onUpdated(e, userId)}
-                        className="btn btn-primary btn-sm"
+                        className="btn btn-primary btn-sm disabled"
                       >
                         save
                       </button>

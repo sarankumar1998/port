@@ -25,7 +25,7 @@ const FormsData = ({userId}) => {
 
 
 
-  const apiBaseUrl = 'http://ec2-44-193-79-62.compute-1.amazonaws.com/api/v1/members';
+  const apiBaseUrl =  process.env.REACT_APP_API_BASE_URL + '/members';
 
 
   const onFinish = async () => {
