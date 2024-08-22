@@ -18,7 +18,7 @@ const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const apiBaseUrl = 'http://localhost:3000/login';
+  const apiBaseUrl = 'http://ec2-3-236-181-198.compute-1.amazonaws.com:3000/login';
 
   const onFinish = (event) => {
     event.preventDefault();
