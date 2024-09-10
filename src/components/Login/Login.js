@@ -1,46 +1,26 @@
 import React, { useState } from "react";
-import { injectStyle } from "react-toastify/dist/inject-style";
+import { useDispatch } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import { Avatar, Grid, Paper, TextField, Button, Link, Typography, Container } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { loginRequest } from "../../slice/LoginSlice";
 import background from "../../assets/ship.jpg";
 import "react-toastify/dist/ReactToastify.css";
 import "./Login.css";
+import { Fade } from "react-awesome-reveal";
+
 
 const Login = () => {
-  if (typeof window !== "undefined") {
-    injectStyle();
-  }
-
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
-  const apiBaseUrl = 'http://ec2-3-236-181-198.compute-1.amazonaws.com:3000/login';
 
   const onFinish = (event) => {
     event.preventDefault();
     const user = { username, password };
-
-    axios.post(apiBaseUrl, user)
-      .then((response) => {
-        if (response.status === 200) {
-          toast.success("Successfully logged in");
-          sessionStorage.setItem("token", response.data.token);
-          navigate("/home");
-        } else {
-          toast.error("An unexpected error occurred. Please try again.");
-        }
-      })
-      .catch((error) => {
-        if (error.response) {
-          toast.error(error.response.data);
-        } else {
-          toast.error("An error occurred. Please try again later.");
-        }
-      });
+    dispatch(loginRequest({ ...user, navigate }));
   };
 
   return (
@@ -55,6 +35,7 @@ const Login = () => {
               Sign In
             </Typography>
           </Grid>
+          
           <form onSubmit={onFinish} className="login-form">
             <TextField
               variant="outlined"

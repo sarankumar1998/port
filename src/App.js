@@ -23,7 +23,6 @@ function App() {
   return (
     <div className="App">
       <AppContext.Provider value={{ routeState: routeState }}>
-        <Router>
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/login" element={<Login />} />
@@ -48,7 +47,6 @@ function App() {
               }
             />
           </Routes>
-        </Router>
       </AppContext.Provider>
     </div>
   );
